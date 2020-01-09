@@ -1,0 +1,298 @@
+@charset "utf-8";
+@import "./mixin";
+
+body,
+div,
+header,
+footer,
+nav,
+section,
+aside,
+article,
+ul,
+dl,
+dt,
+dd,
+li,
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+textarea,
+button,
+input,
+select,
+figure,
+figcaption,
+  {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  color: #666;
+  color: #333;
+  font-weight: normal;
+  font-family: "Microsoft Yahei";
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+.icon {
+  font-family: 'iconfont';
+  font-size: rem(28);
+  color: #666;
+}
+
+// input:-webkit-autofill 导致chrome的输入框背景颜色变成黄色
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+}
+
+
+input[type="button"],
+input[type="submit"],
+input[type="search"],
+input[type="reset"] {
+  -webkit-appearance: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+textarea {
+  -webkit-appearance: none;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #f6f6f6;
+}
+
+.clearfix {
+  zoom: 1
+}
+
+.clearfix::after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: ' ';
+  clear: both;
+  height: 0;
+}
+
+.red {
+  color: #ff4644
+}
+
+.gen {
+  color: #4c7a22
+}
+
+.clear:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.clear {
+  zoom: 1;
+}
+
+.back_img {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.margin {
+  margin: 0 auto;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+/*滚动条整体样式*/
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 5px;
+  background-color: $mainColor;
+  // background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+}
+.scrollbar::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  /*border-radius: 10px;*/
+  background: #EDEDED;
+}
+
+
+.container {
+  width: $widthBox;
+  margin: 0 auto;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ellipsis3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.ellipsis4 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.w {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+// 顶部 logo、搜索、购物车css公共样式
+.hometop2 {
+  background-color: #ffffff;
+
+  .box {
+    padding: 30px 0 35px 0;
+    display: flex;
+
+    .img {
+      flex: 1;
+      width: 300px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .searchBox {
+      flex: 1;
+    }
+
+    .shoppingcartBox {
+      margin-left: 20px;
+    }
+  }
+}
+
+// 订单顶部
+.ordertop {
+  background-color: #ffffff;
+  border-bottom: 2px solid $mainColor;
+
+  .box {
+    padding: 30px 0;
+    display: flex;
+
+    .img {
+      flex: 266px 0 0;
+      width: 266px;
+      height: 60px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .navs {
+      flex: 1;
+      height: 60px;
+      padding-top: 30px;
+
+      .nav {
+        font-size: 14px;
+        line-height: 30px;
+        margin-left: 80px;
+        color: #333333;
+
+        &:hover,
+        &.active {
+          color: $mainColor;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+// 移动端 头部样式
+#header{
+  display: block;
+  position: relative;
+  height: 44px;
+  line-height: 44px;
+  background: #fff;
+  font-size: 17px;
+  z-index: 999;
+  text-align: center;
+  .back{
+    top: 10px;
+    background-image: url(/static/icon/iconback.png);
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    display: block;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+  }
+}

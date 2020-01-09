@@ -1,0 +1,325 @@
+<template>
+  <div>
+    <head-top></head-top>
+    <account-head></account-head>
+    <div class="account">
+      <div class="container box">
+        <div class="ownlist1">
+          <div class="mybox">
+            <div class="tab">
+              <router-link tag="span" class="back" to="/mysale">返回上一页</router-link>
+            </div>
+            <div class="mylog">
+              <div class="typesel">
+                <div class="top">
+                  <div class="typs">
+                    <!-- <span :class="typesel==1?'active':''">金牌收益</span> -->
+                    <span>销售姓名：{{salename}}</span>
+                  </div>
+                  <div class="searchBytime">
+                    <div class="input">
+                      <el-input v-model="orderNum" placeholder="请输入订单编号"></el-input>
+                    </div>
+                    <el-date-picker
+                      v-model="startTime"
+                      format="yyyy-MM-dd"
+                      value-format="yyyy-MM-dd"
+                      type="date"
+                      placeholder="选择日期"
+                    ></el-date-picker>
+                    <el-button type="primary" @click="search">查询</el-button>
+                  </div>
+                </div>
+                <div class="blist" :class="bList.length>0?'true':''">
+                  <div class="tit">订单列表</div>
+                  <div class="table">
+                    <el-row class="title">
+                      <el-col :span="2">序号</el-col>
+                      <el-col :span="6">订单编号</el-col>
+                      <el-col :span="6">客户名称</el-col>
+                      <el-col :span="5">租赁金额</el-col>
+                      <el-col :span="5">收入时间</el-col>
+                    </el-row>
+                    <el-row
+                      class="itm"
+                      v-for="(item,index) of bList"
+                      :key="index"
+                      v-if="bList.length>0"
+                    >
+                      <el-col :span="2">{{index+1}}</el-col>
+                      <el-col :span="6">{{item.orderNum}}</el-col>
+                      <el-col :span="6">{{item.name}}</el-col>
+                      <el-col :span="5">{{item.money}}</el-col>
+                      <el-col :span="5">{{item.createTime}}</el-col>
+                    </el-row>
+                  </div>
+                </div>
+                <div class="noorder" v-if="bList.length==0">暂无记录</div>
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page="page"
+                  :page-size="limit"
+                  layout="total, prev, pager, next, jumper"
+                  :total="count"
+                  style="text-align:right;padding:20px;"
+                ></el-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <foot-guide></foot-guide>
+  </div>
+</template>
+<script>
+import { mapState, mapMutations } from "vuex";
+import headTop from "@/components/header/head";
+import footGuide from "@/components/footer/footGuide";
+import accountHead from "@/components/accountHead/accountHead";
+import { formatDate } from "@/config/often";
+import { mt_queryOrderByInvCode } from "@/api/my";
+export default {
+  name: "mysale",
+  components: {
+    headTop,
+    footGuide,
+    accountHead
+  },
+  data() {
+    return {
+      code: "",
+      salename: "", //销售姓名
+      orderNum: "", //订单编号
+      startTime: "", //搜索日期
+      bList: [
+        {
+          id: null,
+          orderNum: "20191206164851",
+          state: null,
+          status: null,
+          name: null,
+          money: 483,
+          userId: null,
+          deposit: null,
+          rent: null,
+          goodsNumber: null,
+          remark: null,
+          address: null,
+          img: null,
+          dispose: null,
+          createTime: "2019-12-06 16:48:49.0"
+        }
+      ],
+      page: 1,
+      limit: 10,
+      count: 0
+    };
+  },
+  computed: {
+    ...mapState(["userInfo", "shoppingInfo"])
+  },
+  created() {
+    console.log(this.$route.params);
+    this.code = this.$route.params.code;
+    this.salename = this.$route.params.name;
+    this.getList();
+  },
+  mounted() {},
+  methods: {
+    ...mapMutations(["setUserInfo", "setShoppingInfo"]),
+    //搜索
+    search() {
+      this.page = 1;
+      this.getList();
+    },
+    //获取我的客户订单
+    getList() {
+      let that = this;
+      // creator,orderNum,startTime,page,limit
+      mt_queryOrderByInvCode(
+        that.code,
+        that.orderNum,
+        that.startTime != null ? that.startTime : "",
+        that.page,
+        that.limit
+      ).then(data => {
+        console.log(data.data);
+        data.data.data.forEach(item=>{
+          item.createTime = formatDate(item.createTime,'yyyy-MM-dd hh:mm')
+        })
+        that.bList = data.data.data;
+        that.count = data.data.count;
+      });
+    },
+    handleSizeChange(val) {
+      this.limit = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getList();
+    }
+  }
+};
+</script>>
+<style lang="scss" scoped>
+@import "src/style/mixin";
+.account {
+  padding: 30px 0 80px 0;
+  .table {
+    border: 1px solid #e6e6e6;
+    font-size: 14px;
+    text-align: center;
+    background-color: #ffffff;
+    .title {
+      background-color: #fafafa;
+      line-height: 40px;
+      height: 40px;
+      div {
+        color: #333333;
+        border-right: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+    .itm {
+      div {
+        line-height: 50px;
+        height: 50px;
+        color: #666666;
+        border-right: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        &:last-child {
+          border-right: none;
+        }
+        img {
+          max-height: 40px;
+          margin-top: 5px;
+        }
+        span {
+          display: inline-block;
+          color: #333333;
+          margin-right: 10px;
+          &:last-child {
+            margin-right: 0;
+          }
+          &:hover {
+            cursor: pointer;
+            color: $mainColor;
+          }
+        }
+      }
+      &:last-child {
+        div {
+          border-bottom: none;
+        }
+      }
+      .opt {
+        // text-align: center;
+        span {
+        }
+      }
+    }
+  }
+  .noorder {
+    height: 340px;
+    font-size: 14px;
+    padding-top: 40px;
+    text-align: center;
+  }
+  .ownlist1 {
+    .mybox {
+      width: 100%;
+      background-color: #ffffff;
+      .tab {
+        border-bottom: 1px solid #e6e6e6;
+        font-size: 0;
+        padding: 0 30px;
+        span {
+          display: inline-block;
+          line-height: 50px;
+          font-size: 14px;
+          font-weight: bold;
+          color: #333333;
+          &.back {
+            margin-right: 20px;
+            font-weight: normal;
+            &:hover {
+              cursor: pointer;
+              text-decoration: underline;
+              color: $mainColor;
+            }
+          }
+        }
+      }
+      .mylog {
+        padding: 0 30px 30px 30px;
+        .minfo {
+          margin-bottom: 20px;
+          padding-bottom: 30px;
+          border-bottom: 1px dashed #dddddd;
+          text-align: center;
+          .val {
+            font-size: 20px;
+            line-height: 20px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 15px;
+          }
+          .n {
+            font-size: 14px;
+            color: #333333;
+            line-height: 14px;
+          }
+        }
+        .typesel {
+          .top {
+            padding: 20px 0;
+            display: flex;
+            .typs {
+              flex: 230px 0 0;
+              width: 230px;
+              height: 40px;
+              font-size: 0;
+              span {
+                display: inline-block;
+                line-height: 40px;
+                text-align: center;
+                font-size: 14px;
+                color: #333333;
+              }
+            }
+            .searchBytime {
+              flex: 1;
+              text-align: right;
+
+              button {
+                margin-left: 20px;
+              }
+              .input {
+                display: inline-block;
+                width: 200px;
+              }
+            }
+          }
+          .blist {
+            &.true {
+              min-height: 340px;
+            }
+            .tit {
+              font-size: 14px;
+              line-height: 14px;
+              margin-bottom: 20px;
+              color: #333333;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>
