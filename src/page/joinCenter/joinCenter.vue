@@ -89,7 +89,7 @@ export default {
   methods: {
     //查看加盟信息
     join(type){
-      // console.log(type)
+      console.log(type)
       this.$router.push('joinDes/'+ type)
     },
     //提交咨询信息

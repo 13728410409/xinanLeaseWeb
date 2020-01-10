@@ -109,7 +109,7 @@ export default {
         //   earnings: 10, //收益
         //   saleName: "李四", //销售人员
         //   createTime: 1575888816000, //时间
-        //   type: null //1直接收益 2间接收益(总代才有)
+        //   type: null //1直接收益 2间接收益(代理商才有)
         // }
       ],
        page: 1,

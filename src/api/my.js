@@ -82,6 +82,7 @@ var mt_updateCompanyInfo = (type, name, number, companyAddress, contactsName, co
 var mt_queryJoinDescribe = (type) => async ('/web/queryJoinDescribe', {
   type
 }, "GET")
+
 var mt_insertLeaseJoinUs = (companyName,  phone,  email,  contactName,  remark) => async ('/web/leaseJoinUs/insertLeaseJoinUs', {
   companyName,
   phone,
@@ -89,6 +90,10 @@ var mt_insertLeaseJoinUs = (companyName,  phone,  email,  contactName,  remark) 
   contactName,
   remark
 }, "POST")
+
+//获取的角色
+var mt_getJinPaiInfo = () => async ('/web/leaseJoinUs/getJinPaiInfo', {}, "GET")
+
 //查询我的加盟信息
 var mt_queryMyFranchise = () => async ('/api/joinUs/queryMyFranchise', {}, "GET")
 
@@ -184,7 +189,7 @@ var mt_batchAddUser = (sales) => async ('/api/common/batchAddUser', {
   sales
 }, "POST")
 
-// 总代区域内的金牌
+// 代理商区域内的金牌
 var mt_queryMyMedal = (contactsPhone, page, limit) => async ('/api/common/queryMyMedal', {
   contactsPhone,
   page,
@@ -205,6 +210,7 @@ export {
   mt_queryCompanyInfo,
   mt_queryJoinDescribe,
   mt_insertLeaseJoinUs,
+  mt_getJinPaiInfo,
   mt_queryMyFranchise,
   mt_applyJoin,
   mt_payJoinUs_wxpay,

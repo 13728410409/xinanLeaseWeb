@@ -277,7 +277,6 @@ export default {
           }else{
             item.newNumber = 0
           }
-          
         })
         that.remark = data.data.goods[0].remark
         // console.log(that.remark)

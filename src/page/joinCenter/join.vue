@@ -8,11 +8,6 @@
           <div class="aslide">
             <!-- <router-link tag="div" to="/accountSet" class="itm">返回</router-link> -->
             <div class="itm tit">加盟中心</div>
-            <!-- <div
-              class="itm"
-              v-if="status==0||status==3||applyType!=3"
-              @click="selectAngle()"
-            >天使入驻</div>-->
             <div
               class="itm"
               v-if="applyType!=3"
@@ -24,7 +19,7 @@
               v-if="applyType==3"
               :class="type==3?'active':''"
               @click="selectType(3)"
-            >总代入驻</div>
+            >代理商入驻</div>
           </div>
           <div class="main">
             <div class="top">
@@ -297,7 +292,7 @@
                     </el-col>
                     <el-col :span="8" class="tx">
                       加盟类型：
-                      <span>{{authentication.userType | filterJoinType }}</span>
+                      <span>{{JoinTypeText}}</span>
                     </el-col>
                   </el-row>
                   <el-row class="sitm">
@@ -416,6 +411,7 @@ import accountHead from "@/components/accountHead/accountHead";
 import { checkDouble } from "@/config/often";
 import QRCode from "qrcodejs2";
 import {
+  mt_getJinPaiInfo,
   mt_queryMyFranchise,
   mt_applyJoin,
   mt_payJoinUs_wxpay,
@@ -433,7 +429,7 @@ export default {
   },
   data() {
     return {
-      type: 3, //2金牌入驻  3总代入驻
+      type: 3, //2金牌入驻  3代理商入驻
 
       upType: "image/gif, image/jpg, image/jpeg, image/png",
       status: 0, //审核状态
@@ -447,34 +443,8 @@ export default {
       agentRegion: "",
 
       addressData: [],
-      options: [
-        {
-          value: "深圳市",
-          label: "深圳市"
-        },
-        {
-          value: "北京市",
-          label: "北京市"
-        }
-      ],
-      optionsType: [
-        {
-          value: 5,
-          label: "金牌A级"
-        },
-        {
-          value: 6,
-          label: "金牌B级"
-        },
-        {
-          value: 7,
-          label: "金牌C级"
-        },
-        {
-          value: 8,
-          label: "金牌D级"
-        }
-      ],
+      options: [],
+      optionsType: [],
 
       yyzz: "", //营业执照
       zzjg: "", //组织机构代码
@@ -493,12 +463,11 @@ export default {
 
       url: "http://www.duomiku.cn/home",
 
-      applyType: "" //申请入驻的角色  3总代 5金牌
+      applyType: "", //申请入驻的角色  3代理商 5金牌
+      JoinTypeText: '',
     };
   },
-  computed: {
-    ...mapState(["userInfo", "shoppingInfo"])
-  },
+  
   watch: {
     //监听图片变化
     yyzz(newValue, oldValue) {
@@ -510,7 +479,7 @@ export default {
   filters: {
     filterType(value) {
       if (value == 3) {
-        return "总代入驻";
+        return "代理商入驻";
       } else {
         return "金牌入驻";
       }
@@ -524,30 +493,21 @@ export default {
         return "个人";
       }
     },
-    // 5.金牌A级 6.金牌B级 7.金牌C级 8.金牌D级
-    filterJoinType(value) {
-      if (value == 3) {
-        return "总代";
-      } else if (value == 5) {
-        return "金牌A级";
-      } else if (value == 6) {
-        return "金牌B级";
-      } else if (value == 7) {
-        return "金牌C级";
-      } else if (value == 8) {
-        return "金牌D级";
-      }
-    }
+  },
+  computed: {
+    ...mapState(["userInfo", "shoppingInfo"]),
   },
   created() {
     let type = this.$route.params.type;
     this.type = type;
     this.applyType = type;
+    this.getJinPaiInfo()
     this.getCompanyInfo();
   },
   mounted() {},
   methods: {
     ...mapMutations(["setUserInfo"]),
+    //地址
     getAddress() {
       let that = this;
       let str = localStorage.getItem("addressOnlyCity");
@@ -574,12 +534,25 @@ export default {
       this.options = arrCity;
       // console.log(this.options )
     },
-    //切换总代入驻和金牌入驻
+    //切换代理商入驻和金牌入驻
     selectType(val) {
       if (val != this.type) {
         this.type = val;
         // this.$router.push("/join");
       }
+    },
+    //获取角色
+    getJinPaiInfo(){
+      let that = this;
+      mt_getJinPaiInfo(
+      ).then(data => {
+        // console.log(data.data);
+        data.data.forEach(item=>{
+          if(item.type==5||item.type==6||item.type==7||item.type==8){
+            that.optionsType.push({value: item.type,label: item.name})
+          }
+        })
+      });
     },
     //加盟天使
     selectAngle() {
@@ -612,6 +585,7 @@ export default {
 
           let userInfo = this.userInfo;
           userInfo.joinStatus = data.data.status;
+          that.setUserInfo(userInfo)
           //payState支付状态 1成功 2失败 0未支付
           if (data.data.status == 1 && data.data.payState != 1) {
             mt_payJoinUs_wxpay(data.data.id).then(data => {
@@ -649,6 +623,11 @@ export default {
             that.com4 = JSON.parse(data.data.companyInfo).technicalNum;
             that.com5 = JSON.parse(data.data.companyInfo).financialNum;
           }
+          that.optionsType.forEach(item=>{
+            if(item.value==data.data.userType){
+              that.JoinTypeText = item.label
+            }
+          })
           that.applyType = data.data.userType;
           that.type = data.data.userType;
         } else {

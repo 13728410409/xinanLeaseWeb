@@ -1,12 +1,12 @@
 <template>
-  <div class="baseInfo">
+  <div class="userInfo">
     <div class="pInfo">
       <div class="img">
-        <img v-if="baseInfo.headImg" :src="baseInfo.headImg" />
+        <img v-if="userInfo.headImg" :src="userInfo.headImg" />
         <img v-else src="/static/icon/default.png" />
       </div>
-      <div class="name">{{baseInfo.nickName}}</div>
-      <div class="phone">{{baseInfo.phone | filterPhone}}</div>
+      <div class="name">{{userInfo.nickName}}</div>
+      <div class="phone">{{userInfo.phone | filterPhone}}</div>
     </div>
     <div class="oInfo">
       <div class="h">
@@ -14,20 +14,20 @@
         <span class="icon el-icon-edit" title="点击编辑个人信息" @click="editInfo">编辑</span>
       </div>
       <el-row class="info">
-        <el-col :span="12" class="itm" v-if="baseInfo.type!=9">公司名称：{{baseInfo.companyName}}</el-col>
-        <el-col :span="12" class="itm">公司级别：{{baseInfo.type | filterType}}</el-col>
-        <el-col :span="12" class="itm">联系方式：{{baseInfo.phone}}</el-col>
-        <el-col :span="12" class="itm" v-if="userInfo.type!=9">公司地址：{{baseInfo.companyAddress}}</el-col>
+        <el-col :span="12" class="itm" v-if="userInfo.type!=9">公司名称：{{userInfo.companyName}}</el-col>
+        <el-col :span="12" class="itm">公司级别：{{JoinTypeText}}</el-col>
+        <el-col :span="12" class="itm">联系方式：{{userInfo.phone}}</el-col>
+        <el-col :span="12" class="itm" v-if="userInfo.type!=9">公司地址：{{userInfo.companyAddress}}</el-col>
         <el-col :span="12" class="itm" v-if="userInfo.type!=4&&userInfo.type!=9">
-          我的销售：{{baseInfo.salesManNum}}人
+          我的销售：{{userInfo.salesManNum}}人
           <router-link tag="span" to="/mysale" class="bind">去查看</router-link>
         </el-col>
         <el-col :span="12" class="itm">
-          我的客户：{{baseInfo.customerNum}}家
+          我的客户：{{userInfo.customerNum}}家
           <router-link tag="span" to="/mycustomer" class="bind">去查看</router-link>
         </el-col>
         <el-col :span="12" class="itm" v-if="userInfo.type==3||userInfo.type==9">
-          我的金牌：{{baseInfo.medalManNum}}人
+          我的金牌：{{userInfo.medalManNum}}人
           <router-link tag="span" to="/mygold" class="bind">去查看</router-link>
         </el-col>
       </el-row>
@@ -80,7 +80,7 @@ import { mapState, mapMutations } from "vuex";
 import { jsGetAge, formatDate } from "@/config/often";
 import inputFile from '@/components/common/inputFile'
 const regSJH = /^[1][0-9]{10}$/; //手机号正则
-import { mt_getuserInfo, mt_edituserInfo } from "@/api/my"
+import { mt_getuserInfo, mt_edituserInfo, mt_getJinPaiInfo } from "@/api/my"
 export default {
   components: {
     inputFile
@@ -95,7 +95,7 @@ export default {
   },
   data() {
     return {
-      baseInfo: {}, //个人信息
+      // userInfo: {}, //个人信息
 
       dialogPinfo: false, //修改个人信息弹窗是否显示
       pickerOptions0: {
@@ -108,14 +108,14 @@ export default {
       eHeadImg: '',
       eNickName: '',
       gender: "",
-      birthday: ""
-
+      birthday: "",
+      JoinTypeText: '',
     };
   },
   watch: {
     data(val) {
-      this.baseInfo = val;
-      console.log(val);
+      // this.userInfo = val;
+      // console.log(val);
     },
     //监听图片变化
     eHeadImg(newValue, oldValue) {
@@ -125,25 +125,25 @@ export default {
     },
   },
   filters: {
-    filterType(value) {
-      if (value==1) {
-        return '普通用户'
-      }else if (value==3) {
-        return '总代'
-      }else if (value==4) {
-        return '销售'
-      }else if (value==5) {
-        return '金牌A级'
-      }else if (value==6) {
-        return '金牌B级'
-      }else if (value==7) {
-        return '金牌C级'
-      }else if (value==8) {
-        return '金牌D级'
-      }else if (value==9) {
-        return '天使'
-      }
-    },
+    // filterType(value) {
+    //   if (value==1) {
+    //     return '普通用户'
+    //   }else if (value==3) {
+    //     return '代理商'
+    //   }else if (value==4) {
+    //     return '销售'
+    //   }else if (value==5) {
+    //     return '金牌A级'
+    //   }else if (value==6) {
+    //     return '金牌B级'
+    //   }else if (value==7) {
+    //     return '金牌C级'
+    //   }else if (value==8) {
+    //     return '金牌D级'
+    //   }else if (value==9) {
+    //     return '天使'
+    //   }
+    // },
     //手机号
     filterPhone(value) {
       if (regSJH.test(value)) {
@@ -180,7 +180,7 @@ export default {
     }
   },
   created() {
-   
+    this.getJinPaiInfo()
   },
   mounted() {
   },
@@ -189,21 +189,33 @@ export default {
   },
   methods: {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
+    //获取角色
+    getJinPaiInfo(){
+      let that = this;
+      mt_getJinPaiInfo(
+      ).then(data => {
+        // console.log(data.data);
+        data.data.forEach(item=>{
+          if(that.userInfo.type == item.type){
+            that.JoinTypeText = item.name
+          }
+        })
+      });
+    },
     //编辑个人信息弹窗显示
     editInfo() {
-      // console.log(this.baseInfo)
+      // console.log(this.userInfo)
       this.dialogPinfo = true;
-      this.eHeadImg = this.baseInfo.headImg;
-      this.eNickName = this.baseInfo.nickName;
-      this.birthday = this.baseInfo.birthday;
-      this.gender = this.baseInfo.gender;
+      this.eHeadImg = this.userInfo.headImg;
+      this.eNickName = this.userInfo.nickName;
+      this.birthday = this.userInfo.birthday;
+      this.gender = this.userInfo.gender;
     },
     //获取个人信息
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        console.log(data.data)
-        this.baseInfo =  data.data;
+        // console.log(data.data)
         that.setUserInfo(data.data);
       });
     },
@@ -249,7 +261,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../style/mixin";
-.baseInfo {
+.userInfo {
   width: 100%;
   height: 320px;
   margin-bottom: 20px;

@@ -41,6 +41,9 @@
               ref="swiperTop"
               v-if="goodsInfo.lblist.length>0"
             >
+              <!-- <swiper-slide class="itmimg" v-if="goodsInfo.img!=''">
+                <video :src="goodsInfo.img" controls="controls"></video>
+              </swiper-slide> -->
               <swiper-slide
                 class="itmimg"
                 v-for="(item,index) of goodsInfo.lblist"
@@ -54,6 +57,7 @@
               ref="swiperThumbs"
               v-if="goodsInfo.lblist.length>0"
             >
+              
               <swiper-slide
                 class="itmimg"
                 v-for="(item,index) of goodsInfo.lblist"
@@ -452,7 +456,7 @@ export default {
     getGoodsById(id) {
       let that = this;
       mt_getGoodsById(id).then(data => {
-        // console.log(data.data)
+        console.log(data.data)
         that.goodsInfo = data.data;
         that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
@@ -837,6 +841,10 @@ export default {
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
+            video{
+              width: 100%;
+              height: 100%;
+            }
           }
         }
         .gallery-thumbs {

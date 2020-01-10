@@ -358,7 +358,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        console.log(data.data)
+        // console.log(data.data)
         that.userInfoData = data.data;
         that.setUserInfo(data.data);
       });

@@ -353,7 +353,7 @@ export default {
         let userInfo = JSON.parse(jsonUserInfo)
         console.log(userInfo)
         if(userInfo.angelState==3){
-          if(userInfo.joinStatus == 0 || userInfo.joinStatus == 3){
+          if(userInfo.joinStatus == 0){
             this.$router.push('/joinCenter')
           }else{
             this.$router.push('/join')

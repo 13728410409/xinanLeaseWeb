@@ -32,8 +32,7 @@ export default {
       let that = this;
       mt_selectAllcart().then(data => {
         let arr = that.shoppingInfo.list !=null && that.shoppingInfo.list !=undefined ? that.shoppingInfo.list : []
-        console.log(arr)
-        console.log(data.data.data)
+        // console.log(data.data.data)
         if( arr.length < data.data.data.length && arr.length!=0){
           data.data.data.forEach(item => {
             item.address = JSON.parse(item.address);
