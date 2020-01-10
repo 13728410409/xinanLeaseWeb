@@ -147,7 +147,12 @@
                     <div class="size">押金：{{item.deposit}}</div>
                   </div>
                 </el-col>
-                <el-col :span="2" class="im num">{{item.goodsNumber}}</el-col>
+                <el-col :span="2" class="im num">
+                  <div v-if="type==1">x{{item.goodsNumber}}</div>
+                  <div v-if="type==2&&item.deposit==0">续租：{{item.goodsNumber}}</div>
+                  <div v-if="type==2&&item.deposit>0">续租：{{item.goodsNumber - item.newNumber }}</div>
+                  <div v-if="type==2&&item.deposit>0">新租：{{item.newNumber}}</div>
+                </el-col>
                 <el-col :span="5" class="im opt">
                   <router-link
                     tag="div"
@@ -163,8 +168,8 @@
                   >申请售后</router-link>
                 </el-col>
               </el-row>
-              <div class="pinfo" style="text-align:left;font-size:14px;" v-for="(item,index) of goods" :key="index" v-if="index=1&&goods[0].remark!=''">
-                <span>留言：{{item.remark}}</span>
+              <div class="pinfo" style="text-align:left;font-size:14px;" v-if="remark!=''&&remark!=null&&remark!=undefined">
+                <span>留言：{{remark}}</span>
               </div>
               <div class="pinfo">
                 <ul>
@@ -212,10 +217,12 @@ export default {
   },
   data() {
     return {
+      type: 1, //1订单  2续租订单
       id: "",
       detail: {}, //订单详情
       goods: [],
       logistics: [],
+      remark: '',
     };
   },
   computed: {
@@ -257,8 +264,23 @@ export default {
     getOrderDetail(id) {
       let that = this;
       mt_getOrderDetail(id).then(data => {
-        console.log(data.data)
+        // console.log(data.data)
         that.logistics = data.data.express!=null ?  JSON.parse(data.data.express.content): []
+        if(data.data.goods[0].reletId!=''&&data.data.goods[0].reletId!=null&&data.data.goods[0].reletId!=undefined){
+          that.type = 2
+        }else{
+          that.type = 1
+        }
+        data.data.goods.forEach(item=>{
+          if(item.deposit>0){
+            item.newNumber = Number(item.deposit)/Number(item.oldDeoisit)
+          }else{
+            item.newNumber = 0
+          }
+          
+        })
+        that.remark = data.data.goods[0].remark
+        // console.log(that.remark)
         that.goods = data.data.goods;
         that.detail = data.data.order;
         that.detail.addressV = data.data.order.address.split(",").join("");

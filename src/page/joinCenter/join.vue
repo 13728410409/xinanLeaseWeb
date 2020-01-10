@@ -12,7 +12,7 @@
               class="itm"
               v-if="status==0||status==3||applyType!=3"
               @click="selectAngle()"
-            >天使入驻</div> -->
+            >天使入驻</div>-->
             <div
               class="itm"
               v-if="applyType!=3"
@@ -28,7 +28,13 @@
           </div>
           <div class="main">
             <div class="top">
-              <div class="n">入驻信息<span v-if="status==3" style="color:red;font-size:24px;font-weight:bold;margin-left:20px;">审核失败，请重新填写</span></div>
+              <div class="n">
+                入驻信息
+                <span
+                  v-if="status==3"
+                  style="color:red;font-size:24px;font-weight:bold;margin-left:20px;"
+                >审核失败，请重新填写</span>
+              </div>
               <div class="step">
                 <el-steps :space="200" :active="step" finish-status="success">
                   <el-step title="填写资料"></el-step>
@@ -43,49 +49,6 @@
                 <div class="vBox">
                   <el-row>
                     <el-col :span="16">
-                      <el-row class="itm">
-                        <div class="n">选择企业类型：</div>
-                        <div class="val ctype">
-                          <span :class="ctype==1?'active':''" @click="selectCType(1)">公司</span>
-                          <span :class="ctype==2?'active':''" @click="selectCType(2)">个体工商户</span>
-                        </div>
-                      </el-row>
-                      <el-row class="itm">
-                        <el-col :span="12">
-                          <div class="n">企业名称：</div>
-                          <div class="val">
-                            <el-input v-model="companyName"></el-input>
-                          </div>
-                        </el-col>
-                        <el-col :span="12">
-                          <div class="n">营业执照号：</div>
-                          <div class="val">
-                            <el-input v-model="businessCode"></el-input>
-                          </div>
-                        </el-col>
-                      </el-row>
-                      <el-row class="itm">
-                        <el-col :span="12">
-                          <div class="n">法人姓名：</div>
-                          <div class="val">
-                            <el-input v-model="conact"></el-input>
-                          </div>
-                        </el-col>
-                        <el-col :span="12">
-                          <div class="n">法人手机号：</div>
-                          <div class="val">
-                            <el-input maxlength="11" v-model="phone"></el-input>
-                          </div>
-                        </el-col>
-                      </el-row>
-                      <el-row class="itm">
-                        <el-col :span="20">
-                          <div class="n">注册地址：</div>
-                          <div class="val">
-                            <el-input v-model="address" placeholder="请输入详细地址"></el-input>
-                          </div>
-                        </el-col>
-                      </el-row>
                       <el-row class="itm">
                         <el-col :span="12">
                           <div class="n">代理区域：</div>
@@ -111,6 +74,50 @@
                                 :value="item.value"
                               ></el-option>
                             </el-select>
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <el-row class="itm">
+                        <div class="n">选择企业类型：</div>
+                        <div class="val ctype">
+                          <span :class="ctype==1?'active':''" @click="selectCType(1)">公司</span>
+                          <span :class="ctype==2?'active':''" @click="selectCType(2)">个体工商户</span>
+                          <span v-if="type!=3" :class="ctype==3?'active':''" @click="selectCType(3)">个人</span>
+                        </div>
+                      </el-row>
+                      <el-row class="itm">
+                        <el-col :span="12">
+                          <div class="n">企业名称：</div>
+                          <div class="val">
+                            <el-input v-model="companyName"></el-input>
+                          </div>
+                        </el-col>
+                        <el-col :span="12">
+                          <div class="n">营业执照号：</div>
+                          <div class="val">
+                            <el-input v-model="businessCode" placeholder="企业类型为个人可不填"></el-input>
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <el-row class="itm">
+                        <el-col :span="12">
+                          <div class="n">法人姓名：</div>
+                          <div class="val">
+                            <el-input v-model="conact"></el-input>
+                          </div>
+                        </el-col>
+                        <el-col :span="12">
+                          <div class="n">法人手机号：</div>
+                          <div class="val">
+                            <el-input maxlength="11" v-model="phone"></el-input>
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <el-row class="itm">
+                        <el-col :span="20">
+                          <div class="n">注册地址：</div>
+                          <div class="val">
+                            <el-input v-model="address" placeholder="请输入详细地址"></el-input>
                           </div>
                         </el-col>
                       </el-row>
@@ -166,16 +173,23 @@
                 </div>
               </div>
               <div class="cInfo">
-                <div class="title">法人信息</div>
+                <div class="title" v-if="ctype!=3">法人信息</div>
+                <div class="title" v-else>个人信息</div>
                 <div class="vBox">
                   <el-row class="itm">
                     <el-col :span="14">
-                      <div class="n">法人身份证正反面：</div>
+                      <div class="n" v-if="ctype!=3">法人身份证正反面：</div>
+                      <div class="n" v-else>个人身份证正反面：</div>
                       <div class="val">
                         <div class="imgs">
                           <div class="img">
                             <img class="show" v-if="zhengmian!=''" :src="zhengmian" alt />
-                            <img class="show" v-if="zhengmian==''" src="/static/icon/yyzz.png" alt />
+                            <img
+                              class="show"
+                              v-if="zhengmian==''"
+                              src="/static/icon/zhengmian.png"
+                              alt
+                            />
                             <input-file
                               class="uploadImg"
                               v-model="zhengmian"
@@ -186,7 +200,7 @@
                           </div>
                           <div class="img">
                             <img class="show" v-if="fanmian!=''" :src="fanmian" alt />
-                            <img class="show" v-if="fanmian==''" src="/static/icon/yyzz.png" alt />
+                            <img class="show" v-if="fanmian==''" src="/static/icon/fanmian.png" alt />
                             <input-file
                               class="uploadImg"
                               v-model="fanmian"
@@ -201,7 +215,7 @@
                   </el-row>
                 </div>
               </div>
-              <div class="cInfo">
+              <div class="cInfo" v-if="ctype!=3">
                 <div class="title">公司信息</div>
                 <div class="vBox">
                   <el-row>
@@ -263,7 +277,7 @@
                     </div>
                     <div class="alipay">
                       <span @click="payAlipay">立即支付宝支付</span>
-                      <img src="/static/icon/alipay.png" alt="" @click="payAlipay">
+                      <img src="/static/icon/alipay.png" alt @click="payAlipay" />
                     </div>
                   </div>
                 </div>
@@ -277,67 +291,70 @@
                   <div class="authenticationSuccess" v-if="status==2"></div>
                   <div class="authenticationSuccess authenting" v-if="status==1"></div>
                   <el-row class="sitm">
-                    <el-col :span="7" class="tx">
-                      企业类型：
-                      <span>{{authentication.type | filterCtype }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      企业名称：
-                      <span>{{authentication.name }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      营业执照号：
-                      <span>{{authentication.number }}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row class="sitm">
-                    <el-col :span="7" class="tx">
-                      联系人：
-                      <span>{{authentication.contactsName }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      联系号码：
-                      <span>{{authentication.contactsPhone }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      注册地址：
-                      <span>{{authentication.companyAddress }}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row class="sitm">
-                    <el-col :span="7" class="tx">
+                    <el-col :span="8" class="tx">
                       代理区域：
                       <span>{{authentication.agentRegion }}</span>
                     </el-col>
-                    <el-col :span="7" class="tx">
-                      企业人数：
-                      <span>{{authentication.company.companiesNum }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      商务人数：
-                      <span>{{authentication.company.businessNum }}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row class="sitm">
-                    <el-col :span="7" class="tx">
-                      销售人数：
-                      <span>{{authentication.company.salesNum }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      技术人数：
-                      <span>{{authentication.company.technicalNum }}</span>
-                    </el-col>
-                    <el-col :span="7" class="tx">
-                      财务人数：
-                      <span>{{authentication.company.financialNum }}</span>
-                    </el-col>
-                  </el-row>
-                  <el-row class="sitm">
-                    <el-col :span="7" class="tx">
+                    <el-col :span="8" class="tx">
                       加盟类型：
                       <span>{{authentication.userType | filterJoinType }}</span>
                     </el-col>
                   </el-row>
+                  <el-row class="sitm">
+                    <el-col :span="8" class="tx">
+                      企业类型：
+                      <span>{{authentication.type | filterCtype }}</span>
+                    </el-col>
+                    <el-col :span="8" class="tx">
+                      企业名称：
+                      <span>{{authentication.name }}</span>
+                    </el-col>
+                  </el-row>
+                  <el-row class="sitm">
+                    <el-col :span="8" class="tx">
+                      营业执照号：
+                      <span>{{authentication.number }}</span>
+                    </el-col>
+                    <el-col :span="8" class="tx">
+                      联系人：
+                      <span>{{authentication.contactsName }}</span>
+                    </el-col>
+                  </el-row>
+                  <el-row class="sitm">
+                    <el-col :span="8" class="tx">
+                      联系号码：
+                      <span>{{authentication.contactsPhone }}</span>
+                    </el-col>
+                    <el-col :span="8" class="tx">
+                      注册地址：
+                      <span>{{authentication.companyAddress }}</span>
+                    </el-col>
+                  </el-row>
+                  <el-row class="sitm" v-if="authentication.type!=3">
+                    <el-col :span="8" class="tx">
+                      企业人数：
+                      <span>{{authentication.company.companiesNum }}</span>
+                    </el-col>
+                    <el-col :span="8" class="tx">
+                      商务人数：
+                      <span>{{authentication.company.businessNum }}</span>
+                    </el-col>
+                    <el-col :span="8" class="tx">
+                      销售人数：
+                      <span>{{authentication.company.salesNum }}</span>
+                    </el-col>
+                  </el-row>
+                  <el-row class="sitm" v-if="authentication.type!=3">
+                    <el-col :span="8" class="tx">
+                      技术人数：
+                      <span>{{authentication.company.technicalNum }}</span>
+                    </el-col>
+                    <el-col :span="8" class="tx">
+                      财务人数：
+                      <span>{{authentication.company.financialNum }}</span>
+                    </el-col>
+                  </el-row>
+
                   <el-row class="sitm">
                     <el-col :span="24" class="t">营业执照</el-col>
                     <el-col :span="24" class="imgs">
@@ -398,7 +415,12 @@ import inputFile from "common/inputFile";
 import accountHead from "@/components/accountHead/accountHead";
 import { checkDouble } from "@/config/often";
 import QRCode from "qrcodejs2";
-import { mt_queryMyFranchise, mt_applyJoin,mt_payJoinUs_wxpay, mt_payJoinUs_alipay } from "@/api/my";
+import {
+  mt_queryMyFranchise,
+  mt_applyJoin,
+  mt_payJoinUs_wxpay,
+  mt_payJoinUs_alipay
+} from "@/api/my";
 import cityData from "../../../static/other/city.json";
 const regSJH = /^[1][0-9]{10}$/; //手机号正则
 export default {
@@ -471,8 +493,7 @@ export default {
 
       url: "http://www.duomiku.cn/home",
 
-
-      applyType: '',  //申请入驻的角色  3总代 5金牌  
+      applyType: "" //申请入驻的角色  3总代 5金牌
     };
   },
   computed: {
@@ -497,29 +518,31 @@ export default {
     filterCtype(value) {
       if (value == 1) {
         return "公司";
-      } else {
+      } else if (value == 2) {
         return "个体工商户";
+      } else if (value == 3) {
+        return "个人";
       }
     },
     // 5.金牌A级 6.金牌B级 7.金牌C级 8.金牌D级
     filterJoinType(value) {
       if (value == 3) {
         return "总代";
-      } else if(value == 5){
+      } else if (value == 5) {
         return "金牌A级";
-      } else if(value == 6){
+      } else if (value == 6) {
         return "金牌B级";
-      } else if(value == 7){
+      } else if (value == 7) {
         return "金牌C级";
-      } else if(value == 8){
+      } else if (value == 8) {
         return "金牌D级";
       }
-    },
+    }
   },
   created() {
-    let type = this.$route.params.type
-    this.type = type
-    this.applyType = type
+    let type = this.$route.params.type;
+    this.type = type;
+    this.applyType = type;
     this.getCompanyInfo();
   },
   mounted() {},
@@ -528,21 +551,27 @@ export default {
     getAddress() {
       let that = this;
       let str = localStorage.getItem("addressOnlyCity");
-      console.log(str)
+      // console.log(str)
       if (str) {
         that.addressData = JSON.parse(str);
       } else {
-        axios.get("/static/other/onlycity.json").then(data => {
-          // console.log(data.data.data)
-          that.addressData = data.data.data
-          localStorage.setItem("addressOnlyCity", JSON.stringify(data.data.data))
-        }).catch(response => {});
+        axios
+          .get("/static/other/onlycity.json")
+          .then(data => {
+            // console.log(data.data.data)
+            that.addressData = data.data.data;
+            localStorage.setItem(
+              "addressOnlyCity",
+              JSON.stringify(data.data.data)
+            );
+          })
+          .catch(response => {});
       }
-      let arrCity = []
-      that.addressData.forEach((item,index)=>{
-        arrCity.push({'value':item.name,'label':item.name})
-      })
-      this.options = arrCity
+      let arrCity = [];
+      that.addressData.forEach((item, index) => {
+        arrCity.push({ value: item.name, label: item.name });
+      });
+      this.options = arrCity;
       // console.log(this.options )
     },
     //切换总代入驻和金牌入驻
@@ -553,12 +582,20 @@ export default {
       }
     },
     //加盟天使
-    selectAngle(){
-      this.$router.push('/joinAngle')
+    selectAngle() {
+      this.$router.push("/joinAngle");
     },
+    //选择企业类型
     selectCType(val) {
       if (this.ctype != val) {
         this.ctype = val;
+        if (val == 3) {
+          this.com1 = 0;
+          this.com2 = 0;
+          this.com3 = 0;
+          this.com4 = 0;
+          this.com5 = 0;
+        }
       }
     },
     //获取企业信息
@@ -571,48 +608,51 @@ export default {
           data.data.imgs2 = JSON.parse(data.data.legalManImgs);
           data.data.company = JSON.parse(data.data.companyInfo);
           that.authentication = data.data;
-          that.status = data.data.status
+          that.status = data.data.status;
 
-          let userInfo = this.userInfo
-          userInfo.joinStatus = data.data.status
+          let userInfo = this.userInfo;
+          userInfo.joinStatus = data.data.status;
           //payState支付状态 1成功 2失败 0未支付
-          if (data.data.status == 1 && data.data.payState!=1) {
+          if (data.data.status == 1 && data.data.payState != 1) {
             mt_payJoinUs_wxpay(data.data.id).then(data => {
               // console.log(data.data);
-              data.data.forms = JSON.parse(data.data.form)
+              data.data.forms = JSON.parse(data.data.form);
               that.useqrcode(data.data);
             });
           }
           if (data.data.status == 0 || data.data.status == 3) {
             that.step = 1;
-            that.getAddress()
+            that.getAddress();
           } else if (data.data.status == 1) {
             that.step = 2;
           } else if (data.data.status == 2) {
             that.step = 3;
           }
-          if(data.data.status == 3){
-            that.ctype  = data.data.type
-            that.companyName  = data.data.name
-            that.businessCode  = data.data.number
-            that.conact  = data.data.contactsName
-            that.phone  = data.data.contactsPhone
-            that.address  = data.data.companyAddress
-            that.agentRegion  = data.data.agentRegion
-            that.yyzz  = JSON.parse(data.data.imgs).img1
-            that.zzjg  = JSON.parse(data.data.imgs).img2
-            that.swdj  = JSON.parse(data.data.imgs).img3
-            that.zhengmian  = JSON.parse(data.data.legalManImgs).positive
-            that.fanmian  = JSON.parse(data.data.legalManImgs).negative
-            that.recommend  = data.data.invitationCode != null ? data.data.invitationCode : ''
-            that.com1  = JSON.parse(data.data.companyInfo).companiesNum
-            that.com2  = JSON.parse(data.data.companyInfo).businessNum
-            that.com3  = JSON.parse(data.data.companyInfo).salesNum
-            that.com4  = JSON.parse(data.data.companyInfo).technicalNum
-            that.com5  = JSON.parse(data.data.companyInfo).financialNum
+          if (data.data.status == 3) {
+            that.ctype = data.data.type;
+            that.companyName = data.data.name;
+            that.businessCode = data.data.number;
+            that.conact = data.data.contactsName;
+            that.phone = data.data.contactsPhone;
+            that.address = data.data.companyAddress;
+            that.agentRegion = data.data.agentRegion;
+            that.yyzz = JSON.parse(data.data.imgs).img1;
+            that.zzjg = JSON.parse(data.data.imgs).img2;
+            that.swdj = JSON.parse(data.data.imgs).img3;
+            that.zhengmian = JSON.parse(data.data.legalManImgs).positive;
+            that.fanmian = JSON.parse(data.data.legalManImgs).negative;
+            that.recommend =
+              data.data.invitationCode != null ? data.data.invitationCode : "";
+            that.com1 = JSON.parse(data.data.companyInfo).companiesNum;
+            that.com2 = JSON.parse(data.data.companyInfo).businessNum;
+            that.com3 = JSON.parse(data.data.companyInfo).salesNum;
+            that.com4 = JSON.parse(data.data.companyInfo).technicalNum;
+            that.com5 = JSON.parse(data.data.companyInfo).financialNum;
           }
-          that.applyType = data.data.userType
-          that.type = data.data.userType
+          that.applyType = data.data.userType;
+          that.type = data.data.userType;
+        } else {
+          that.getAddress();
         }
       });
     },
@@ -630,10 +670,19 @@ export default {
         technicalNum: that.com4,
         financialNum: that.com5
       };
-      if (that.companyName == "") {
+      if (that.agentRegion == "") {
+        state = false;
+        title = "代理区域不能为空";
+      } else if (that.type == "") {
+        state = false;
+        title = "加盟类型不能为空";
+      } else if (that.companyName == "") {
         state = false;
         title = "企业名称不能为空";
-      } else if (that.businessCode == "") {
+      } else if (
+        (that.ctype == 1 || that.ctype == 2) &&
+        that.businessCode == ""
+      ) {
         state = false;
         title = "营业执照不能为空";
       } else if (that.conact == "") {
@@ -645,18 +694,15 @@ export default {
       } else if (that.address == "") {
         state = false;
         title = "注册地址不能为空";
-      } else if (that.agentRegion == "") {
-        state = false;
-        title = "代理区域不能为空";
-      } else if (imgs.img1 == "") {
+      } else if ((that.ctype == 1 || that.ctype == 2) && imgs.img1 == "") {
         state = false;
         title = "营业执照不能为空";
       } else if (legalManImgs.positive == "") {
         state = false;
-        title = "法人身份证正面不能为空";
+        title = "身份证正面不能为空";
       } else if (legalManImgs.negative == "") {
         state = false;
-        title = "法人身份证反面不能为空";
+        title = "身份证反面不能为空";
       } else if (!checkDouble(that.com1)) {
         state = false;
         title = "企业人数输入有误";
@@ -686,8 +732,7 @@ export default {
           JSON.stringify(legalManImgs),
           JSON.stringify(companyInfo),
           that.recommend,
-          that.agentRegion,
-
+          that.agentRegion
         ).then(data => {
           that.$message({
             message: "加盟信息提交成功",
@@ -705,9 +750,10 @@ export default {
         });
       }
     },
-    getNewInfo(){
-      this.destriyQrcode()
-      this.getCompanyInfo()
+    //获取支付回调是否信息
+    getNewInfo() {
+      this.destriyQrcode();
+      this.getCompanyInfo();
     },
     // 销毁微信二维码
     destriyQrcode() {
@@ -736,7 +782,7 @@ export default {
     },
     // 支付宝支付
     payAlipay() {
-      let that = this
+      let that = this;
       mt_payJoinUs_alipay(that.authentication.id).then(data => {
         // console.log(data.data);
         that.html = data.data.form;
@@ -744,9 +790,26 @@ export default {
         const div = document.createElement("div");
         div.innerHTML = form;
         document.body.appendChild(div);
+        document.forms[0].target = "_blank";
         document.forms[0].submit();
+        that
+          .$confirm(
+            "如果已经支付完成请点击下方‘支付完成’按钮！",
+            "加盟费支付提示",
+            {
+              confirmButtonText: "支付完成",
+              cancelButtonText: "取消",
+              showClose: false
+            }
+          )
+          .then(() => {
+            that.getNewInfo()
+          })
+          .catch(() => {
+            
+          });
       });
-    },
+    }
   }
 };
 </script>>
@@ -894,7 +957,7 @@ export default {
             .showInfo {
               padding: 30px 20px;
               position: relative;
-              .tip{
+              .tip {
                 font-size: 14px;
                 color: #f08200;
                 line-height: 30px;
@@ -912,27 +975,27 @@ export default {
                     font-size: 14px;
                     color: #666666;
                   }
-                  .refresh{
+                  .refresh {
                     font-size: 14px;
                     color: #f08200;
                     line-height: 30px;
                     cursor: pointer;
                   }
                 }
-                .alipay{
+                .alipay {
                   flex: 1;
                   padding-top: 70px;
                   font-size: 18px;
                   font-weight: bold;
                   color: #333333;
-                  img{
+                  img {
                     display: block;
                     margin: 0 auto;
                     width: 60px;
                     height: 60px;
                     cursor: pointer;
                   }
-                  span{
+                  span {
                     display: inline-block;
                     line-height: 30px;
                     font-size: 14px;
@@ -958,7 +1021,7 @@ export default {
               .sitm {
                 margin-bottom: 20px;
                 .tx {
-                  font-size: 14px;
+                  font-size: 13px;
                   line-height: 14px;
                   color: #999999;
                   span {
@@ -976,7 +1039,7 @@ export default {
                       width: 293px;
                       height: 200px;
                     }
-                    img{
+                    img {
                       max-width: 100%;
                     }
                   }

@@ -28,18 +28,39 @@
           </div>
         </div>
         <div class="goodsInfo">
-          <p  v-if="detail.order.consignee">收货地址：{{detail.addressV}}&nbsp;&nbsp;收货人：{{detail.order.consignee | filterName}}&nbsp;&nbsp;{{detail.order.consigneePhone | filterPhone}}</p>
-          <p  v-if="detail.gDes">商品名称：{{detail.gDes}}</p>
+          <p
+            v-if="detail.order.consignee"
+          >收货地址：{{detail.addressV}}&nbsp;&nbsp;收货人：{{detail.order.consignee | filterName}}&nbsp;&nbsp;{{detail.order.consigneePhone | filterPhone}}</p>
+          <p v-if="detail.gDes">商品名称：{{detail.gDes}}</p>
         </div>
         <div class="payWay" v-if="detail.order.orderState==1">
           <div class="tab">
-            <span class="active">微信</span>
-            <span @click="payAlipay">点击使用支付宝</span>
+            <span :class="payType==1? 'active':''" @click="selectPayType(1)">微信</span>
+            <span :class="payType==2? 'active':''" @click="selectPayType(2)">点击使用支付宝</span>
+            <span :class="payType==3? 'active':''" @click="selectPayType(3)">对公账户打款</span>
           </div>
-          <div class="val">
+          <div class="val" v-if="payType==1">
             <div id="qrCode" ref="qrCodeDiv" style="width: 170px;margin: 0 auto;"></div>
             <div class="tx">使用微信扫一扫支付</div>
           </div>
+
+          <el-row class="itm bankInfo" v-if="payType==3">
+            <el-col :span="24">
+              <el-col :span="24" class="tip">请根据以下对公账户进行打款</el-col>
+              <el-col :span="6" class="name">帐户名称：</el-col>
+              <el-col :span="18" class="val">{{bankInfo.name}}</el-col>
+              <el-col :span="6" class="name">收款账户：</el-col>
+              <el-col :span="18" class="val">{{bankInfo.number}}</el-col>
+              <el-col :span="6" class="name">银行账户：</el-col>
+              <el-col :span="18" class="val">{{bankInfo.bankName}}</el-col>
+              <el-col :span="6" class="name">银行地址：</el-col>
+              <el-col :span="18" class="val">{{bankInfo.bankCity}}</el-col>
+              <el-col :span="6" class="name">开户网点：</el-col>
+              <el-col :span="18" class="val">{{bankInfo.bankDian}}</el-col>
+              <!-- <div v-if="weixinFlag" id="qrCode1" ref="qrCode1" style="width: 170px;margin: 0 auto;"></div> -->
+              <!-- <div class="btnRechargeStatus" @click="rechargeAccount">立即充值</div> -->
+            </el-col>
+          </el-row>
         </div>
       </div>
       <error v-else></error>
@@ -55,7 +76,13 @@ import error from "@/components/error/error";
 import axios from "axios";
 import QRCode from "qrcodejs2";
 import { httpUrl } from "@/api/httpUrl";
-import { mt_getOrderDetail, mt_payByPc, mt_wxpayByPc, mt_validateIsPaySuccess } from "@/api/order";
+import {
+  mt_getOrderDetail,
+  mt_payByPc,
+  mt_wxpayByPc,
+  mt_validateIsPaySuccess,
+  mt_querySystemBank
+} from "@/api/order";
 export default {
   name: "pay",
   components: {
@@ -68,9 +95,10 @@ export default {
       detail: {},
       isLogin: false,
       tip: "",
+      payType: 1,
+      bankInfo: {}, //对公账号信息
 
-      lxtimer: '', //轮询定时器
-
+      lxtimer: "" //轮询定时器
     };
   },
   watch: {},
@@ -111,13 +139,15 @@ export default {
       mt_getOrderDetail(id).then(data => {
         console.log(data.data);
         let gDes = "";
-        if (data.data.order.id!='') {
+        if (data.data.order.id != "") {
           data.data.goods.forEach(item => {
             gDes += item.proIntroduction + ",";
           });
           data.data.gDes = gDes;
           that.detail = data.data;
-          that.detail.addressV = data.data.order.address ? data.data.order.address.split(",").join(""): ''
+          that.detail.addressV = data.data.order.address
+            ? data.data.order.address.split(",").join("")
+            : "";
           if (data.data.order.orderState == 2) {
             that.$message({
               message: "订单已支付成功，自动返回首页",
@@ -127,18 +157,31 @@ export default {
             setTimeout(() => {
               that.$router.push("/");
             }, 1000);
-          }else if(data.data.order.orderState==1){
-            that.getWxCodeUrl(that.detail.order.id);
+          } else if (data.data.order.orderState == 1) {
+            that.getWxCodeUrl(that.id);
           }
         }
       });
     },
+    selectPayType(type) {
+      let that = this;
+      console.log(type);
+      that.payType = type;
+      if (type == 1) {
+        that.getWxCodeUrl(that.id);
+      } else if (type == 2) {
+        that.payAlipay();
+      } else if (type == 3) {
+        that.querySystemBank();
+      }
+    },
+    //微信支付
     getWxCodeUrl(id) {
       let that = this,
-        title = "微信网页支付"
+        title = "微信网页支付";
       mt_wxpayByPc(id, title).then(data => {
         console.log(data.data);
-        data.data.forms = JSON.parse(data.data.form)
+        data.data.forms = JSON.parse(data.data.form);
         that.useqrcode(data.data);
       });
     },
@@ -154,9 +197,8 @@ export default {
           colorLight: "#ffffff", //二维码背景色
           correctLevel: QRCode.CorrectLevel.L //容错率，L/M/H
         });
-        let timestamp =new Date().getTime() + 60*1000
-        that.validateIsPaySuccess(url.outTradeNo,timestamp)
-        
+        let timestamp = new Date().getTime() + 60 * 1000;
+        that.validateIsPaySuccess(url.outTradeNo, timestamp);
       }, 100);
     },
     // 销毁微信二维码
@@ -173,68 +215,88 @@ export default {
     // 支付宝支付
     payAlipay() {
       let that = this,
-        title = "支付宝网页支付"
-      mt_payByPc(that.detail.order.id, title).then(data => {
+        title = "支付宝网页支付";
+      mt_payByPc(that.id, title).then(data => {
         console.log(data.data);
         that.html = data.data.form;
         var form = data.data.form;
         const div = document.createElement("div");
         div.innerHTML = form;
         document.body.appendChild(div);
-        document.forms[0].target = '_blank'
+        document.forms[0].target = "_blank";
         document.forms[0].submit();
-        clearTimeout(that.lxtimer)    
-        that.$confirm('如果已经支付完成请点击下方‘支付完成’按钮！', '订单支付提示', {
-          confirmButtonText: '支付完成',
-          cancelButtonText: '取消',
-          showClose: false,
-        }).then(() => {
-          let timestamp =new Date().getTime() + 60*1000
-          that.validateIsPaySuccess(data.data.outTradeNo,timestamp)
-        }).catch(() => {
-        }); 
-
+        clearTimeout(that.lxtimer);
+        that
+          .$confirm(
+            "如果已经支付完成请点击下方‘支付完成’按钮！",
+            "订单支付提示",
+            {
+              confirmButtonText: "支付完成",
+              cancelButtonText: "取消",
+              showClose: false
+            }
+          )
+          .then(() => {
+            let timestamp = new Date().getTime() + 60 * 1000;
+            that.validateIsPaySuccess(data.data.outTradeNo, timestamp);
+          })
+          .catch(() => {
+            clearTimeout(that.lxtimer);
+          });
       });
     },
-
     //轮询微信支付是否成功
-    validateIsPaySuccess(outTradeNo,time) {
+    validateIsPaySuccess(outTradeNo, time) {
       let that = this;
-      let timestamp =new Date().getTime()
-      if(timestamp<=time){
+      let timestamp = new Date().getTime();
+      if (timestamp <= time) {
         mt_validateIsPaySuccess(outTradeNo).then(data => {
-          console.log(data)
-          if (data.data==1) {
+          console.log(data);
+          if (data.data == 1) {
             that.destriyQrcode();
+            clearTimeout(that.lxtimer);
             that.$message.success("支付成功");
-            that.$router.push('/orderList')
+            that.$router.push("/orderList");
           } else {
             that.lxtimer = setTimeout(function() {
               that.validateIsPaySuccess(outTradeNo, time);
             }, 1000);
           }
         });
-      }else{
-        clearTimeout(that.lxtimer)      
-        that.$alert('操作超时，请点击重试支付', '订单支付提示', {
-          confirmButtonText: '重新支付',
+      } else {
+        clearTimeout(that.lxtimer);
+        that.$alert("操作超时，请点击重试支付", "订单支付提示", {
+          confirmButtonText: "重新支付",
           showClose: false,
           callback: action => {
-            that.destriyQrcode();
-            that.getOrderDetail(this.id);
+            // that.destriyQrcode();
+            clearTimeout(that.lxtimer);
+            if (that.payType == 1) {
+              that.destriyQrcode();
+              that.getWxCodeUrl(this.id);
+            } else if (that.payType == 2) {
+              that.payAlipay();
+            }
           }
-        })
+        });
       }
+    },
+    //获取对公账号信息
+    querySystemBank() {
+      mt_querySystemBank().then(data => {
+        console.log(data.data);
+        this.bankInfo = data.data;
+        clearTimeout(this.lxtimer);
+      });
     }
   },
   beforeDestroy() {
     // this.destriyQrcode()
-    clearTimeout(this.lxtimer)      
+    clearTimeout(this.lxtimer);
   },
-  destroyed(){
-    clearTimeout(this.lxtimer)     
-  },
-
+  destroyed() {
+    clearTimeout(this.lxtimer);
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -350,6 +412,38 @@ export default {
           text-align: center;
           font-size: 14px;
           color: #666666;
+        }
+      }
+      .itm {
+        width: 500px;
+        margin: 0 auto;
+        padding-top: 40px;
+        margin-top: 20px;
+        .name {
+          line-height: 40px;
+          font-size: 14px;
+        }
+        .val {
+          line-height: 40px;
+          font-size: 14px;
+        }
+        &.bankInfo {
+          padding: 15px 0;
+          border: 1px solid #f1f1f1;
+          background-color: #f5f5f5;
+          .tip {
+            line-height: 40px;
+            font-size: 14px;
+            color: #f08200;
+            padding-left: 30px;
+          }
+          .name {
+            text-align: right;
+            padding-right: 10px;
+          }
+          .val {
+            padding-left: 10px;
+          }
         }
       }
     }

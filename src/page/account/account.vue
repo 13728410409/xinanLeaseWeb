@@ -467,7 +467,6 @@ export default {
         duration: 1000
       });
     },
-    
     //获取对公账号信息
     querySystemBank(){
       mt_querySystemBank().then(data => {

@@ -158,6 +158,32 @@
               <div class="close" v-if="showmore==5" @click="closemoreClick()">关闭</div>
             </div>
           </div>
+          <div class="itm">
+            <div class="name">
+              <span>适用人数：</span>
+            </div>
+            <div class="result">
+              <span :class="cond6.id==null?'active':''" @click="nolimit(6)">不限</span>
+              <span
+                v-for="(item,index) of condition.peoples"
+                :key="index"
+                v-if="index < 6 "
+                :class="cond6.id==item.id?'active':''"
+                data-cond="6"
+                @click="selectCond(6,item)"
+              >{{item.name}}</span>
+              <span
+                v-for="(item,index) of condition.peoples"
+                :key="index"
+                v-if="showmore==6&&index>=6"
+                :class="cond6.id==item.id?'active':''"
+                data-cond="6"
+                @click="selectCond(6,item)"
+              >{{item.name}}</span>
+              <div class="more" v-if="condition.peoples&&condition.peoples.length>6" @click="showmoreClick(6)">更多</div>
+              <div class="close" v-if="showmore==6" @click="closemoreClick()">关闭</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -231,15 +257,10 @@ export default {
       cond3: '',   //新旧
       cond4: '',   //价格
       cond5: '',   //租赁方式
-
+      cond6: '',   //适用人数
       cond: 1,    //销量1 价格2  新旧3  周期长短4
 
-      spiritList: [
-        { id: '001', des: '￥4200三星 GALAXY NOTE10+ 5G手机 骁龙855 智能S', price: '5574', commentNum: 142, img: '/static/photo/product1.png' },
-        { id: '002', des: '￥4200三星 GALAXY NOTE10+ 5G手机 骁龙855 智能S', price: '5574', commentNum: 142, img: '/static/photo/product1.png' },
-        { id: '003', des: '￥4200三星 GALAXY NOTE10+ 5G手机 骁龙855 智能S', price: '5574', commentNum: 142, img: '/static/photo/product1.png' },
-        { id: '004', des: '￥4200三星 GALAXY NOTE10+ 5G手机 骁龙855 智能S', price: '5574', commentNum: 142, img: '/static/photo/product1.png' },
-      ],
+      spiritList: [],
       list: [],
 
       page: 1,
@@ -292,6 +313,12 @@ export default {
        this.getList()
       }
     },
+    cond6(newVal,oldVal){
+      if(newVal!=oldVal){
+        this.page = 1
+       this.getList()
+      }
+    },
     cond(newVal,oldVal){
       if(newVal!=oldVal){
         this.page = 1
@@ -304,7 +331,7 @@ export default {
     getGoodsAttr(){
       let that = this
       mt_getGoodsAttr().then(data=>{
-        // console.log(data.data)
+        console.log(data.data)
         data.data.moneys.forEach(item=>{
           item.name = item.moneyBegin+'-'+ item.moenyEnd+'元'
         })
@@ -333,6 +360,8 @@ export default {
         this.cond4 = val;
       }else if (num == 5) {
         this.cond5 = val;
+      }else if (num == 6) {
+        this.cond6 = val;
       }
     },
     //选择不限
@@ -347,6 +376,8 @@ export default {
         this.cond4 = ''
       }else if (num == 5) {
         this.cond5 = ''
+      }else if (num == 6) {
+        this.cond6 = ''
       }
     },
     //显示更多
@@ -369,7 +400,8 @@ export default {
       let id3 = that.cond3.id != null &&that.cond3.id != undefined ? that.cond3.id: ''
       let id4 = that.cond4.id != null &&that.cond4.id != undefined ? that.cond4.id: ''
       let id5 = that.cond5.id != null &&that.cond5.id != undefined ? that.cond5.id: ''
-      mt_getGoodsByCondition(id1,id2,id3,id4,id5,that.name,that.menuId,that.money,that.cond,that.page,that.limit).then(data=>{
+      let id6 = that.cond6.id != null &&that.cond6.id != undefined ? that.cond6.id: ''
+      mt_getGoodsByCondition(id1,id2,id3,id4,id5,id6,that.name,that.menuId,that.money,that.cond,that.page,that.limit).then(data=>{
         // console.log(data.data)
         that.list = data.data.data
         that.count = data.data.count

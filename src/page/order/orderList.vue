@@ -82,12 +82,17 @@
                         <el-col :span="4" class="itms"  style="text-align:center;">
                           <img :src="items.goodsImg" alt />
                         </el-col>
-                        <el-col :span="14" class="itms">
+                        <el-col :span="13" class="itms">
                           <div style="font-size:12px;color:#333333;height:18px;line-height:18px;">{{items.goodsName}}</div>
                           <div class="ellipsis2" style="font-size:12px;color:#999999;height:30px;line-height:15px;">{{items.proIntroduction}}</div>
                           <div style="font-size:12px;color:#999999;height:12px;line-height:12px;">{{items.dispose}}</div>
                         </el-col>
-                        <el-col :span="2" class="itms" style="padding-top:20px;text-align:center;">x{{items.goodsNumber}}</el-col>
+                        <el-col :span="3" class="itms" style="padding-top:20px;text-align:center;">
+                          <div v-if="type==1">x{{items.goodsNumber}}</div>
+                          <div v-if="type==2&&items.deposit==0">续租：{{items.goodsNumber}}</div>
+                          <div v-if="type==2&&items.deposit>0">续租：{{items.goodsNumber - items.newNumber }}</div>
+                          <div v-if="type==2&&items.deposit>0">新租：{{items.newNumber}}</div>
+                        </el-col>
                         <el-col :span="4" class="itms" style="padding-top:20px;text-align:center;">
                           <router-link
                             tag="span"
@@ -191,7 +196,7 @@ export default {
   watch: {
     //我的订单和续租订单变化
     type(newVal, oldVal) {
-      this.showStatus = 1;
+      this.showStatus = '';
       this.page = 1;
       if (newVal == 1) {
         this.getMyOrder();
@@ -270,7 +275,19 @@ export default {
         that.orderNum,
         that.buyTime
       ).then(data => {
-        console.log(data);
+        console.log(data.data);
+        data.data.data.forEach(item =>{
+          item.leaseOrderGoods.forEach(items =>{
+            if(items.deposit>0){
+              items.newNumber = Number(items.deposit)/Number(items.oldDeoisit)
+            }else{
+              items.newNumber = 0
+            }
+          })
+        })
+        // data.data.forEach(item=>{
+
+        // })
         that.orderList = data.data.data;
         that.count = data.data.count;
       });

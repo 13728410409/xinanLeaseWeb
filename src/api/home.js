@@ -28,8 +28,8 @@ var mt_querySecondPage= (menuId) => async ('/web/goods/querySecondPage', {
 },"GET");
 
 //根据条件查询商品列表
-var mt_getGoodsByCondition= (goodsType,goodsBrand,goodsStatus,goodsMoeny,goodsWay,name,menuId,money,goodSort,page,limit) => async ('/web/goods/getGoodsByCondition', {
-  goodsType,goodsBrand,goodsStatus,goodsMoeny,goodsWay,name,menuId,money,goodSort,page,limit
+var mt_getGoodsByCondition= (goodsType,goodsBrand,goodsStatus,goodsMoeny,goodsWay,goodsPeoples,name,menuId,money,goodSort,page,limit) => async ('/web/goods/getGoodsByCondition', {
+  goodsType,goodsBrand,goodsStatus,goodsMoeny,goodsWay,goodsPeoples,name,menuId,money,goodSort,page,limit
 },"POST");
 
 //获取精选商品

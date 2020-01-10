@@ -106,6 +106,7 @@ export default {
       localStorage.removeItem("newsInfo");
       localStorage.removeItem("historySearch");
       localStorage.removeItem("shoppingInfo");
+      localStorage.removeItem("routerHref");
       this.$router.push("/login");
     },
     // 复制成功时的回调函数

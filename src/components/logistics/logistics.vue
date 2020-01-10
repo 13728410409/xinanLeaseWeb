@@ -33,7 +33,7 @@ export default {
   watch: {
     data(val) {
       this.logistics = val;
-      console.log(val)
+      // console.log(val)
       val.forEach(item => {
         item.time = formatDate(item.createTime, "yyyy-MM-dd hh:mm:ss");
       });

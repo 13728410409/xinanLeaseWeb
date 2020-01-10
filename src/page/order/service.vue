@@ -8,8 +8,8 @@
         </router-link>
         <div class="navs">
           <router-link tag="span" to="/home" class="nav">首页</router-link>
-          <router-link tag="span" to="/orderList" class="nav">我的订单</router-link>
-          <router-link tag="span" to="/orderList" class="nav">续租订单</router-link>
+          <router-link tag="span" to="/orderList" class="nav">订单中心</router-link>
+          <span class="nav active">售后</span>
         </div>
       </div>
     </div>
