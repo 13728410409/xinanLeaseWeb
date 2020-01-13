@@ -41,9 +41,17 @@
               ref="swiperTop"
               v-if="goodsInfo.lblist.length>0"
             >
-              <!-- <swiper-slide class="itmimg" v-if="goodsInfo.img!=''">
-                <video :src="goodsInfo.img" controls="controls"></video>
-              </swiper-slide> -->
+              <swiper-slide
+                class="itmimg video"
+                v-if="goodsInfo.video!=''&&goodsInfo.video!=null"
+                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}"
+              >
+                <div
+                  @click="playVideo"
+                  style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
+                ></div>
+                <img class="videoPlay" src="/static/icon/video.png" alt />
+              </swiper-slide>
               <swiper-slide
                 class="itmimg"
                 v-for="(item,index) of goodsInfo.lblist"
@@ -51,13 +59,24 @@
                 :style="{ backgroundImage:'url('+item+')'}"
               ></swiper-slide>
             </swiper>
+
             <swiper
               :options="swiperOptionThumbs"
               class="gallery-thumbs"
               ref="swiperThumbs"
               v-if="goodsInfo.lblist.length>0"
             >
-              
+              <swiper-slide
+                class="itmimg video"
+                v-if="goodsInfo.video!=''&&goodsInfo.video!=null"
+                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}"
+              >
+                <div
+                  @click="playVideo"
+                  style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
+                ></div>
+                <img class="videoPlay" src="/static/icon/video.png" alt />
+              </swiper-slide>
               <swiper-slide
                 class="itmimg"
                 v-for="(item,index) of goodsInfo.lblist"
@@ -66,6 +85,7 @@
               ></swiper-slide>
             </swiper>
           </div>
+
           <div class="goodsInfoDetail" v-if="goodsInfo.des">
             <div class="gname">{{goodsInfo.des}}</div>
             <div class="gprice">
@@ -144,11 +164,16 @@
                 ></el-input-number>
               </div>
             </div>
-            <div class="tip">合计首期租金￥{{rent * per * leaseTerm * num | filterMoney2wei }} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
+            <div
+              class="tip"
+            >合计首期租金￥{{rent * per * leaseTerm * num | filterMoney2wei }} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
             <div class="special">
               <span v-if="deposit==0">商品免押金</span>
               <span>起租时间{{goodsInfo.leaseTime}}个月</span>
-              <span v-if="per!=1" style="background-color:red;color:#ffffff;font-weight:bold;">租期越长优惠越大，当前优惠{{ per * 10 | filterPer }}折</span>
+              <span
+                v-if="per!=1"
+                style="background-color:red;color:#ffffff;font-weight:bold;"
+              >租期越长优惠越大，当前优惠{{ per * 10 | filterPer }}折</span>
             </div>
             <div class="opt">
               <span class="addCart" @click="addCart">加入购物车</span>
@@ -300,12 +325,19 @@ import footGuide from "@/components/footer/footGuide";
 import search from "@/components/search/search";
 import shoppingcart from "@/components/shopping/shoppingcart";
 import addressbox from "@/components/address/proviceCity";
-import {formatDate,isInArray,compare,formatNum,accMul} from "@/config/often";
+import {
+  formatDate,
+  isInArray,
+  compare,
+  formatNum,
+  accMul
+} from "@/config/often";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { mt_getGoodsById, mt_addCart } from "@/api/home";
 import { mt_selectComment, mt_goodsinsert } from "@/api/order";
 import { mt_insertcart, mt_selectAllcart } from "@/api/common";
-import {mt_getuserInfo} from "@/api/my";
+import { mt_getuserInfo } from "@/api/my";
+
 export default {
   name: "goodsdetail",
   components: {
@@ -340,7 +372,7 @@ export default {
       },
 
       goodsInfo: {},
-
+      videoImg: "",
       attrList: [], //属性参数
       productImgs: [], //产品图片
 
@@ -456,7 +488,7 @@ export default {
     getGoodsById(id) {
       let that = this;
       mt_getGoodsById(id).then(data => {
-        console.log(data.data)
+        console.log(data.data);
         that.goodsInfo = data.data;
         that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
@@ -484,6 +516,28 @@ export default {
         that.productImgs = JSON.parse(data.data.leaseInfoImg);
         that.init();
       });
+    },
+    //播放视频
+    playVideo() {
+      console.log(this.goodsInfo.video);
+      this.$alert(
+        "<video controls='controls' id='vide'><source src=" +
+          this.goodsInfo.video +
+          " ref='video' type='video/mp4' /></video>",
+        "商品视频",
+        {
+          showClose: false,
+          dangerouslyUseHTMLString: true,
+          callback: action => {
+            if(action == 'confirm'){
+              console.log(111)
+              let vide = document.getElementById("vide");
+              vide.pause();
+            }
+          }
+        }
+
+      );
     },
     // 初始化配置
     init() {
@@ -631,14 +685,17 @@ export default {
     //咨询
     consult() {
       console.log(this.consultCont);
-      let that = this
-      if(that.consultCont!=''){
-        mt_goodsinsert(that.goodsId,that.consultCont).then(data => {
-            console.log(data);
-            that.consultCont = ''
-            that.$message.success("商品咨询提交成功，稍后平台会主动联系你！", 500);
-          });
-      }else{
+      let that = this;
+      if (that.consultCont != "") {
+        mt_goodsinsert(that.goodsId, that.consultCont).then(data => {
+          console.log(data);
+          that.consultCont = "";
+          that.$message.success(
+            "商品咨询提交成功，稍后平台会主动联系你！",
+            500
+          );
+        });
+      } else {
         that.$message.warning("咨询内容不能为空", 500);
       }
     },
@@ -841,7 +898,21 @@ export default {
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
-            video{
+            position: relative;
+            &.video {
+              &:hover {
+                cursor: pointer;
+              }
+              .videoPlay {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate3d(-50%, -50%, 0);
+                width: 40px;
+                height: 40px;
+              }
+            }
+            video {
               width: 100%;
               height: 100%;
             }
@@ -854,6 +925,20 @@ export default {
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
+            position: relative;
+            &.video {
+              &:hover {
+                cursor: pointer;
+              }
+              .videoPlay {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate3d(-50%, -50%, 0);
+                width: 40px;
+                height: 40px;
+              }
+            }
           }
         }
       }

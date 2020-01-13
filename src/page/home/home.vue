@@ -40,8 +40,7 @@
             v-if="navList.length!==0 && index<6"
             v-for="(item,index) of navList"
             :key="index"
-            @click="viewhome2(item)"
-          >
+            @click="viewhome2(item)">
             <span class="name">{{item.name}}</span>
             <!-- <div class="list ellipsis">
                 <span class="itm" v-for="(items,indexs) of navList[index].list" v-if="indexs<2" :key="indexs" :title="items.name">{{items.name}}</span>
@@ -58,8 +57,7 @@
               v-for="(item,index) in swiperList"
               :key="index"
               :style="{ backgroundImage:'url('+item.imgUrl+')'}"
-              class="swiperSlide"
-            >
+              class="swiperSlide">
             <div v-if="item.jumpType==2" @click="viewDetail(item.record.id)" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
             <div v-if="item.jumpType==1" @click="jump(item.record)" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
               <!-- <img class="swiper-img" :src="item.url" alt=""> -->
