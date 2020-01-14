@@ -26,7 +26,7 @@ export default {
   },
   created() {
     let hrefValue = this.$route.params.parameter
-    console.log(hrefValue.length)
+    // console.log(hrefValue.length)
     if(hrefValue.length<10){
       if(hrefValue==2){
         this.text = '您的账户不存在，请先登录绑定微信'
@@ -38,17 +38,18 @@ export default {
         this.text = '系统繁忙'
         this.$message.warning('系统繁忙')
       }
-      this.$router.push('/')
+      this.$router.push('/login')
     }else{
       let data = {}
-      if(hrefValue.indexOf("&") != -1 && hrefValue.indexOf("u=") != -1 && hrefValue.indexOf("t=") != -1){
+      if(hrefValue.indexOf("t=") != -1){
         let arr = hrefValue.split('&')
         let value = new Object();
         arr.forEach((item,index)=>{
           value[item.split('=')[0]] = item.split('=')[1]
         })
-        data = { userType: value.u, token: value.t }
-        // console.log(data)
+        let uinfo = {}
+        uinfo.token = value.t
+        this.setUserInfo(uinfo);
         mt_getuserInfo().then(data => {
           // console.log(data.data)
           this.setUserInfo(data.data);

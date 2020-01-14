@@ -274,6 +274,23 @@
                       <span @click="payAlipay">立即支付宝支付</span>
                       <img src="/static/icon/alipay.png" alt @click="payAlipay" />
                     </div>
+                    <el-row class="itm bankInfo">
+                      <el-col :span="24">
+                        <el-col :span="24" class="tip">请根据以下对公账户进行打款</el-col>
+                        <el-col :span="6" class="name">帐户名称：</el-col>
+                        <el-col :span="18" class="val">{{bankInfo.name}}</el-col>
+                        <el-col :span="6" class="name">收款账户：</el-col>
+                        <el-col :span="18" class="val">{{bankInfo.number}}</el-col>
+                        <el-col :span="6" class="name">银行账户：</el-col>
+                        <el-col :span="18" class="val">{{bankInfo.bankName}}</el-col>
+                        <el-col :span="6" class="name">银行地址：</el-col>
+                        <el-col :span="18" class="val">{{bankInfo.bankCity}}</el-col>
+                        <el-col :span="6" class="name">开户网点：</el-col>
+                        <el-col :span="18" class="val">{{bankInfo.bankDian}}</el-col>
+                        <!-- <div v-if="weixinFlag" id="qrCode1" ref="qrCode1" style="width: 170px;margin: 0 auto;"></div> -->
+                        <!-- <div class="btnRechargeStatus" @click="rechargeAccount">立即充值</div> -->
+                      </el-col>
+                    </el-row>
                   </div>
                 </div>
                 <div class="showInfo" v-if="authentication.payState==1">
@@ -417,6 +434,9 @@ import {
   mt_payJoinUs_wxpay,
   mt_payJoinUs_alipay
 } from "@/api/my";
+import {
+  mt_querySystemBank
+} from "@/api/order";
 import cityData from "../../../static/other/city.json";
 const regSJH = /^[1][0-9]{10}$/; //手机号正则
 export default {
@@ -465,6 +485,8 @@ export default {
 
       applyType: "", //申请入驻的角色  3代理商 5金牌
       JoinTypeText: '',
+
+      bankInfo: {},
     };
   },
   
@@ -507,6 +529,13 @@ export default {
   mounted() {},
   methods: {
     ...mapMutations(["setUserInfo"]),
+    //获取对公账号信息
+    querySystemBank() {
+      mt_querySystemBank().then(data => {
+        // console.log(data.data);
+        this.bankInfo = data.data;
+      });
+    },
     //地址
     getAddress() {
       let that = this;
@@ -575,7 +604,7 @@ export default {
     getCompanyInfo() {
       let that = this;
       mt_queryMyFranchise().then(data => {
-        // console.log(data.data);
+        
         if (data.data) {
           data.data.imgs1 = JSON.parse(data.data.imgs);
           data.data.imgs2 = JSON.parse(data.data.legalManImgs);
@@ -587,12 +616,14 @@ export default {
           userInfo.joinStatus = data.data.status;
           that.setUserInfo(userInfo)
           //payState支付状态 1成功 2失败 0未支付
+          console.log(data.data);
           if (data.data.status == 1 && data.data.payState != 1) {
             mt_payJoinUs_wxpay(data.data.id).then(data => {
-              // console.log(data.data);
+              console.log(data.data);
               data.data.forms = JSON.parse(data.data.form);
               that.useqrcode(data.data);
             });
+            that.querySystemBank()
           }
           if (data.data.status == 0 || data.data.status == 3) {
             that.step = 1;
@@ -980,6 +1011,35 @@ export default {
                     font-size: 14px;
                     color: #666666;
                     cursor: pointer;
+                  }
+                }
+                .itm {
+                  flex: 1;
+                  margin: 0 auto;
+                  .name {
+                    line-height: 40px;
+                    font-size: 14px;
+                  }
+                  .val {
+                    line-height: 40px;
+                    font-size: 14px;
+                    text-align: left;
+                  }
+                  &.bankInfo {
+                    padding: 15px 0;
+                    .tip {
+                      line-height: 40px;
+                      font-size: 14px;
+                      color: #f08200;
+                      padding-left: 30px;
+                    }
+                    .name {
+                      text-align: right;
+                      padding-right: 10px;
+                    }
+                    .val {
+                      padding-left: 10px;
+                    }
                   }
                 }
               }

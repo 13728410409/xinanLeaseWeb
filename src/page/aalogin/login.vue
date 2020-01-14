@@ -213,7 +213,6 @@ export default {
           mt_loginByPhone(that.phone, that.code).then(data => {
             // console.log(data.data);
             that.setUserInfo(data.data);
-            // console.log(href);
             if (obj) {
               that.updateCart(obj);
             }
@@ -231,21 +230,20 @@ export default {
     //微信登录
     loginByWechat() {
       let that = this;
-      that.$message.success("功能开发中");
+      that.dialogWechat = true;
+      setTimeout(function() {
+        var obj = new WxLogin({
+          self_redirect: false,
+          id: "login_container",
+          appid: "wxa8a5d1f439d19603",
+          scope: "snsapi_login",
+          redirect_uri: "http%3A%2F%2Fwww.xinanzulin.com%2Fapi%2FwxLogin",
+          state: "",
+          style: "black",
+          href: ""
+        });
+      }, 50);
 
-      // that.dialogWechat = true;
-      // setTimeout(function() {
-      //   var obj = new WxLogin({
-      //     self_redirect: false,
-      //     id: "login_container",
-      //     appid: "wx6013aa07979a7b71",
-      //     scope: "snsapi_login",
-      //     redirect_uri: "http%3a%2f%2fweb.elleng.cn%2fwxLogin",
-      //     state: "",
-      //     style: "black",
-      //     href: ""
-      //   });
-      // }, 50);
     },
     //关闭微信登录
     close() {

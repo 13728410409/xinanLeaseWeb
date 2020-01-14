@@ -98,7 +98,7 @@ export default {
       payType: 1,
       bankInfo: {}, //对公账号信息
 
-      lxtimer: "" //轮询定时器
+      lxtimer: null //轮询定时器
     };
   },
   watch: {},
@@ -165,15 +165,21 @@ export default {
     },
     selectPayType(type) {
       let that = this;
-      console.log(type);
-      that.payType = type;
-      if (type == 1) {
-        that.getWxCodeUrl(that.id);
-      } else if (type == 2) {
-        that.payAlipay();
-      } else if (type == 3) {
-        that.querySystemBank();
+      if(that.payType!=type){
+        that.payType = type;
+        if (type == 1) {
+          that.getWxCodeUrl(that.id);
+        } else if (type == 2) {
+          that.payAlipay();
+          that.destriyQrcode()
+          clearTimeout(that.lxtimer);
+        } else if (type == 3) {
+          that.querySystemBank();
+          that.destriyQrcode()
+          clearTimeout(that.lxtimer);
+        }
       }
+      
     },
     //微信支付
     getWxCodeUrl(id) {
@@ -205,10 +211,12 @@ export default {
     destriyQrcode() {
       // console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
-      var childs = wxcode.childNodes;
-      if (childs != null) {
-        for (var i = childs.length - 1; i >= 0; i--) {
-          wxcode.removeChild(childs[i]);
+      if(wxcode!=null){
+        var childs = wxcode.childNodes;
+        if (childs != null) {
+          for (var i = childs.length - 1; i >= 0; i--) {
+            wxcode.removeChild(childs[i]);
+          }
         }
       }
     },
@@ -226,6 +234,7 @@ export default {
         document.forms[0].target = "_blank";
         document.forms[0].submit();
         clearTimeout(that.lxtimer);
+        console.log(that.lxtimer)
         that
           .$confirm(
             "如果已经支付完成请点击下方‘支付完成’按钮！",
