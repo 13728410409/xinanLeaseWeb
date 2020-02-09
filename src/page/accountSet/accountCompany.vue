@@ -250,7 +250,7 @@ import headTop from "@/components/header/head";
 import footGuide from "@/components/footer/footGuide";
 import accountHead from "@/components/accountHead/accountHead";
 import inputFile from "common/inputFile";
-import { mt_queryCompanyInfo, mt_insertCompanyInfo } from "@/api/my";
+import { mt_queryCompanyInfo, mt_insertCompanyInfo, mt_getuserInfo } from "@/api/my";
 const regSJH = /^[1][0-9]{10}$/; //手机号正则
 export default {
   name: "accountCompany",
@@ -304,6 +304,16 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapMutations(["setUserInfo", "setShoppingInfo"]),
+    //获取个人信息
+    getUserInfo() {
+      let that = this;
+      mt_getuserInfo().then(data => {
+        // console.log(data.data)
+        that.userInfoData = data.data;
+        that.setUserInfo(data.data);
+      });
+    },
     selectCType(val) {
       if (this.ctype != val) {
         this.ctype = val;
@@ -326,10 +336,12 @@ export default {
             that.step = 2
           }else if(data.data.status == 2){
             that.step = 3
+            that.getUserInfo()
           }
         }
       })
     },
+
     //提交申请
     submit() {
       let that = this,

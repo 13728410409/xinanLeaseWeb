@@ -629,6 +629,7 @@ export default {
     height: 300px;
     padding: 20px;
     background-color: #ffffff;
+    overflow: hidden;
     .signimg{
       padding: 0 18px;
       position: relative;

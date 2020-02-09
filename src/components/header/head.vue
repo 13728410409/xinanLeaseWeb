@@ -10,9 +10,10 @@
         <span v-if="isLogin">{{tip}}信安IT租赁欢迎您！</span>
         <router-link tag="span" to="/orderList" v-if="isLogin">我的订单</router-link>
         <router-link tag="span" to="/account" v-if="isLogin">我的账户</router-link>
-        <span v-if="isLogin" v-clipboard:copy="userInfo.code" v-clipboard:success="onCopy"  v-clipboard:error="onError">复制邀请码</span>
-        <span v-if="isLogin" v-clipboard:copy="websiteUrl+'/shareRegister/'+userInfo.code" v-clipboard:success="onCopy"  v-clipboard:error="onError">复制分享链接</span>
-        <span v-if="isLogin&&userInfo.type==1" v-clipboard:copy="websiteUrl+'/registerAngle/'+userInfo.code" v-clipboard:success="onCopy"  v-clipboard:error="onError">复制天使加盟链接</span>
+        <!-- <span v-if="isLogin&&userInfo.type==1" @click="shareLink">分享链接</span> -->
+        <!-- <span v-if="isLogin" v-clipboard:copy="userInfo.code" v-clipboard:success="onCopy"  v-clipboard:error="onError">复制邀请码</span> -->
+        <span v-if="isLogin" v-clipboard:copy="websiteUrl+'/shareRegister/'+userInfo.code" v-clipboard:success="onCopy"  v-clipboard:error="onError">分享链接</span>
+        <span v-if="isLogin&&userInfo.type==1" v-clipboard:copy="websiteUrl+'/registerAngle/'+userInfo.code" v-clipboard:success="onCopy"  v-clipboard:error="onError">天使加盟</span>
         <router-link tag="span" to="/news" v-if="isLogin">
           <i v-if="newsInfo && (newsInfo.myCount+newsInfo.sysCount) ==0" title="暂无消息">消息</i>
           <el-badge
@@ -99,6 +100,9 @@ export default {
         that.setNewsInfo(data.data);
       });
     },
+    shareLink(){
+      this.$router.push({ name:'account', params:{ shareLink: 'mitaTrue' } })
+    },
     //退出登录
     quit() {
       this.setUserInfo('')
@@ -112,7 +116,7 @@ export default {
     // 复制成功时的回调函数
     onCopy(e) {
       this.$message({
-        message: "内容已复制到剪切板！",
+        message: "链接已复制！",
         type: "success",
         duration: 1000
       });

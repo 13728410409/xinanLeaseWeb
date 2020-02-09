@@ -305,11 +305,13 @@ export default {
     getGoods() {
       let that = this;
       mt_queryHomeGoods().then(data => {
-        that.sortList = data.data[0];
+        console.log(data.data)
+        that.sortList = data.data.length>0 ? data.data[0] : []
         that.productList = [];
-        that.productList.push(data.data[1]);
+        if(data.data.length>2){
+          that.productList.push(data.data[1]);
         that.productList.push(data.data[2]);
-        console.log(that.productList);
+        }
       });
     },
     //获取合作伙伴

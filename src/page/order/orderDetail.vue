@@ -64,7 +64,8 @@
               </div>
               <div class="itm">
                 <div class="n">运费：</div>
-                <div class="v">￥0</div>
+                <div class="v" v-if="detail.courierMoney!=null&&detail.courierMoney!=''">￥{{detail.courierMoney}}</div>
+                <div class="v" v-else>￥0</div>
                 <!-- <div class="v">￥{{detail.courierMoney}}</div> -->
               </div>
             </div>
@@ -123,7 +124,7 @@
           </div>
           <div class="goodsInfo">
             <el-row class="title">
-              <el-col :span="10" class="im name">商品名称</el-col>
+              <el-col :span="10" class="im name">商品品牌</el-col>
               <el-col :span="4" class="im orderNum">类型和尺寸</el-col>
               <el-col :span="3" class="im price">价格（元）</el-col>
               <el-col :span="2" class="im num">商品数量</el-col>
@@ -246,6 +247,8 @@ export default {
         return "待评价";
       } else if (value == 6) {
         return "已申请售后";
+      } else if (value == 7) {
+        return "待确认打款";
       }
     },
     filterPhone(val) {
@@ -264,7 +267,7 @@ export default {
     getOrderDetail(id) {
       let that = this;
       mt_getOrderDetail(id).then(data => {
-        // console.log(data.data)
+        console.log(data.data)
         that.logistics = data.data.express!=null ?  JSON.parse(data.data.express.content): []
         if(data.data.goods[0].reletId!=''&&data.data.goods[0].reletId!=null&&data.data.goods[0].reletId!=undefined){
           that.type = 2

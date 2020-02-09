@@ -664,9 +664,11 @@ export default {
           .img{
             width: 170px;
             height: 170px;
+            line-height: 170px;
             img{
-              width: 100%;
-              height: 100%;
+              max-width: 100%;
+              max-height: 100%;
+              vertical-align: middle;
             }
           }
           .price{

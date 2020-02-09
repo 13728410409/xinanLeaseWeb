@@ -42,8 +42,8 @@
             </el-col>
             <el-col :span="5" class="type">{{item.collocation.val}}</el-col>
             <el-col :span="2" class="price">
-              <div>￥{{item.collocation.rent}}</div>
-              <div>￥{{item.collocation.deposit}}</div>
+              <div>租金：￥{{item.collocation.rent*item.per}}</div>
+              <div>押金：￥{{item.collocation.deposit*item.per}}</div>
             </el-col>
             <el-col :span="3" class="number">
               <el-input-number
@@ -291,7 +291,7 @@ export default {
         arr = this.cartList;
       obj.list = arr;
       this.setShoppingInfo(obj);
-      that.updateCart(obj);
+      this.updateCart(obj);
     },
     //租期选择
     changeLeaseTerm(index, item) {
@@ -303,20 +303,23 @@ export default {
         arr = this.cartList;
       obj.list = arr;
       this.setShoppingInfo(obj);
-      that.updateCart(obj);
+      this.updateCart(obj);
     },
     //计算价格
     computedPrice() {
       this.selectedNum = 0;
+      this.deposit = 0
+      this.rent = 0
       this.totalPrice = 0;
+      console.log(this.cartList)
       this.cartList.forEach((item, index) => {
         if (item.selected) {
           this.selectedNum += 1;
-          this.deposit += item.num * item.collocation.deposit;
-          this.rent += item.collocation.rent * item.num * item.leaseTerm;
+          this.deposit += item.num * item.collocation.deposit *item.per;
+          this.rent += item.collocation.rent * item.num * item.leaseTerm  *item.per;
           this.totalPrice +=
-            item.num * item.collocation.deposit +
-            item.collocation.rent * item.num * item.leaseTerm;
+            item.num * item.collocation.deposit *item.per +
+            item.collocation.rent * item.num * item.leaseTerm *item.per;
         }
       });
       if (this.selectedNum == this.cartList.length) {

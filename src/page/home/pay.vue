@@ -57,8 +57,7 @@
               <el-col :span="18" class="val">{{bankInfo.bankCity}}</el-col>
               <el-col :span="6" class="name">开户网点：</el-col>
               <el-col :span="18" class="val">{{bankInfo.bankDian}}</el-col>
-              <!-- <div v-if="weixinFlag" id="qrCode1" ref="qrCode1" style="width: 170px;margin: 0 auto;"></div> -->
-              <!-- <div class="btnRechargeStatus" @click="rechargeAccount">立即充值</div> -->
+              <el-col :span="24" style="text-align:center;"><span style="line-height:40px;font-size:14px;color:#f08200;cursor:pointer;" @click="makeConfirm">支付完成</span></el-col>
             </el-col>
           </el-row>
         </div>
@@ -81,7 +80,8 @@ import {
   mt_payByPc,
   mt_wxpayByPc,
   mt_validateIsPaySuccess,
-  mt_querySystemBank
+  mt_querySystemBank,
+  mt_makeConfirm
 } from "@/api/order";
 export default {
   name: "pay",
@@ -137,7 +137,7 @@ export default {
       let that = this;
       this.orderList = [];
       mt_getOrderDetail(id).then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         let gDes = "";
         if (data.data.order.id != "") {
           data.data.goods.forEach(item => {
@@ -165,28 +165,29 @@ export default {
     },
     selectPayType(type) {
       let that = this;
-      if(that.payType!=type){
+      if (that.payType != type) {
         that.payType = type;
         if (type == 1) {
           that.getWxCodeUrl(that.id);
         } else if (type == 2) {
           that.payAlipay();
-          that.destriyQrcode()
+          that.destriyQrcode();
           clearTimeout(that.lxtimer);
+          that.lxtimer = null;
         } else if (type == 3) {
           that.querySystemBank();
-          that.destriyQrcode()
+          that.destriyQrcode();
           clearTimeout(that.lxtimer);
+          that.lxtimer = null;
         }
       }
-      
     },
     //微信支付
     getWxCodeUrl(id) {
       let that = this,
         title = "微信网页支付";
       mt_wxpayByPc(id, title).then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         data.data.forms = JSON.parse(data.data.form);
         that.useqrcode(data.data);
       });
@@ -203,7 +204,7 @@ export default {
           colorLight: "#ffffff", //二维码背景色
           correctLevel: QRCode.CorrectLevel.L //容错率，L/M/H
         });
-        let timestamp = new Date().getTime() + 60 * 1000;
+        let timestamp = new Date().getTime() + 180 * 1000;
         that.validateIsPaySuccess(url.outTradeNo, timestamp);
       }, 100);
     },
@@ -211,7 +212,7 @@ export default {
     destriyQrcode() {
       // console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
-      if(wxcode!=null){
+      if (wxcode != null) {
         var childs = wxcode.childNodes;
         if (childs != null) {
           for (var i = childs.length - 1; i >= 0; i--) {
@@ -225,7 +226,7 @@ export default {
       let that = this,
         title = "支付宝网页支付";
       mt_payByPc(that.id, title).then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         that.html = data.data.form;
         var form = data.data.form;
         const div = document.createElement("div");
@@ -234,7 +235,8 @@ export default {
         document.forms[0].target = "_blank";
         document.forms[0].submit();
         clearTimeout(that.lxtimer);
-        console.log(that.lxtimer)
+        that.lxtimer = null;
+        // console.log(that.lxtimer)
         that
           .$confirm(
             "如果已经支付完成请点击下方‘支付完成’按钮！",
@@ -246,7 +248,7 @@ export default {
             }
           )
           .then(() => {
-            let timestamp = new Date().getTime() + 60 * 1000;
+            let timestamp = new Date().getTime() + 180 * 1000;
             that.validateIsPaySuccess(data.data.outTradeNo, timestamp);
           })
           .catch(() => {
@@ -264,6 +266,7 @@ export default {
           if (data.data == 1) {
             that.destriyQrcode();
             clearTimeout(that.lxtimer);
+            that.lxtimer = null;
             that.$message.success("支付成功");
             that.$router.push("/orderList");
           } else {
@@ -274,6 +277,7 @@ export default {
         });
       } else {
         clearTimeout(that.lxtimer);
+        that.lxtimer = null;
         that.$alert("操作超时，请点击重试支付", "订单支付提示", {
           confirmButtonText: "重新支付",
           showClose: false,
@@ -296,15 +300,40 @@ export default {
         console.log(data.data);
         this.bankInfo = data.data;
         clearTimeout(this.lxtimer);
+        this.lxtimer = null;
       });
-    }
+    },
+    //确认支付完成
+    makeConfirm() {
+      let that = this
+      console.log(1111)
+      that.$confirm(
+        "已支付成功点击‘确定’，请等待平台确认到款",
+        "对公账户付款提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          showClose: false,
+          type: "warning"
+        }
+      )
+        .then(() => {
+          mt_makeConfirm(that.id,'用户提交打款确认申请').then(data => {
+            console.log(data.data);
+            that.$router.push("/orderList");
+          });
+        })
+        .catch(() => {});
+    },
   },
   beforeDestroy() {
     // this.destriyQrcode()
     clearTimeout(this.lxtimer);
+    this.lxtimer = null;
   },
   destroyed() {
     clearTimeout(this.lxtimer);
+    this.lxtimer = null;
   }
 };
 </script>

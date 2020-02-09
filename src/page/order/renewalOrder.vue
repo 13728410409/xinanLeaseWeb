@@ -62,8 +62,8 @@
             </el-col>
             <el-col :span="5" class="type ellipsis4">{{item.dispose}}</el-col>
             <el-col :span="2" class="price">
-              <div>￥{{item.rent}}</div>
-              <div>￥{{item.deposit}}</div>
+              <div>租金：￥{{item.rent *item.selectedGoodsCycle.per}}</div>
+              <div>押金：￥{{item.deposit}}</div>
             </el-col>
             <el-col :span="4" class="number">
               <el-input-number
@@ -515,6 +515,13 @@ export default {
           });
         });
         that.goods = data.data.goods;
+        that.goods.forEach((item, index) => {
+          item.leaseTermOptions.forEach(items => {
+            if (items.value == item.goodsCycle) {
+              item.selectedGoodsCycle = items
+            }
+          });
+      });
         that.detail = data.data.detail;
         that.computedPrice();
       });
@@ -523,6 +530,14 @@ export default {
     //租期选择
     changeLeaseTerm(index, item) {
       this.goods[index].selected = true;
+      console.log(this.goods)
+      this.goods.forEach((item, index) => {
+          item.leaseTermOptions.forEach(items => {
+            if (items.value == item.goodsCycle) {
+              item.selectedGoodsCycle = items
+            }
+          });
+      });
       this.computedPrice();
     },
     //数量加减
@@ -537,15 +552,9 @@ export default {
       this.goods.forEach((item, index) => {
         if (item.selected) {
           this.selectedNum += 1;
-          let per = 0;
-          item.leaseTermOptions.forEach(items => {
-            if (items.value == item.goodsCycle) {
-              per = items.per;
-            }
-          });
           this.totalPrice +=
-            accMul(item.goodsNumber * item.deposit, per) +
-            accMul(item.rent * item.goodsNumber * item.goodsCycle, per);
+            accMul(item.goodsNumber * item.deposit, item.selectedGoodsCycle.per) +
+            accMul(item.rent * item.goodsNumber * item.goodsCycle, item.selectedGoodsCycle.per);
         }
       });
       if (this.selectedNum == this.goods.length) {

@@ -134,7 +134,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        // console.log(data.data);
+        console.log(data.data);
         data.data.birthday =
           data.data.birthday != "" && data.data.birthday != undefined
             ? formatDate(data.data.birthday, "yyyy-MM-dd")

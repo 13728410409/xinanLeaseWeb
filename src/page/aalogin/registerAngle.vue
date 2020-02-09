@@ -259,7 +259,6 @@ export default {
         color: #999999;
         &:hover {
           color: $mainColor;
-          text-decoration: underline;
           cursor: pointer;
         }
       }

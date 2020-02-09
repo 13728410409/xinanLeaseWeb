@@ -88,7 +88,7 @@
                 </div>
               </el-col>
               <el-col :span="5" class="type">{{item.collocation.val}}</el-col>
-              <el-col :span="3" class="number price">
+              <el-col :span="3" class="number price" style="text-align: left;padding-left: 10px;">
                 <div
                   style="color: #e1481f;"
                 >租金：￥{{item.collocation.rent * item.per }}</div>
@@ -156,7 +156,7 @@
               </div>
               <div class="code">
                 <span>邀请码：</span>
-                <el-input class="inp" v-model="invitationCode" placeholder="请输入邀请码"></el-input>
+                <el-input class="inp" v-model="invitationCode" placeholder="请输入邀请人的手机号"></el-input>
               </div>
             </div>
           </div>

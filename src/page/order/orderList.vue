@@ -109,7 +109,7 @@
                     <el-col :span="5" class="min opt">
                       <router-link tag="span" :to="'/orderDetail/'+item.id" >订单详情</router-link>
                       <router-link tag="span" :to="'/pay/'+item.id" v-if="item.state==1">去付款</router-link>
-                      <span v-if="item.state>2" @click="viewLogistics(item)">物流</span>
+                      <span v-if="item.state>2&&item.state!=7" @click="viewLogistics(item)">物流</span>
                       <span v-if="item.state==3" @click="confirmOrder(item)">确认收货</span>
                       <router-link tag="span" :to="'/comment/'+item.id" v-if="item.state==5">评价</router-link>
                       <router-link
@@ -231,6 +231,8 @@ export default {
         return "待评价";
       } else if (value == 6) {
         return "已申请售后";
+      } else if (value == 7) {
+        return "待确认打款";
       }
     }
   },
@@ -463,6 +465,7 @@ export default {
                 }
                 .itms{
                   padding-left: 10px;
+                  overflow: hidden;
                   img {
                     max-height: 50px;
                     margin-top: 5px;

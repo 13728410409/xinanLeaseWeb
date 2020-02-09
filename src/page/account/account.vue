@@ -345,10 +345,15 @@ export default {
   },
   created() {
     this.getUserInfo();
-    if (this.userInfo.type == 1) {
-      this.type = 1;
-    } else {
-      this.type = 0;
+    let shareLink = this.$route.params.shareLink != undefined&&this.$route.params.shareLink != null ? this.$route.params.shareLink : ''
+    if(shareLink=='mitaTrue'){
+      this.type = 2
+    }else{
+      if (this.userInfo.type == 1) {
+        this.type = 1;
+      } else {
+        this.type = 0;
+      }
     }
   },
   mounted() {},

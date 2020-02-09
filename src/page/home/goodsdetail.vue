@@ -90,7 +90,7 @@
             <div class="gname">{{goodsInfo.des}}</div>
             <div class="gprice">
               <span class="n">月租金：</span>
-              <span class="val">￥{{rent}}</span>
+              <span class="val">￥{{rent * per}}</span>
               <span class="share" title="点击生成分享链接">分享</span>
             </div>
             <div class="item collocation">
@@ -110,7 +110,7 @@
               <div class="vals">
                 <div class="ways">{{goodsInfo.goodsWay | filterWay}}</div>
                 <div class="price">
-                  月押金：
+                  押金：
                   <span>￥{{deposit}}</span>
                 </div>
               </div>
@@ -171,7 +171,7 @@
               <span v-if="deposit==0">商品免押金</span>
               <span>起租时间{{goodsInfo.leaseTime}}个月</span>
               <span
-                v-if="per!=1"
+                v-if="per<1&&per>0"
                 style="background-color:red;color:#ffffff;font-weight:bold;"
               >租期越长优惠越大，当前优惠{{ per * 10 | filterPer }}折</span>
             </div>
@@ -506,7 +506,8 @@ export default {
         JSON.parse(data.data.leaseTerm).forEach((item, index) => {
           leaseTermOptions.push({
             value: Number(item.value),
-            label: item.value + "个月，打" + accMul(item.per, 10) + "折",
+            // label: item.value + "个月" + accMul(item.per, 10) + "折",
+            label: item.value + "个月",
             per: item.per
           });
         });

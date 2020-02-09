@@ -91,7 +91,10 @@ var mt_wxpayRecharge = (subject, totalAmount) => async ('/api/wxpay/payByPc', {
 var mt_querySystemBank = () => async ('/web/leaseSystemBank/querySystemBank', {
 },"GET");
 
-
+// 对公账户 打款确认
+var mt_makeConfirm = (orderId,moneyRemark) => async ('/api/order/makeConfirm', {
+  orderId,moneyRemark
+},"GET");
 
 export {
   mt_createOrder,
@@ -111,5 +114,6 @@ export {
   mt_alipayRecharge,
   mt_wxpayRecharge,
   mt_validateIsPaySuccess,
-  mt_querySystemBank
+  mt_querySystemBank,
+  mt_makeConfirm
 }
