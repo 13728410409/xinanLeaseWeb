@@ -128,7 +128,7 @@
                   ></el-input>
                 </el-col>
                 <el-col :span="5" class="type">配送方式：快递</el-col>
-                <el-col :span="2" class="price">￥0</el-col>
+                <el-col :span="2" class="price">￥{{freight}}</el-col>
               </el-col>
             </el-row>
           </div>
@@ -323,7 +323,7 @@ import search from "@/components/search/search";
 import shoppingcart from "@/components/shopping/shoppingcart";
 import error from "@/components/error/error";
 import cityData from "../../../static/other/city.json";
-import { mt_selectAllcart, mt_insertcart, mt_deletecart } from "@/api/common";
+import { mt_selectAllcart, mt_insertcart, mt_deletecart, mt_getUserPostage } from "@/api/common";
 import {
   mt_getAddressList,
   mt_addAddress,
@@ -491,12 +491,38 @@ export default {
         }
       }
     }
-    this.computedPrice();
+    this.getUserPostage()   //计算运费
+    
     this.getAddressList();
   },
   mounted() {},
   methods: {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
+    getUserPostage(){
+      mt_getUserPostage().then(data =>{
+        console.log(data.data)
+        let userPostage = data.data
+        let arr = [];  
+        console.log(this.cartList)
+        this.cartList.forEach(item => {
+          arr.push(item.gcreator);
+        });
+        console.log(arr)
+        let creators = Array.from(new Set(arr))  //去重后的商家id集合
+
+        let fprice = 0
+        creators.forEach((item, index) => {
+          userPostage.forEach((items,indexs)=>{
+            if(item ==items.userId){
+              fprice +=   items.money
+            }
+          })
+        });
+        console.log(fprice)
+        this.freight = fprice
+        this.computedPrice();  
+      })
+    },
     //获取地址
     getAddressList() {
       let that = this;
@@ -814,7 +840,8 @@ export default {
           leaseOrderGoodsInfo,
           that.invoice.id ? that.invoice.id : "",
           that.invitationCode,
-          that.companyName
+          that.companyName,
+          that.freight
         ).then(data => {
           // console.log(data.data);
           that.remove();

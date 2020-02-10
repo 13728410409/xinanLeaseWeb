@@ -431,8 +431,14 @@ export default {
   },
   filters: {
     filterWay(value) {
-      if (value == "1") {
-        return "短租";
+      if (value == "3") {
+        return "即租即还";
+      }else if(value=='4'){
+        return "租完即送";
+      }else if(value=='5'){
+        return "固定租期";
+      }else if(value=='6'){
+        return "短期租赁";
       }
     },
     filterMoney2wei(value) {
@@ -594,7 +600,8 @@ export default {
         startTime: that.startTime,
         collocation: that.collocation,
         subTime: subTime,
-        selected: false
+        selected: false,
+        gCreator: that.goodsInfo.creator
       };
       let obj = {},
         arr = [];

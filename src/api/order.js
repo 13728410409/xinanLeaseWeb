@@ -1,8 +1,8 @@
 import { async } from '@/config/fetch';
 
 //创建订单
-var mt_createOrder = (addressId,leaseOrderGoodsInfo,invoiceId,invitationCode,companyName) => async ('/api/order/createOrder', {
-  addressId,leaseOrderGoodsInfo,invoiceId,invitationCode,companyName
+var mt_createOrder = (addressId,leaseOrderGoodsInfo,invoiceId,invitationCode,companyName,courierMoney) => async ('/api/order/createOrder', {
+  addressId,leaseOrderGoodsInfo,invoiceId,invitationCode,companyName,courierMoney
 },"POST");
 
 //续租订单

@@ -39,8 +39,6 @@ var mt_commonPhone = () => async ('/common/commonPhone', {
 var mt_getQnToken = () => async ('/web/qiniu/getUpToken', {},"GET");
 
 
-
-
 //获取购物车列表
 var mt_selectAllcart = () => async ('/api/cart/selectAll', {
   
@@ -79,7 +77,6 @@ var mt_newselectAll = (type,title,page,limit) => async ('/web/new/selectAll', {
   type,title,page,limit
 },"GET");
 
-
 //获取热门商品 或者 最新商品的查询
 // 1热门商品 2最新商品
 var mt_queryHotOrNewGoods = (type) => async ('/web/goods/queryHotOrNewGoods', {
@@ -101,6 +98,9 @@ var mt_aggrement = (type) => async ('/web/leaseUserAgreement/selectAll', {
   type
 },"GET");
 
+//获取所有商家邮费
+var mt_getUserPostage = () => async ('/api/common/getUserPostage', {
+},"GET");
 
 export {
   mt_register_code,
@@ -123,5 +123,5 @@ export {
   mt_invitation,
   mt_loginByWxAndPhone,
   mt_aggrement,
-  
+  mt_getUserPostage
 }
