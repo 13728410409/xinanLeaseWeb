@@ -98,7 +98,7 @@ export default {
       payType: 1,
       bankInfo: {}, //对公账号信息
 
-      lxtimer: null //轮询定时器
+      lxtimer: false //轮询定时器
     };
   },
   watch: {},
@@ -173,12 +173,12 @@ export default {
           that.payAlipay();
           that.destriyQrcode();
           clearTimeout(that.lxtimer);
-          that.lxtimer = null;
+          that.lxtimer = false;
         } else if (type == 3) {
           that.querySystemBank();
           that.destriyQrcode();
           clearTimeout(that.lxtimer);
-          that.lxtimer = null;
+          that.lxtimer = false;
         }
       }
     },
@@ -235,7 +235,7 @@ export default {
         document.forms[0].target = "_blank";
         document.forms[0].submit();
         clearTimeout(that.lxtimer);
-        that.lxtimer = null;
+        that.lxtimer = false;
         // console.log(that.lxtimer)
         that
           .$confirm(
@@ -253,6 +253,7 @@ export default {
           })
           .catch(() => {
             clearTimeout(that.lxtimer);
+            that.lxtimer = false;
           });
       });
     },
@@ -266,7 +267,7 @@ export default {
           if (data.data == 1) {
             that.destriyQrcode();
             clearTimeout(that.lxtimer);
-            that.lxtimer = null;
+            that.lxtimer = false;
             that.$message.success("支付成功");
             that.$router.push("/orderList");
           } else {
@@ -277,13 +278,14 @@ export default {
         });
       } else {
         clearTimeout(that.lxtimer);
-        that.lxtimer = null;
+        that.lxtimer = false;
         that.$alert("操作超时，请点击重试支付", "订单支付提示", {
           confirmButtonText: "重新支付",
           showClose: false,
           callback: action => {
             // that.destriyQrcode();
             clearTimeout(that.lxtimer);
+            that.lxtimer = false;
             if (that.payType == 1) {
               that.destriyQrcode();
               that.getWxCodeUrl(this.id);
@@ -300,7 +302,7 @@ export default {
         console.log(data.data);
         this.bankInfo = data.data;
         clearTimeout(this.lxtimer);
-        this.lxtimer = null;
+        this.lxtimer = false;
       });
     },
     //确认支付完成
@@ -329,11 +331,11 @@ export default {
   beforeDestroy() {
     // this.destriyQrcode()
     clearTimeout(this.lxtimer);
-    this.lxtimer = null;
+    this.lxtimer = false;
   },
   destroyed() {
     clearTimeout(this.lxtimer);
-    this.lxtimer = null;
+    this.lxtimer = false;
   }
 };
 </script>
