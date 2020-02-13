@@ -211,6 +211,7 @@
       bottom="0"
       custom-class="leaseAggrement">
       <el-row>
+        <el-col :span="24" style="color:#f08200;">合同编号：{{contract.uid}}</el-col>
         <el-col :span="12">
           <el-row>
             <el-col :span="22">甲方（出租方）：信安租赁（深圳）有限公司</el-col>

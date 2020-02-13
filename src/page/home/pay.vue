@@ -279,21 +279,21 @@ export default {
       } else {
         clearTimeout(that.lxtimer);
         that.lxtimer = false;
-        that.$alert("操作超时，请点击重试支付", "订单支付提示", {
-          confirmButtonText: "重新支付",
-          showClose: false,
-          callback: action => {
-            // that.destriyQrcode();
-            clearTimeout(that.lxtimer);
-            that.lxtimer = false;
-            if (that.payType == 1) {
-              that.destriyQrcode();
-              that.getWxCodeUrl(this.id);
-            } else if (that.payType == 2) {
-              that.payAlipay();
-            }
-          }
-        });
+        // that.$alert("操作超时，请点击重试支付", "订单支付提示", {
+        //   confirmButtonText: "重新支付",
+        //   showClose: false,
+        //   callback: action => {
+        //     // that.destriyQrcode();
+        //     clearTimeout(that.lxtimer);
+        //     that.lxtimer = false;
+        //     if (that.payType == 1) {
+        //       that.destriyQrcode();
+        //       that.getWxCodeUrl(this.id);
+        //     } else if (that.payType == 2) {
+        //       that.payAlipay();
+        //     }
+        //   }
+        // });
       }
     },
     //获取对公账号信息
