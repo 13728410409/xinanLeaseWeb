@@ -87,7 +87,7 @@
           </div>
 
           <div class="goodsInfoDetail" v-if="goodsInfo.des">
-            <div class="gname">{{goodsInfo.des}}</div>
+            <div class="gname">{{goodsInfo.name}}</div>
             <div class="gprice">
               <span class="n">月租金：</span>
               <span class="val">￥{{rent * per}}</span>
@@ -193,10 +193,17 @@
           <div class="item">
             <div class="name">属性参数</div>
             <div class="val detailsInfo">
-              <div class="itm" v-for="item of attrList" :key="index">
+              <div class="itm" v-for="item of attrList" :key="item">
                 <span class="n">{{item.attrName}}</span>
                 <span class="v">{{item.attrVal}}</span>
               </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="name">产品描述</div>
+            <div class="val llist">
+              <div class="t">产品介绍</div>
+              <div class="b">{{goodsInfo.des}}</div>
             </div>
           </div>
           <div class="item">
@@ -232,7 +239,7 @@
           <div class="item">
             <div class="name">产品介绍</div>
             <div class="val">
-              <img class="pimg" v-for="item of productImgs" :src="item" alt />
+              <img class="pimg" v-for="item of productImgs" :key="item" :src="item" alt />
             </div>
           </div>
         </div>
@@ -433,11 +440,11 @@ export default {
     filterWay(value) {
       if (value == "3") {
         return "即租即还";
-      }else if(value=='4'){
+      } else if (value == "4") {
         return "租完即送";
-      }else if(value=='5'){
+      } else if (value == "5") {
         return "固定租期";
-      }else if(value=='6'){
+      } else if (value == "6") {
         return "短期租赁";
       }
     },
@@ -536,14 +543,13 @@ export default {
           showClose: false,
           dangerouslyUseHTMLString: true,
           callback: action => {
-            if(action == 'confirm'){
-              console.log(111)
+            if (action == "confirm") {
+              console.log(111);
               let vide = document.getElementById("vide");
               vide.pause();
             }
           }
         }
-
       );
     },
     // 初始化配置
@@ -589,7 +595,7 @@ export default {
       let data = {
         gid: that.goodsId,
         img: that.goodsInfo.lblist[0],
-        des: that.goodsInfo.des,
+        des: that.goodsInfo.name,
         num: that.num,
         way: that.goodsInfo.goodsWay,
         wayValue: that.wayValue,
@@ -1156,11 +1162,22 @@ export default {
           &.detailsInfo {
             display: flex;
             flex-wrap: wrap;
-            border-top: 1px solid #c4c4c4;
-            border-left: 1px solid #c4c4c4;
+            // border-top: 1px solid #c4c4c4;
+            // border-left: 1px solid #c4c4c4;
             .itm {
               width: 50%;
               display: flex;
+              background-color: #f9f9f9;
+              // border-bottom: 1px solid #c4c4c4;
+              &:first-child{
+                border-top: 1px solid #c4c4c4;
+              }
+              &:nth-child(2){
+                border-top: 1px solid #c4c4c4;
+              }
+              &:last-child{
+
+              }
               span {
                 flex: 1;
                 line-height: 40px;

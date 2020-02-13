@@ -40,7 +40,8 @@
             v-if="navList.length!==0 && index<6"
             v-for="(item,index) of navList"
             :key="index"
-            @click="viewhome2(item)">
+            @click="viewhome2(item)"
+          >
             <span class="name">{{item.name}}</span>
             <!-- <div class="list ellipsis">
                 <span class="itm" v-for="(items,indexs) of navList[index].list" v-if="indexs<2" :key="indexs" :title="items.name">{{items.name}}</span>
@@ -57,9 +58,18 @@
               v-for="(item,index) in swiperList"
               :key="index"
               :style="{ backgroundImage:'url('+item.imgUrl+')'}"
-              class="swiperSlide">
-            <div v-if="item.jumpType==2" @click="viewDetail(item.record.id)" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
-            <div v-if="item.jumpType==1" @click="jump(item.record)" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
+              class="swiperSlide"
+            >
+              <div
+                v-if="item.jumpType==2"
+                @click="viewDetail(item.record.id)"
+                style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
+              ></div>
+              <div
+                v-if="item.jumpType==1"
+                @click="jump(item.record)"
+                style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
+              ></div>
               <!-- <img class="swiper-img" :src="item.url" alt=""> -->
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -84,7 +94,7 @@
           <div class="img">
             <img :src="item.img" />
           </div>
-          <div class="des ellipsis2" :title="item.proIntroduction">{{item.proIntroduction}}</div>
+          <div class="des ellipsis2" :title="item.proIntroduction">{{item.name}}</div>
           <div class="price">
             <i>￥</i>
             <span>{{item.money}}</span>
@@ -97,13 +107,20 @@
       class="container main product"
       v-if="productList.length!==0"
       v-for="(item,index) of productList"
-      :key="index">
+      :key="index"
+    >
       <div class="typesign">
         <div class="title">
           <span>{{item.typeStr}}</span>
           <span class="circleBack"></span>
         </div>
-        <div class="signimg" v-for="(items,indexs) of item.goodsList" :key="indexs" v-if="indexs<1" @click="viewDetail(items.id)">
+        <div
+          class="signimg"
+          v-for="(items,indexs) of item.goodsList"
+          :key="indexs"
+          v-if="indexs<1"
+          @click="viewDetail(items.id)"
+        >
           <img :src="items.img" alt />
         </div>
       </div>
@@ -120,7 +137,8 @@
             <img :src="items.img" alt />
           </div>
           <div class="info">
-            <div class="des ellipsis4" :title="item.proIntroduction">{{items.proIntroduction}}</div>
+            <div class="ellipsis2" style="color:#333333;">{{items.name}}</div>
+            <div class="des ellipsis2" style="color:#999999;">{{items.proIntroduction}}</div>
             <div class="price">
               <i>￥</i>
               <span>{{items.money}}</span>
@@ -230,17 +248,17 @@ export default {
       navList: [],
       swiperList: [],
       swiperOption: {
-        pagination: '.swiper-pagination',
+        pagination: ".swiper-pagination",
         notNextTick: true,
         // autoplay: 3000,
-        direction: 'horizontal',
+        direction: "horizontal",
         grabCursor: true,
         setWrapperSize: true,
         autoHeight: true,
         paginationClickable: true,
         mousewheelControl: true,
         observeParents: true,
-        loop: true,
+        loop: true
       },
       sortList: { goodsList: [] },
       swiperOption1: {
@@ -257,7 +275,7 @@ export default {
     ...mapState(["userInfo", "phoneInfo"])
   },
   created() {
-    vm = this
+    vm = this;
     if (
       localStorage.getItem("userInfo") != "null" &&
       localStorage.getItem("userInfo") != null
@@ -293,11 +311,11 @@ export default {
       let that = this;
       mt_lunbo().then(data => {
         // console.log(data.data)
-        data.data.forEach(item=>{
-          if(item.jumpType==2){
-            item.record = JSON.parse(item.record)
+        data.data.forEach(item => {
+          if (item.jumpType == 2) {
+            item.record = JSON.parse(item.record);
           }
-        })
+        });
         that.swiperList = data.data;
       });
     },
@@ -305,13 +323,12 @@ export default {
     getGoods() {
       let that = this;
       mt_queryHomeGoods().then(data => {
-        console.log(data.data)
-        that.sortList = data.data.length>0 ? data.data[0] : []
+        console.log(data.data);
+        that.sortList = data.data.length > 0 ? data.data[0] : [];
         that.productList = [];
-        if(data.data.length>2){
-          that.productList.push(data.data[1]);
+        console.log(data.data.length)
+        that.productList.push(data.data[1]);
         that.productList.push(data.data[2]);
-        }
       });
     },
     //获取合作伙伴
@@ -343,23 +360,23 @@ export default {
     viewDetail(val) {
       this.$router.push("/goodsdetail/" + val);
     },
-    jump(val){
-      console.log(val)
+    jump(val) {
+      console.log(val);
     },
     //查看加盟信息
     viewJoinInfo() {
-      let jsonUserInfo = localStorage.getItem('userInfo')
-      if (jsonUserInfo!=null) {
-        let userInfo = JSON.parse(jsonUserInfo)
-        console.log(userInfo)
-        if(userInfo.angelState==3){
-          if(userInfo.joinStatus == 0){
-            this.$router.push('/joinCenter')
-          }else{
-            this.$router.push('/join')
+      let jsonUserInfo = localStorage.getItem("userInfo");
+      if (jsonUserInfo != null) {
+        let userInfo = JSON.parse(jsonUserInfo);
+        console.log(userInfo);
+        if (userInfo.angelState == 3) {
+          if (userInfo.joinStatus == 0) {
+            this.$router.push("/joinCenter");
+          } else {
+            this.$router.push("/join");
           }
-        }else{
-          this.$router.push('/joinAngle')
+        } else {
+          this.$router.push("/joinAngle");
         }
       } else {
         this.$router.push("/joinCenter");
@@ -599,7 +616,7 @@ export default {
         flex: 1;
         margin-left: 15px;
         .des {
-          height: 80px;
+          height: 40px;
           line-height: 20px;
           font-size: 13px;
           color: #333333;

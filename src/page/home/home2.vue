@@ -93,7 +93,8 @@
         <div class="itm" v-for="(items,indexs) of item.goodsRankingDtoList" :key="indexs" @click="viewDetail(items.id)" >
           <div class="img"><img :src="items.img" alt=""></div>
           <div class="info">
-            <div class="des ellipsis4">{{items.name}}</div>
+            <div class="ellipsis2" style="color:#333333;">{{items.name}}</div>
+            <div class="des ellipsis2" style="color:#999999;">{{items.proIntroduction}}</div>
             <div class="price"><i>￥</i><span>{{items.money}}</span></div>
           </div>
         </div>
@@ -604,7 +605,6 @@ export default {
         line-height: 20px;
       }
       .price{
-
         margin-top: 12px;
         line-height: 18px;
         display: flex;
@@ -680,7 +680,7 @@ export default {
         flex: 1;
         margin-left: 15px;
         .des{
-          height: 86px;
+          height: 43px;
           line-height: 20px;
           font-size: 13px;
           color: #333333;

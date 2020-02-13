@@ -694,7 +694,7 @@ export default {
         let arr = [];
         console.log(this.cartList);
         this.cartList.forEach(item => {
-          arr.push(item.gcreator);
+          arr.push(item.gCreator);
         });
         console.log(arr);
         let creators = Array.from(new Set(arr)); //去重后的商家id集合
