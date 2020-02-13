@@ -301,8 +301,7 @@
       width="100%"
       top="0"
       bottom="0"
-      custom-class="leaseAggrement"
-    >
+      custom-class="leaseAggrement">
       <el-row>
         <el-col :span="12">
           <el-row>
@@ -423,8 +422,7 @@
           <br />甲方：
           <span style="width:300px;display:inline-block;">信安租赁（深圳）有限公司</span>签约代表：韩大平
           <br />乙方：
-          <span style="width:300px;display:inline-block;">{{authentication.name}}</span>
-          签约代表：{{authentication.contactsName}}
+          <span style="width:300px;display:inline-block;">{{authentication.name}}</span>签约代表：{{authentication.contactsName}}
           <br />
           签约日期：{{htDate[0]}}年{{htDate[1]}}月{{htDate[2]}}日
         </div>
@@ -458,7 +456,7 @@
                 <el-col :span="6" class="b c">设备租金合计</el-col>
               </el-col>
               <el-col :span="24" class="row">
-                <el-col :span="6" class="r c">{{item.collocation.val}},{{item.des}}</el-col>
+                <el-col :span="6" class="r c">{{item.collocation.val}}</el-col>
                 <el-col :span="6" class="r c">{{item.num}}</el-col>
                 <el-col :span="6" class="r c">{{item.collocation.rent}}</el-col>
                 <el-col :span="6" class="c">{{item.num*item.collocation.rent*item.leaseTerm}}</el-col>
@@ -483,10 +481,10 @@
         </div>
         <br />附件一：企业信息资料（营业执照、法人身份证复印件）
         <div>营业执照
-          <img v-if="authentication.imgs1" :src="authentication.imgs1.img1" alt />
+          <img v-if="authentication.imgs1" :src="authentication.imgs1.img1" alt style="width:300px;" />
           法人身份证复印件
-          <img v-if="authentication.imgs2" :src="authentication.imgs2.positive" alt />
-          <img v-if="authentication.imgs2" :src="authentication.imgs2.negative" alt />
+          <img v-if="authentication.imgs2" :src="authentication.imgs2.positive" alt style="width:300px;" />
+          <img v-if="authentication.imgs2" :src="authentication.imgs2.negative" alt style="width:300px;" />
           <!-- <img :src="authentication.imgs1.img1" alt=""> -->
           <!-- <img :src="authentication.imgs2.positive" alt=""> -->
           <!-- <img :src="authentication.imgs2.negative" alt=""> -->
@@ -690,7 +688,7 @@ export default {
     getUserPostage() {
       mt_getUserPostage().then(data => {
         console.log(data.data);
-        let userPostage = data.data;
+        let userPostage = data.data.data;
         let arr = [];
         console.log(this.cartList);
         this.cartList.forEach(item => {

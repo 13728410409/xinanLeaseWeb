@@ -96,6 +96,9 @@ var mt_makeConfirm = (orderId,moneyRemark) => async ('/api/order/makeConfirm', {
   orderId,moneyRemark
 },"GET");
 
+// 查看我的合同
+var mt_queryLeaseContractByUserId = () => async ('/api/order/queryLeaseContractByUserId', {
+},"GET");
 export {
   mt_createOrder,
   mt_renewalOrder,
@@ -115,5 +118,6 @@ export {
   mt_wxpayRecharge,
   mt_validateIsPaySuccess,
   mt_querySystemBank,
-  mt_makeConfirm
+  mt_makeConfirm,
+  mt_queryLeaseContractByUserId
 }
