@@ -90,7 +90,7 @@
             <div class="gname">{{goodsInfo.name}}</div>
             <div class="gprice">
               <span class="n">月租金：</span>
-              <span class="val">￥{{rent * per}}</span>
+              <span class="val">￥{{rent*per | filterMoney2wei}}</span>
               <span class="share" title="点击生成分享链接">分享</span>
             </div>
             <div class="item collocation">
@@ -111,7 +111,7 @@
                 <div class="ways">{{goodsInfo.goodsWay | filterWay}}</div>
                 <div class="price">
                   押金：
-                  <span>￥{{deposit}}</span>
+                  <span>￥{{deposit  | filterMoney2wei}}</span>
                 </div>
               </div>
               <!-- <div class="date">
@@ -166,7 +166,7 @@
             </div>
             <div
               class="tip"
-            >合计首期租金￥{{rent * per * leaseTerm * num | filterMoney2wei }} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
+            >合计首期租金￥{{rent*per*num*leaseTerm  | filterMoney2wei}} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
             <div class="special">
               <span v-if="deposit==0">商品免押金</span>
               <span>起租时间{{goodsInfo.leaseTime}}个月</span>
@@ -425,16 +425,15 @@ export default {
       // console.log(newVal);
       // console.log(this.per);
     },
-
     //数量
     num(newVal, oldVal) {
-      console.log(newVal);
+      // console.log(newVal);
     },
     showFlag(newVal, oldVal) {
       if (newVal == 2) {
         this.selectComment();
       }
-    }
+    },
   },
   filters: {
     filterWay(value) {
@@ -449,7 +448,7 @@ export default {
       }
     },
     filterMoney2wei(value) {
-      return value.toFixed(2);
+      return value.toFixed(2)
       // formatNum(value)
     },
     filterPer(value) {
@@ -509,9 +508,9 @@ export default {
         JSON.parse(data.data.dispose).forEach((item, index) => {
           pzList.push({
             id: item.id,
-            rent: item.rentMoney,
+            rent: Number(item.rentMoney),
             val: item.config,
-            deposit: item.depositMoney
+            deposit: Number(item.depositMoney)
           });
         });
         that.goodsInfo.pzList = pzList;
@@ -521,7 +520,7 @@ export default {
             value: Number(item.value),
             // label: item.value + "个月" + accMul(item.per, 10) + "折",
             label: item.value + "个月",
-            per: item.per
+            per: Number(item.per)
           });
         });
         leaseTermOptions.sort(compare("value"));
@@ -544,7 +543,7 @@ export default {
           dangerouslyUseHTMLString: true,
           callback: action => {
             if (action == "confirm") {
-              console.log(111);
+              // console.log(111);
               let vide = document.getElementById("vide");
               vide.pause();
             }
@@ -578,7 +577,7 @@ export default {
     },
     //改变租赁数量
     changeNum() {
-      console.log(this.num);
+      // console.log(this.num);
     },
     //切换查看产品参数和产品评价
     selectShowFlag(val) {

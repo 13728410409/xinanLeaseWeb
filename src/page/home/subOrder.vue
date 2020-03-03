@@ -92,8 +92,8 @@
               </el-col>
               <el-col :span="5" class="type">{{item.collocation.val}}</el-col>
               <el-col :span="3" class="number price" style="text-align: left;padding-left: 10px;">
-                <div style="color: #e1481f;">租金：￥{{item.collocation.rent * item.per }}</div>
-                <div style="color: #e1481f;">押金：￥{{item.collocation.deposit}}</div>
+                <div style="color: #e1481f;">租金：￥{{item.collocation.rent * item.per | filterMoney2wei}}</div>
+                <div style="color: #e1481f;">押金：￥{{item.collocation.deposit | filterMoney2wei}}</div>
               </el-col>
               <el-col :span="3" class="number">
                 <div style="color: #e1481f;">租期：{{item.leaseTerm}}个月</div>
@@ -160,9 +160,9 @@
           </div>
           <div class="priceInfo">
             <div class="p">
-              <span>商品租金：￥{{rent }}</span>
-              <span>商品押金：￥{{deposit }}</span>
-              <span>运费：￥{{freight}}</span>
+              <span>商品租金：￥{{rent | filterMoney2wei}}</span>
+              <span>商品押金：￥{{deposit | filterMoney2wei}}</span>
+              <span>运费：￥{{freight | filterMoney2wei}}</span>
             </div>
             <div class="ai">
               <div class="a" v-if="selectedAddress.addressV">确认地址：{{selectedAddress.addressV}}</div>
@@ -176,7 +176,7 @@
             <div class="sbtn">
               <span class="v">
                 总计：
-                <i>￥{{totalPrice}}</i>
+                <i>￥{{totalPrice | filterMoney2wei}}</i>
               </span>
               <span class="subOrder" @click="subOrder">提交订单</span>
             </div>
