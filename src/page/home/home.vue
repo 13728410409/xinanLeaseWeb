@@ -323,10 +323,10 @@ export default {
     getGoods() {
       let that = this;
       mt_queryHomeGoods().then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         that.sortList = data.data.length > 0 ? data.data[0] : [];
         that.productList = [];
-        console.log(data.data.length)
+        // console.log(data.data.length)
         that.productList.push(data.data[1]);
         that.productList.push(data.data[2]);
       });
@@ -361,14 +361,14 @@ export default {
       this.$router.push("/goodsdetail/" + val);
     },
     jump(val) {
-      console.log(val);
+      // console.log(val);
     },
     //查看加盟信息
     viewJoinInfo() {
       let jsonUserInfo = localStorage.getItem("userInfo");
       if (jsonUserInfo != null) {
         let userInfo = JSON.parse(jsonUserInfo);
-        console.log(userInfo);
+        // console.log(userInfo);
         if (userInfo.angelState == 3) {
           if (userInfo.joinStatus == 0) {
             this.$router.push("/joinCenter");

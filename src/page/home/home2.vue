@@ -24,9 +24,10 @@
     <!-- 主菜单、轮播及信息 -->
     <div class="container bannerBox">
       <!-- 导航  -->
-      <div class="nav " :class="navList.length>6?'scrollbar':''">
+      <!-- <div class="nav " :class="navList.length>6?'scrollbar':''"> -->
+      <div class="nav ">
         <ul>
-          <li v-for="(item,index) of navList" :key="index">
+          <li v-for="(item,index) of navList" v-if="index<6"  :key="index">
             <span class="name">{{item.name}}&nbsp;></span>
             <div class="list ellipsis">
               <span class="itm" v-for="(items,indexs) of navList[index].childMenu" v-if="indexs<2" :key="indexs" :title="items.name">{{items.name}}</span>

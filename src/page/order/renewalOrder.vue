@@ -552,9 +552,8 @@ export default {
       this.goods.forEach((item, index) => {
         if (item.selected) {
           this.selectedNum += 1;
-          this.totalPrice +=
-            accMul(item.goodsNumber * item.deposit, item.selectedGoodsCycle.per) +
-            accMul(item.rent * item.goodsNumber * item.goodsCycle, item.selectedGoodsCycle.per);
+          // this.totalPrice += accMul(item.goodsNumber * item.deposit, item.selectedGoodsCycle.per) + accMul(item.rent * item.goodsNumber * item.goodsCycle, item.selectedGoodsCycle.per);
+          this.totalPrice += item.goodsNumber * item.deposit + item.rent * item.goodsNumber * item.goodsCycle
         }
       });
       if (this.selectedNum == this.goods.length) {

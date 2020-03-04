@@ -90,19 +90,27 @@
             <div class="gname">{{goodsInfo.name}}</div>
             <div class="gprice">
               <span class="n">月租金：</span>
-              <span class="val">￥{{rent * per}}</span>
+              <span class="val">￥{{rent}}</span>
               <span class="share" title="点击生成分享链接">分享</span>
             </div>
             <div class="item collocation">
               <div class="name">选择配置:</div>
               <div class="val">
-                <div
+                <!-- <div
                   class="itm"
                   :class="collocation.val==item.val?'active':''"
                   v-for="(item,index) of goodsInfo.pzList"
                   :key="index"
                   @click="selectcollocation(item)"
-                >{{item.val}}</div>
+                >{{item.val}}</div> -->
+                <div
+                  class="itm"
+                  :class="collocation.config==item.config?'active':''"
+                  v-for="(item,index) of testDataModel"
+                  :key="index"
+                  @click="selectcollocation(item)"
+                >{{item.config}}</div>
+                
               </div>
             </div>
             <div class="item way">
@@ -122,7 +130,7 @@
                 <div class="name">租赁时间：</div>
                 <el-select v-model="leaseTerm" placeholder="请选择">
                   <el-option
-                    v-for="(item,index) of goodsInfo.leaseTermOptions"
+                    v-for="item of goodsInfo.leaseTermOptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -166,14 +174,11 @@
             </div>
             <div
               class="tip"
-            >合计首期租金￥{{rent * per * leaseTerm * num | filterMoney2wei }} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
+            >合计首期租金￥{{rent * leaseTerm * num | filterMoney2wei }} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
             <div class="special">
               <span v-if="deposit==0">商品免押金</span>
               <span>起租时间{{goodsInfo.leaseTime}}个月</span>
-              <span
-                v-if="per<1&&per>0"
-                style="background-color:red;color:#ffffff;font-weight:bold;"
-              >租期越长优惠越大，当前优惠{{ per * 10 | filterPer }}折</span>
+              <!-- <span v-if="per<1&&per>0" style="background-color:red;color:#ffffff;font-weight:bold;">租期越长优惠越大，当前优惠{{ per * 10 | filterPer }}折</span> -->
             </div>
             <div class="opt">
               <span class="addCart" @click="addCart">加入购物车</span>
@@ -391,24 +396,33 @@ export default {
       addressArr: ["广东省", "深圳市"], //地址
       // addressArr: [], //地址
       startTime: "", //时间
-
       pickerOptions0: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 8.64e7; //如果没有后面的-8.64e7就是不可以选择今天的
         }
       },
-
       num: 1, //数量
-
       showFlag: 1, //1显示产品参数  2显示产品评价
-
       commentType: 1, //评价类型 1好评 2中评 3差评
       commentList: [],
       page: 1,
       limit: 10,
 
       consultCont: "", //咨询内容
-      searchWordKey: "" //搜索
+      searchWordKey: "", //搜索
+
+      testDataModel: [
+        { id: "1", config: "配置1", 
+          value: [{ term: 1, depositMoney: '300', rentMoney: '101' }] 
+        },
+        { id: "2", config: "配置2", 
+          value: [{ term: 3, depositMoney: '330', rentMoney: '102' },{ term: 4, depositMoney: '400', rentMoney: '120' }] 
+        },
+        { id: "3", config: "配置3", 
+          value: [{ term: 2, depositMoney: '350', rentMoney: '103' },{ term: 3, depositMoney: '500', rentMoney: '130' },{ term: 6, depositMoney: '600', rentMoney: '200' }] 
+        }
+      ],  //配置信息
+
     };
   },
   computed: {
@@ -419,16 +433,16 @@ export default {
     leaseTerm(newVal, oldVal) {
       this.goodsInfo.leaseTermOptions.forEach(item => {
         if (item.value == newVal) {
-          this.per = item.per;
+          this.rent = item.rentMoney
+          this.deposit = item.depositMoney
         }
       });
       // console.log(newVal);
       // console.log(this.per);
     },
-
     //数量
     num(newVal, oldVal) {
-      console.log(newVal);
+      // console.log(newVal);
     },
     showFlag(newVal, oldVal) {
       if (newVal == 2) {
@@ -505,27 +519,7 @@ export default {
         that.goodsInfo = data.data;
         that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
-        let pzList = [];
-        JSON.parse(data.data.dispose).forEach((item, index) => {
-          pzList.push({
-            id: item.id,
-            rent: item.rentMoney,
-            val: item.config,
-            deposit: item.depositMoney
-          });
-        });
-        that.goodsInfo.pzList = pzList;
-        let leaseTermOptions = [];
-        JSON.parse(data.data.leaseTerm).forEach((item, index) => {
-          leaseTermOptions.push({
-            value: Number(item.value),
-            // label: item.value + "个月" + accMul(item.per, 10) + "折",
-            label: item.value + "个月",
-            per: item.per
-          });
-        });
-        leaseTermOptions.sort(compare("value"));
-        that.goodsInfo.leaseTermOptions = leaseTermOptions;
+        
         that.attrList = JSON.parse(data.data.leaseAttr);
         that.productImgs = JSON.parse(data.data.leaseInfoImg);
         that.init();
@@ -555,20 +549,63 @@ export default {
     // 初始化配置
     init() {
       var today = new Date().getTime();
-      this.collocation = this.goodsInfo.pzList[0]; //配置
-      this.rent = this.goodsInfo.pzList[0].rent;
-      this.deposit = this.goodsInfo.pzList[0].deposit;
-      this.leaseTerm = Number(this.goodsInfo.leaseTermOptions[0].value); //租期
-      this.per = this.goodsInfo.leaseTermOptions[0].per; //租期
+      // this.collocation = this.goodsInfo.pzList[0]; //配置
+      // this.rent = this.goodsInfo.pzList[0].rent;
+      // this.deposit = this.goodsInfo.pzList[0].deposit;
+      // this.leaseTerm = Number(this.goodsInfo.leaseTermOptions[0].value); //租期
+      // this.per = this.goodsInfo.leaseTermOptions[0].per; //租期
       this.startTime = formatDate(today, "yyyy-MM-dd");
       this.leaseTime = formatDate(today, "yyyy-MM-dd"); //租赁开始日期
+
+      this.collocation = this.testDataModel[0]; //配置
+      this.rent = this.testDataModel[0].value[0].rentMoney;
+      this.deposit = this.testDataModel[0].value[0].depositMoney;
+      this.leaseTerm = this.testDataModel[0].value[0].term; //租期
+      let pzList = [];
+      // JSON.parse(data.data.dispose).forEach((item, index) => {
+      //   pzList.push({
+      //     id: item.id,
+      //     rent: item.rentMoney,
+      //     val: item.config,
+      //     deposit: item.depositMoney
+      //   });
+      // });
+      // that.goodsInfo.pzList = pzList;
+      
+      // JSON.parse(data.data.leaseTerm).forEach((item, index) => {
+      //   leaseTermOptions.push({
+      //     value: Number(item.value),
+      //     // label: item.value + "个月" + accMul(item.per, 10) + "折",
+      //     label: item.value + "个月",
+      //     per: item.per
+      //   });
+      // });
+      this.changeDateData()
+    },
+    // 更新日期数据选项
+    changeDateData(){
+      let leaseTermOptions = [];
+      // console.log(this.collocation)
+      this.collocation.value.forEach((item, index) => {
+        leaseTermOptions.push({
+          value: item.term,
+          label: item.term + "个月",
+          rentMoney: item.rentMoney,
+          depositMoney: item.depositMoney
+        });
+      });
+      leaseTermOptions.sort(compare("value"));
+      this.goodsInfo.leaseTermOptions = leaseTermOptions;
     },
     //选择配置
     selectcollocation(val) {
-      if (this.collocation != val) {
+      if (this.collocation.config != val.config) {
         this.collocation = val;
-        this.rent = val.rent;
-        this.deposit = val.deposit;
+        // testDataModel
+        this.rent = val.value[0].rentMoney;
+        this.deposit = val.value[0].depositMoney;
+        this.leaseTerm = val.value[0].term;
+        this.changeDateData()
       }
     },
     //地址选择
@@ -578,7 +615,7 @@ export default {
     },
     //改变租赁数量
     changeNum() {
-      console.log(this.num);
+      // console.log(this.num);
     },
     //切换查看产品参数和产品评价
     selectShowFlag(val) {
@@ -600,9 +637,9 @@ export default {
         way: that.goodsInfo.goodsWay,
         wayValue: that.wayValue,
         leaseTerm: that.leaseTerm,
+        rent: that.rent,
+        deposit: that.deposit,
         leaseTermOptions: that.goodsInfo.leaseTermOptions,
-        per: that.per,
-        // address: that.addressArr,
         startTime: that.startTime,
         collocation: that.collocation,
         subTime: subTime,
@@ -652,9 +689,10 @@ export default {
       }
       //存本地购物车缓存
       that.setShoppingInfo(obj);
-      if (that.userInfo.token) {
+      let userInfo = localStorage.getItem('userInfo')
+      console.log(userInfo)
+      if (userInfo) {
         mt_insertcart(JSON.stringify(obj)).then(data => {
-          // console.log(data);
           that.getCarList();
         });
       }
@@ -1169,14 +1207,13 @@ export default {
               display: flex;
               background-color: #f9f9f9;
               // border-bottom: 1px solid #c4c4c4;
-              &:first-child{
+              &:first-child {
                 border-top: 1px solid #c4c4c4;
               }
-              &:nth-child(2){
+              &:nth-child(2) {
                 border-top: 1px solid #c4c4c4;
               }
-              &:last-child{
-
+              &:last-child {
               }
               span {
                 flex: 1;

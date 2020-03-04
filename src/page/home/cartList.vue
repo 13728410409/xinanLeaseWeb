@@ -40,10 +40,11 @@
                 <div class="des ellipsis2">{{item.des}}</div>
               </div>
             </el-col>
-            <el-col :span="5" class="type">{{item.collocation.val}}</el-col>
+            <el-col :span="5" class="type">{{item.collocation.config}}</el-col>
             <el-col :span="2" class="price">
-              <div>租金：￥{{item.collocation.rent*item.per}}</div>
-              <div>押金：￥{{item.collocation.deposit*item.per}}</div>
+              <div>租金：￥{{item.rent}}</div>
+              <div>押金：￥{{item.deposit}}</div>
+              <!-- <div>押金：￥{{item.collocation.deposit*item.per}}</div> -->
             </el-col>
             <el-col :span="3" class="number">
               <el-input-number
@@ -64,10 +65,10 @@
                 @change="changeLeaseTerm(index,item)"
               >
                 <el-option
-                  v-for="(item,index) of leaseTermOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="items of item.leaseTermOptions"
+                  :key="items.value"
+                  :label="items.label"
+                  :value="items.value"
                 ></el-option>
               </el-select>
             </el-col>
@@ -137,28 +138,28 @@ export default {
   },
   data() {
     return {
-      leaseTermOptions: [
-        {
-          value: 1,
-          label: "1个月"
-        },
-        {
-          value: 3,
-          label: "3个月"
-        },
-        {
-          value: 6,
-          label: "6个月"
-        },
-        {
-          value: 12,
-          label: "1年"
-        },
-        {
-          value: 36,
-          label: "3年"
-        }
-      ],
+      // leaseTermOptions: [
+      //   {
+      //     value: 1,
+      //     label: "1个月"
+      //   },
+      //   {
+      //     value: 3,
+      //     label: "3个月"
+      //   },
+      //   {
+      //     value: 6,
+      //     label: "6个月"
+      //   },
+      //   {
+      //     value: 12,
+      //     label: "1年"
+      //   },
+      //   {
+      //     value: 36,
+      //     label: "3年"
+      //   }
+      // ],
 
       cartList: [],
       checkedAll: false,
@@ -182,7 +183,9 @@ export default {
     let arr = [];
     Object.assign(arr, this.shoppingInfo.list);
     this.cartList = arr;
-    if (this.userInfo.token) {
+    let userInfo = localStorage.getItem('userInfo')
+    console.log(userInfo)
+    if (userInfo) {
       this.getCarList();
     }
   },
@@ -227,7 +230,9 @@ export default {
     },
     //更新购物车
     updateCart(arr) {
-      if (this.userInfo.token) {
+      let userInfo = localStorage.getItem('userInfo')
+      console.log(userInfo)
+      if (userInfo) {
         mt_insertcart(JSON.stringify(arr)).then(data => {
           console.log(data);
         });
@@ -240,7 +245,7 @@ export default {
     //删除商品
     deleteGood(index, value) {
       let that = this;
-      console.log(value);
+      // console.log(value);
       that
         .$confirm("是否确认把商品移除购物车?", "删除提示", {
           confirmButtonText: "确定",
@@ -248,7 +253,17 @@ export default {
           type: "warning"
         })
         .then(() => {
-          that.deleteCart(value.id);
+          let userInfo = localStorage.getItem('userInfo')
+          console.log(userInfo)
+          if(userInfo){
+            that.deleteCart(value.id);
+          }else{
+            arrayRemove(that.cartList,value)
+            let obj = {},
+              arr = that.cartList;
+            obj.list = arr;
+            that.setShoppingInfo(obj);
+          }
         })
         .catch(() => {});
     },
@@ -262,15 +277,30 @@ export default {
           type: "warning"
         })
         .then(() => {
-          let objArr = that.cartList
-          let idarr = []
-          objArr.forEach(item => {
-            if (item.selected) {
-              idarr.push(item.id);
-            }
-          });
           // console.log(idarr);
-          that.deleteCart(idarr.join(","));
+          let userInfo = localStorage.getItem('userInfo')
+          console.log(userInfo)
+          if(userInfo){
+            let objArr = that.cartList
+            let idarr = []
+            objArr.forEach(item => {
+              if (item.selected) {
+                idarr.push(item.id);
+              }
+            });
+            that.deleteCart(idarr.join(","));
+          }else{
+            let objArr = that.cartList
+            that.cartList.forEach(item => {
+              if (item.selected) {
+                arrayRemove(that.cartList,item)
+                let obj = {},
+                  arr = that.cartList;
+                obj.list = arr;
+                that.setShoppingInfo(obj);
+              }
+            });
+          }
         })
         .catch(() => {});
     },
@@ -292,12 +322,20 @@ export default {
       obj.list = arr;
       this.setShoppingInfo(obj);
       this.updateCart(obj);
+      
     },
     //租期选择
-    changeLeaseTerm(index, item) {
+    changeLeaseTerm(index, value) {
       // console.log(index);
+      // console.log(value);
       this.cartList[index].selected = true;
-      console.log(this.cartList);
+      // console.log(this.cartList);
+      value.leaseTermOptions.forEach(item=>{
+        if(value.leaseTerm==item.value){
+          this.cartList[index].rent = item.rentMoney
+          this.cartList[index].deposit = item.depositMoney
+        }
+      })
       this.computedPrice();
       let obj = {},
         arr = this.cartList;
@@ -315,11 +353,11 @@ export default {
       this.cartList.forEach((item, index) => {
         if (item.selected) {
           this.selectedNum += 1;
-          this.deposit += item.num * item.collocation.deposit *item.per;
-          this.rent += item.collocation.rent * item.num * item.leaseTerm  *item.per;
+          this.deposit += item.num * item.deposit;
+          this.rent += item.rent * item.num * item.leaseTerm;
           this.totalPrice +=
-            item.num * item.collocation.deposit *item.per +
-            item.collocation.rent * item.num * item.leaseTerm *item.per;
+            item.num * item.deposit +
+            item.rent * item.num * item.leaseTerm ;
         }
       });
       if (this.selectedNum == this.cartList.length) {

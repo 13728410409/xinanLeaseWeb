@@ -90,10 +90,10 @@
                   <div class="sign">{{item.sign}}</div>
                 </div>
               </el-col>
-              <el-col :span="5" class="type">{{item.collocation.val}}</el-col>
+              <el-col :span="5" class="type">{{item.collocation.config}}</el-col>
               <el-col :span="3" class="number price" style="text-align: left;padding-left: 10px;">
-                <div style="color: #e1481f;">租金：￥{{item.collocation.rent * item.per }}</div>
-                <div style="color: #e1481f;">押金：￥{{item.collocation.deposit}}</div>
+                <div style="color: #e1481f;">租金：￥{{item.rent }}</div>
+                <div style="color: #e1481f;">押金：￥{{item.deposit}}</div>
               </el-col>
               <el-col :span="3" class="number">
                 <div style="color: #e1481f;">租期：{{item.leaseTerm}}个月</div>
@@ -667,7 +667,7 @@ export default {
         if (this.cartList.length == 0) {
           this.noData = true;
           this.$message({
-            message: "操作太频繁，自动返回首页",
+            message: "订单已处理，自动返回首页",
             type: "warning",
             duration: 1000
           });
@@ -923,9 +923,9 @@ export default {
       this.totalPrice = 0;
       this.cartList.forEach((item, index) => {
         this.selectedNum += 1;
-        this.deposit += item.num * item.collocation.deposit;
+        this.deposit += item.num * item.deposit;
         this.rent +=
-          item.collocation.rent * item.num * item.leaseTerm * item.per;
+          item.rent * item.num * item.leaseTerm;
       });
       this.totalPrice = this.rent + this.deposit + this.freight;
     },
