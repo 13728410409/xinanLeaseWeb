@@ -87,26 +87,22 @@
           <el-col :span="2" class="sel">
             <el-checkbox v-model="checkedAll" @change="checkAll">全选</el-checkbox>
           </el-col>
-          <el-col :span="10" class="delAll">
+          <el-col :span="8" class="delAll">
             <span @click="delAll">删除选中的商品</span>
           </el-col>
-          <el-col :span="10" class="totalInfo">
+          <el-col :span="12" class="totalInfo">
             <div class="totalInfo">
               <span class="num">
-                已选中
-                <i>{{selectedNum}}</i>件商品
+                已选中<i>{{selectedNum}}</i>件商品
               </span>
               <span class="deposit">
-                押金：
-                <i>￥{{deposit}}</i>
+                押金：<i>￥{{deposit  |filterMoney2wei}}</i>
               </span>
               <span class="rent">
-                租金：
-                <i>￥{{rent}}</i>
+                租金：<i>￥{{rent  |filterMoney2wei}}</i>
               </span>
               <span class="totalPrice">
-                总价：
-                <i>￥{{totalPrice}}</i>
+                总价：<i>￥{{totalPrice  |filterMoney2wei}}</i>
               </span>
             </div>
           </el-col>
@@ -125,7 +121,7 @@ import headTop from "@/components/header/head";
 import footGuide from "@/components/footer/footGuide";
 import search from "@/components/search/search";
 import shoppingcart from "@/components/shopping/shoppingcart";
-import { arrayRemove, uniq } from "@/config/often";
+import { arrayRemove, uniq, accMul } from "@/config/often";
 import { mt_selectAllcart, mt_insertcart, mt_deletecart } from "@/api/common";
 
 export default {
@@ -178,6 +174,12 @@ export default {
     num(newVal, oldVal) {
       console.log(newVal);
     }
+  },
+  filters: {
+    filterMoney2wei(value) {
+      return value.toFixed(2)
+      // formatNum(value)
+    },
   },
   created() {
     let arr = [];

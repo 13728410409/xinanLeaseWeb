@@ -119,7 +119,7 @@
                 <div class="ways">{{goodsInfo.goodsWay | filterWay}}</div>
                 <div class="price">
                   押金：
-                  <span>￥{{deposit}}</span>
+                  <span>￥{{deposit }}</span>
                 </div>
               </div>
               <!-- <div class="date">
@@ -174,7 +174,7 @@
             </div>
             <div
               class="tip"
-            >合计首期租金￥{{rent * leaseTerm * num | filterMoney2wei }} 合计需支付押金￥{{ deposit * num | filterMoney2wei }}</div>
+            >合计首期租金￥{{rent * leaseTerm * num  }} 合计需支付押金￥{{ deposit * num  }}</div>
             <div class="special">
               <span v-if="deposit==0">商品免押金</span>
               <span>起租时间{{goodsInfo.leaseTime}}个月</span>
@@ -448,7 +448,7 @@ export default {
       if (newVal == 2) {
         this.selectComment();
       }
-    }
+    },
   },
   filters: {
     filterWay(value) {
@@ -463,7 +463,7 @@ export default {
       }
     },
     filterMoney2wei(value) {
-      return value.toFixed(2);
+      return value.toFixed(2)
       // formatNum(value)
     },
     filterPer(value) {
@@ -538,7 +538,7 @@ export default {
           dangerouslyUseHTMLString: true,
           callback: action => {
             if (action == "confirm") {
-              console.log(111);
+              // console.log(111);
               let vide = document.getElementById("vide");
               vide.pause();
             }
@@ -690,7 +690,7 @@ export default {
       //存本地购物车缓存
       that.setShoppingInfo(obj);
       let userInfo = localStorage.getItem('userInfo')
-      console.log(userInfo)
+      // console.log(userInfo)
       if (userInfo) {
         mt_insertcart(JSON.stringify(obj)).then(data => {
           that.getCarList();

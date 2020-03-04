@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="5" class="type ellipsis4">{{item.dispose}}</el-col>
             <el-col :span="2" class="price">
-              <div>租金：￥{{item.rent *item.selectedGoodsCycle.per}}</div>
+              <div>租金：￥{{item.rent}}</div>
               <div>押金：￥{{item.deposit}}</div>
             </el-col>
             <el-col :span="4" class="number">
@@ -84,7 +84,7 @@
                 @change="changeLeaseTerm(index,item)"
               >
                 <el-option
-                  v-for="(item,index) of item.leaseTermOptions"
+                  v-for="item of item.leaseTermOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -126,8 +126,7 @@
             class="val receive"
             v-for="(item,index) of addressList"
             :key="index"
-            v-if="addressList.length>0 && moreAddress && index>=1"
-          >
+            v-if="addressList.length>0 && moreAddress && index>=1">
             <span
               class="select"
               :class="selectedAddress.id==item.id?'active':''"
