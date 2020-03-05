@@ -186,7 +186,7 @@ export default {
     Object.assign(arr, this.shoppingInfo.list);
     this.cartList = arr;
     let userInfo = localStorage.getItem('userInfo')
-    console.log(userInfo)
+    // console.log(userInfo)
     if (userInfo) {
       this.getCarList();
     }
@@ -202,6 +202,13 @@ export default {
         let arr1 = data.data.data;
         arr1.forEach(item => {
           item.collocation = JSON.parse(item.collocation);
+          item.leaseTermOptions = JSON.parse(item.leaseTermOptions)
+          item.leaseTermOptions.forEach(items=>{
+            if(item.leaseTerm==items.value){
+              item.rent = items.rentMoney
+              item.deposit = items.depositMoney
+            }
+          })
         });
         that.cartList = arr1;
         let obj = {};
@@ -351,7 +358,7 @@ export default {
       this.deposit = 0
       this.rent = 0
       this.totalPrice = 0;
-      console.log(this.cartList)
+      // console.log(this.cartList)
       this.cartList.forEach((item, index) => {
         if (item.selected) {
           this.selectedNum += 1;
