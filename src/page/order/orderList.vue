@@ -75,7 +75,6 @@
                     <span style="margin-left:20px;color:#999999;">订单号：</span>
                     {{item.orderNum}}
                   </el-col>
-
                   <el-col :span="24" style="display:flex;">
                     <el-col :span="14">
                       <div class="ginfos"  v-for="(items,indexs) of item.leaseOrderGoods" :key="indexs">

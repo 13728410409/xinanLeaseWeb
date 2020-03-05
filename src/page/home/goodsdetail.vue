@@ -27,10 +27,8 @@
     <div class="goods">
       <div class="container box">
         <div class="step">
-          <span>全部商品</span>&nbsp;&gt;&nbsp;
-          <span>笔记本X</span>&nbsp;&gt;&nbsp;
-          <span>戴尔X</span>&nbsp;&gt;&nbsp;
-          <span>查看全部</span>
+          <span @click="search">全部商品</span>&nbsp;&gt;&nbsp;
+          <span>{{goodsInfo.name}}</span>
         </div>
 
         <div class="goodsinfo" v-if="goodsInfo.lblist">
@@ -495,6 +493,10 @@ export default {
   mounted() {},
   methods: {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
+    //点击搜索
+    search(){
+      this.$router.push({ name:'list', params:{ name : '', menuId: ''  } })
+    },
     //获取购物车列表
     getCarList() {
       let that = this;
@@ -519,7 +521,8 @@ export default {
         that.goodsInfo = data.data;
         that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
-        
+        console.log(JSON.parse(data.data.dispose))
+        that.testDataModel = JSON.parse(data.data.dispose)
         that.attrList = JSON.parse(data.data.leaseAttr);
         that.productImgs = JSON.parse(data.data.leaseInfoImg);
         that.init();
@@ -549,37 +552,13 @@ export default {
     // 初始化配置
     init() {
       var today = new Date().getTime();
-      // this.collocation = this.goodsInfo.pzList[0]; //配置
-      // this.rent = this.goodsInfo.pzList[0].rent;
-      // this.deposit = this.goodsInfo.pzList[0].deposit;
-      // this.leaseTerm = Number(this.goodsInfo.leaseTermOptions[0].value); //租期
-      // this.per = this.goodsInfo.leaseTermOptions[0].per; //租期
       this.startTime = formatDate(today, "yyyy-MM-dd");
       this.leaseTime = formatDate(today, "yyyy-MM-dd"); //租赁开始日期
-
       this.collocation = this.testDataModel[0]; //配置
       this.rent = this.testDataModel[0].value[0].rentMoney;
       this.deposit = this.testDataModel[0].value[0].depositMoney;
       this.leaseTerm = this.testDataModel[0].value[0].term; //租期
       let pzList = [];
-      // JSON.parse(data.data.dispose).forEach((item, index) => {
-      //   pzList.push({
-      //     id: item.id,
-      //     rent: item.rentMoney,
-      //     val: item.config,
-      //     deposit: item.depositMoney
-      //   });
-      // });
-      // that.goodsInfo.pzList = pzList;
-      
-      // JSON.parse(data.data.leaseTerm).forEach((item, index) => {
-      //   leaseTermOptions.push({
-      //     value: Number(item.value),
-      //     // label: item.value + "个月" + accMul(item.per, 10) + "折",
-      //     label: item.value + "个月",
-      //     per: item.per
-      //   });
-      // });
       this.changeDateData()
     },
     // 更新日期数据选项
@@ -751,9 +730,9 @@ export default {
         that.$message.warning("咨询内容不能为空", 500);
       }
     },
-    search() {
-      console.log(this.searchWordKey);
-    },
+    // search() {
+    //   searchconsole.log(this.searchWordKey);
+    // },
     //切换评价类型
     selectComentType(val) {
       console.log(val);

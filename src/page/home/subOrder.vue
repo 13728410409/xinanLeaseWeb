@@ -325,11 +325,11 @@
           <span
             v-for="(item,index) in cartList"
             style="color:#f08200;"
-          >“{{item.collocation.val}}”</span>，甲乙双方就租赁
+          >“{{item.collocation.config}}”</span>，甲乙双方就租赁
           <span
             v-for="(item,index) in cartList"
             style="color:#f08200;"
-          >“{{item.collocation.val}}”</span>设备事宜一致达成以下条款，由双方共同遵守：
+          >“{{item.collocation.config}}”</span>设备事宜一致达成以下条款，由双方共同遵守：
           <br />一、设备租期及租金
           <br />1.1 租期：租期共计 月（详见附件一），租赁期满后，甲方收回设备。
           <br />1.2设备：具体租赁设备的详细信息，包括品牌、型号、配置、租金单价、租金总价、数量，设备价值等等，参见本合同（附件一）。
@@ -456,27 +456,27 @@
                 <el-col :span="6" class="b c">设备租金合计</el-col>
               </el-col>
               <el-col :span="24" class="row">
-                <el-col :span="6" class="r c">{{item.collocation.val}}</el-col>
+                <el-col :span="6" class="r c">{{item.collocation.config}}</el-col>
                 <el-col :span="6" class="r c">{{item.num}}</el-col>
-                <el-col :span="6" class="r c">{{item.collocation.rent}}</el-col>
-                <el-col :span="6" class="c">{{item.num*item.collocation.rent*item.leaseTerm}}</el-col>
+                <el-col :span="6" class="r c">{{item.rent}}</el-col>
+                <el-col :span="6" class="c">{{item.num*item.rent*item.leaseTerm}}</el-col>
               </el-col>
             </el-col>
           </el-row>
           <el-row class="row">
             <el-col :span="4" class="a br c">租金合计（元）</el-col>
-            <el-col :span="20" class="b br">{{item.num*item.collocation.rent*item.leaseTerm}}</el-col>
+            <el-col :span="20" class="b br">{{item.num*item.rent*item.leaseTerm}}</el-col>
           </el-row>
           <el-row class="row">
             <el-col :span="4" class="a br c">押金合计（元）</el-col>
-            <el-col :span="20" class="b br">{{item.num*item.collocation.deposit}}</el-col>
+            <el-col :span="20" class="b br">{{item.num*item.deposit}}</el-col>
           </el-row>
           <el-row class="row">
             <el-col :span="4" class="a br c">租金及押金合计（元）</el-col>
             <el-col
               :span="20"
               class="b br"
-            >{{item.num*item.collocation.rent*item.leaseTerm + item.num*item.collocation.deposit}}</el-col>
+            >{{item.num*item.rent*item.leaseTerm + item.num*item.deposit}}</el-col>
           </el-row>
         </div>
         <br />附件一：企业信息资料（营业执照、法人身份证复印件）
@@ -1023,10 +1023,9 @@ export default {
             courierWay: 1,
             courierMoney: 0,
             remark: that.leaveMsg,
-            deposit: item.collocation.deposit,
-            rent: item.collocation.rent,
-            dispose: item.collocation.val,
-            per: item.per
+            deposit: item.deposit,
+            rent: item.rent,
+            dispose: item.collocation.config,
           };
           arr.push(d);
         });
