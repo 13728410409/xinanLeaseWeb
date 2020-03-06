@@ -652,7 +652,7 @@ export default {
 
     this.subTime = this.$route.params.subTime;
     let obj = this.shoppingInfo;
-    // console.log(this.shoppingInfo);
+    console.log(this.shoppingInfo);
     if (obj) {
       // console.log(obj.list);
       if (this.subTime != "") {
@@ -664,6 +664,7 @@ export default {
           }
         });
         this.cartList = arr;
+        console.log(this.cartList)
         if (this.cartList.length == 0) {
           this.noData = true;
           this.$message({
@@ -687,14 +688,14 @@ export default {
     //计算运费
     getUserPostage() {
       mt_getUserPostage().then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         let userPostage = data.data.data;
         let arr = [];
-        console.log(this.cartList);
+        // console.log(this.cartList);
         this.cartList.forEach(item => {
           arr.push(item.gcreator);
         });
-        console.log(arr);
+        // console.log(arr);
         let creators = Array.from(new Set(arr)); //去重后的商家id集合
         let fprice = 0;
         creators.forEach((item, index) => {
@@ -704,7 +705,7 @@ export default {
             }
           });
         });
-        console.log(fprice);
+        // console.log(fprice);
         this.freight = fprice;
         this.computedPrice();
       });
@@ -763,7 +764,7 @@ export default {
     },
     //修改地址
     edit(value) {
-      console.log(value);
+      // console.log(value);
       this.editId = value.id;
       this.addressArr = [];
       this.dialogPAddress = true;
@@ -896,7 +897,7 @@ export default {
 
       //获取实名认证信息
       mt_queryCompanyInfo().then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         let date = new Date();
         this.htDate.push(date.getFullYear());
         this.htDate.push(date.getMonth() + 1);
@@ -911,7 +912,7 @@ export default {
     },
     //数量加减
     changeNum(index, item) {
-      console.log(index);
+      // console.log(index);
       this.cartList[index].selected = true;
       this.computedPrice();
     },
@@ -1003,7 +1004,7 @@ export default {
       let that = this,
         state = true,
         title = "";
-      console.log(this.selectedAddress);
+      // console.log(this.selectedAddress);
       if (
         that.selectedAddress.id == "" ||
         that.selectedAddress.id == undefined
@@ -1011,7 +1012,7 @@ export default {
         state = false;
         title = "地址不能为空";
       }
-      console.log(that.invoice);
+      // console.log(that.invoice);
       if (state) {
         // console.log(that.cartList);
         let arr = [];
@@ -1055,14 +1056,14 @@ export default {
     remove() {
       this.subTime = this.$route.params.subTime;
       let obj = [];
-      obj = this.shoppingInfo;
+      obj = this.cartList;
 
       let arr = [],
         obh = {},
         val = "",
         ids = [];
-      obj.list.forEach(item => {
-        console.log(item);
+      obj.forEach(item => {
+        // console.log(item);
         if (item.subTime == this.subTime) {
           ids.push(item.id);
         }
@@ -1072,13 +1073,13 @@ export default {
     //更新购物车
     updateCart(arr) {
       mt_insertcart(JSON.stringify(arr)).then(data => {
-        console.log(data);
+        // console.log(data);
       });
     },
     deleteCart(ids) {
-      console.log(ids);
+      // console.log(ids);
       mt_deletecart(ids).then(data => {
-        console.log(data);
+        // console.log(data);
         this.getCarList();
       });
     },
@@ -1086,7 +1087,7 @@ export default {
     getCarList() {
       let that = this;
       mt_selectAllcart().then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         let arr =
           that.shoppingInfo.list != null && that.shoppingInfo.list != undefined
             ? that.shoppingInfo.list

@@ -240,7 +240,8 @@ export default {
     //更新购物车
     updateCart(arr) {
       let userInfo = localStorage.getItem('userInfo')
-      // console.log(userInfo)
+      // console.log(arr)
+      // console.log(JSON.stringify(arr))
       if (userInfo) {
         mt_insertcart(JSON.stringify(arr)).then(data => {
           // console.log(data);
@@ -249,6 +250,7 @@ export default {
     },
     //单选
     checkgood(e) {
+      // console.log(this.cartList)
       this.computedPrice();
     },
     //删除商品
@@ -385,14 +387,18 @@ export default {
             let arr = [],
               obj = {};
             arr = this.cartList;
+            // console.log(this.cartList)
             arr.forEach((item, index) => {
               if (item.selected) {
                 item.subTime = subTime;
               }
             });
             obj.list = arr;
+            // console.log(obj)
             this.setShoppingInfo(obj);
+            // localStorage.setItem('shoppingInfo',JSON.stringify(obj))
             this.updateCart(obj);
+            // console.log(subTime)
             this.$router.push("/subOrder/" + subTime);
           } else {
             this.$message.warning("请先选择一个商品");
