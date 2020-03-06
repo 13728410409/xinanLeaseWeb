@@ -687,14 +687,14 @@ export default {
     //计算运费
     getUserPostage() {
       mt_getUserPostage().then(data => {
-        // console.log(data.data);
+        console.log(data.data);
         let userPostage = data.data.data;
         let arr = [];
-        // console.log(this.cartList);
+        console.log(this.cartList);
         this.cartList.forEach(item => {
-          arr.push(item.gCreator);
+          arr.push(item.gcreator);
         });
-        // console.log(arr);
+        console.log(arr);
         let creators = Array.from(new Set(arr)); //去重后的商家id集合
         let fprice = 0;
         creators.forEach((item, index) => {
@@ -704,7 +704,7 @@ export default {
             }
           });
         });
-        // console.log(fprice);
+        console.log(fprice);
         this.freight = fprice;
         this.computedPrice();
       });

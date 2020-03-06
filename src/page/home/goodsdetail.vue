@@ -623,7 +623,7 @@ export default {
         collocation: that.collocation,
         subTime: subTime,
         selected: false,
-        gCreator: that.goodsInfo.creator
+        gcreator: that.goodsInfo.creator
       };
       let obj = {},
         arr = [];

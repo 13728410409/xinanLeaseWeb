@@ -45,7 +45,7 @@
             <el-col :span="5">类型和尺寸</el-col>
             <el-col :span="2">价格</el-col>
             <el-col :span="4" class="number">数量</el-col>
-            <el-col :span="4" class="number">租期</el-col>
+            <el-col :span="4" class="number">租期(月)</el-col>
           </el-row>
           <el-row class="itm" v-if="goods.length>0" v-for="(item,index) in goods" :key="index">
             <!-- <el-col :span="2" class="sel">
@@ -60,7 +60,7 @@
                 <div class="des ellipsis3" :title="item.proIntroduction">{{item.proIntroduction}}</div>
               </div>
             </el-col>
-            <el-col :span="5" class="type ellipsis4">{{item.dispose}}</el-col>
+            <el-col :span="5" class="type ellipsis4">{{item.dispose.config}}</el-col>
             <el-col :span="2" class="price">
               <div>租金：￥{{item.rent}}</div>
               <div>押金：￥{{item.deposit}}</div>
@@ -238,7 +238,7 @@ import {
   mt_editAddress,
   mt_setDefaultAddress
 } from "@/api/my";
-import { formatDate, accMul } from "@/config/often";
+import { formatDate, accMul, compare } from "@/config/often";
 const regSJH = /^[1][0-9]{10}$/; //手机号正则
 export default {
   name: "renewalOrder",
@@ -504,38 +504,46 @@ export default {
           item.selected = true;
           item.leaseTermOptions = [];
           item.goodsCycle = Number(item.goodsCycle);
-          JSON.parse(item.leaseTerm).forEach((items, indexs) => {
-            item.leaseTermOptions.push({
-              value: Number(items.value),
-              label:
-                Number(items.value) + "个月，打" + accMul(items.per, 10) + "折",
-              per: items.per
+          item.dispose = JSON.parse(item.dispose);
+          let leaseTermOptions = [];
+          // console.log(this.collocation)
+          item.dispose.value.forEach((item, index) => {
+            leaseTermOptions.push({
+              value: item.term,
+              label: item.term + "个月",
+              rentMoney: item.rentMoney,
+              depositMoney: item.depositMoney
             });
           });
+          leaseTermOptions.sort(compare("value"));
+          item.leaseTermOptions = leaseTermOptions;
         });
+
         that.goods = data.data.goods;
-        that.goods.forEach((item, index) => {
-          item.leaseTermOptions.forEach(items => {
-            if (items.value == item.goodsCycle) {
-              item.selectedGoodsCycle = items
-            }
-          });
-      });
+
+        // that.goods.forEach((item, index) => {
+        //   item.leaseTermOptions.forEach(items => {
+        //     if (items.value == item.goodsCycle) {
+        //       item.selectedGoodsCycle = items
+        //     }
+        //   });
+        // });
         that.detail = data.data.detail;
         that.computedPrice();
       });
     },
 
     //租期选择
-    changeLeaseTerm(index, item) {
+    changeLeaseTerm(index, value) {
       this.goods[index].selected = true;
-      console.log(this.goods)
-      this.goods.forEach((item, index) => {
-          item.leaseTermOptions.forEach(items => {
-            if (items.value == item.goodsCycle) {
-              item.selectedGoodsCycle = items
-            }
-          });
+      // console.log(this.goods)
+      // console.log(index)
+      // console.log(value)
+      value.leaseTermOptions.forEach(item => {
+        if (item.value == value.goodsCycle) {
+          this.goods[index].rent = item.rentMoney
+          this.goods[index].deposit = item.depositMoney
+        }
       });
       this.computedPrice();
     },

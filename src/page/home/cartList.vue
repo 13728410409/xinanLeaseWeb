@@ -240,10 +240,10 @@ export default {
     //更新购物车
     updateCart(arr) {
       let userInfo = localStorage.getItem('userInfo')
-      console.log(userInfo)
+      // console.log(userInfo)
       if (userInfo) {
         mt_insertcart(JSON.stringify(arr)).then(data => {
-          console.log(data);
+          // console.log(data);
         });
       }
     },
