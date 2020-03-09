@@ -16,7 +16,8 @@
     </div>
     <div class="hometop3">
       <div class="container box">
-        <span class="title">商品分类</span>
+        <span class="title" @click="search">商品分类</span>
+        <!-- <router-link tag="span" to="/newsCenter" class="title">商品分类</router-link> -->
         <!-- <span class="nav active">企业特购</span>
           <span class="nav">热门服务</span>
           <span class="nav">超值套餐</span>
@@ -30,7 +31,9 @@
         <router-link tag="span" to="/newsCenter" class="nav">新闻中心</router-link>
         <span class="nav" @click="viewJoinInfo" v-if="!isLogin || userInfo.type!=4">加盟中心</span>
       </div>
+
     </div>
+
     <!-- 主菜单、轮播及信息 -->
     <div class="container bannerBox">
       <!-- 导航  -->
@@ -298,6 +301,9 @@ export default {
     //获取用户信息
   },
   methods: {
+    search(){
+      this.$router.push({ name:'list', params:{ name : this.wordkey, menuId: ''  } })
+    },
     //获取一级菜单分类
     getGoodsMenu() {
       let that = this;

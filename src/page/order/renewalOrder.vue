@@ -502,7 +502,6 @@ export default {
         console.log(data.data);
         data.data.goods.forEach(item => {
           item.selected = true;
-          item.leaseTermOptions = [];
           item.goodsCycle = Number(item.goodsCycle);
           item.dispose = JSON.parse(item.dispose);
           let leaseTermOptions = [];

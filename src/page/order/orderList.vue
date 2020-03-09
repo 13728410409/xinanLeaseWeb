@@ -277,6 +277,9 @@ export default {
         that.buyTime
       ).then(data => {
         console.log(data.data.data);
+        data.data.data.forEach(item => {
+          item.createTime = formatDate(item.createTime,'yyyy-MM-dd hh:mm')
+        });
         data.data.data.forEach(item =>{
           item.leaseOrderGoods.forEach(items =>{
             if(items.deposit>0){

@@ -16,12 +16,12 @@
     </div>
     <div class="hometop3">
       <div class="container box">
-        <span class="title">商品分类</span>
-        <span class="nav active">企业特购</span>
+        <span class="title" @click="search">商品分类</span>
+        <!-- <span class="nav active">企业特购</span>
         <span class="nav">热门服务</span>
         <span class="nav">超值套餐</span>
         <span class="nav">关于我们</span>
-        <span class="nav">合作伙伴</span>
+        <span class="nav">合作伙伴</span> -->
       </div>
     </div>
     <div class="goods">

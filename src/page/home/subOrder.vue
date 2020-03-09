@@ -1022,7 +1022,7 @@ export default {
             goodsCycle: item.leaseTerm,
             goodsNumber: item.num,
             courierWay: 1,
-            courierMoney: 0,
+            // courierMoney: 0,
             remark: that.leaveMsg,
             deposit: item.deposit,
             rent: item.rent,

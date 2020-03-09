@@ -164,9 +164,11 @@ export default {
         console.log(data.data)
         that.detail = data.data.detail;
         if(data.data.goods.length==1){
+          data.data.goods[0].dispose = JSON.parse(data.data.goods[0].dispose).config
            that.good = data.data.goods[0]
         }else{
           data.data.goods.forEach(item=>{
+            item.dispose = JSON.parse(item.dispose).config
             if(item.id == that.sid){
               that.good = item
             }
