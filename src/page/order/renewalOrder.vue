@@ -587,7 +587,7 @@ export default {
           remark: "",
           deposit: item.deposit,
           rent: item.rent,
-          dispose: item.dispose,
+          dispose: item.dispose.config,
           per: item.per
         };
         arr.push(d);

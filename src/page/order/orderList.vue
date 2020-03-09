@@ -81,12 +81,12 @@
                         <el-col :span="4" class="itms"  style="text-align:center;">
                           <img :src="items.goodsImg" alt />
                         </el-col>
-                        <el-col :span="13" class="itms">
+                        <el-col :span="12" class="itms">
                           <div style="font-size:12px;color:#333333;height:18px;line-height:18px;">{{items.goodsName}}</div>
                           <div class="ellipsis2" style="font-size:12px;color:#999999;height:30px;line-height:15px;">{{items.proIntroduction}}</div>
                           <div style="font-size:12px;color:#999999;height:12px;line-height:12px;">{{items.dispose}}</div>
                         </el-col>
-                        <el-col :span="3" class="itms" style="padding-top:20px;text-align:center;">
+                        <el-col :span="4" class="itms" style="padding-top:20px;text-align:center;">
                           <div v-if="type==1">x{{items.goodsNumber}}</div>
                           <div v-if="type==2&&items.deposit==0">续租：{{items.goodsNumber}}</div>
                           <div v-if="type==2&&items.deposit>0">续租：{{items.goodsNumber - items.newNumber }}</div>
@@ -254,7 +254,7 @@ export default {
         that.orderNum,
         that.buyTime
       ).then(data => {
-        // console.log(data.data.data);
+        console.log(data.data.data);
         data.data.data.forEach(item => {
           item.createTime = formatDate(item.createTime,'yyyy-MM-dd hh:mm')
         });
@@ -276,7 +276,7 @@ export default {
         that.orderNum,
         that.buyTime
       ).then(data => {
-        console.log(data.data);
+        console.log(data.data.data);
         data.data.data.forEach(item =>{
           item.leaseOrderGoods.forEach(items =>{
             if(items.deposit>0){
