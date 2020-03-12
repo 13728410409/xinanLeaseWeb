@@ -94,7 +94,7 @@
             </swiper>
           </div> -->
 
-          <div class="goodsInfoDetail" v-if="goodsInfo.des">
+          <div class="goodsInfoDetail" v-if="goodsInfo.name">
             <div class="gname">{{goodsInfo.name}}</div>
             <div class="gprice">
               <span class="n">月租金：</span>
@@ -530,11 +530,9 @@ export default {
     getGoodsById(id) {
       let that = this;
       mt_getGoodsById(id).then(data => {
-        console.log(data.data);
-        that.goodsInfo = data.data;
-        that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
+        // console.log(data.data);
+        // that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
-        // console.log(JSON.parse(data.data.dispose))
         that.testDataModel = JSON.parse(data.data.dispose)
         that.attrList = JSON.parse(data.data.leaseAttr);
         that.productImgs = JSON.parse(data.data.leaseInfoImg);
@@ -546,7 +544,7 @@ export default {
           arr.unshift(res)
         }
         that.navlist = arr
-        // console.log(that.navlist)
+        that.goodsInfo = data.data;
         that.init();
       });
     },
@@ -559,7 +557,6 @@ export default {
     },
     //播放视频
     playVideo() {
-      console.log(this.goodsInfo.video);
       this.$alert(
         "<video controls='controls' id='vide' style='width:400px;height400px;'><source src=" +
           this.goodsInfo.video +
@@ -641,7 +638,7 @@ export default {
       // console.log(subTime)
       let data = {
         gid: that.goodsId,
-        img: that.goodsInfo.lblist[0],
+        img: that.navlist[0],
         des: that.goodsInfo.name,
         num: that.num,
         way: that.goodsInfo.goodsWay,
