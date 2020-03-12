@@ -31,19 +31,32 @@
           <span>{{goodsInfo.name}}</span>
         </div>
 
-        <div class="goodsinfo" v-if="goodsInfo.lblist">
+        <div class="goodsinfo">
+          
           <div class="carousel" style="height: 530px">
+            <div class="gallery-top2">
+              <div class="itmimg" :style="{ backgroundImage:'url('+currentImg+')'}">
+                <div v-if="goodsInfo.video!=''&&goodsInfo.video!=null&&currentIndex==0"  @click="playVideo" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
+                <img v-if="goodsInfo.video!=''&&goodsInfo.video!=null&&currentIndex==0"  class="videoPlay" src="/static/icon/video.png" alt />
+              </div>
+            </div>
+            <div class="gallery-thumbs2">
+              <div class="itmimg" :class="currentIndex==index?'active':''" v-for="(item,index) of navlist" :key="index" :style="{ backgroundImage:'url('+item+')'}" 
+              @mouseover="selectStyle(item,index)"></div>
+            </div>
+          </div>  
+
+
+          <!-- <div class="carousel" style="height: 530px"  v-if="goodsInfo.lblist">
             <swiper
               :options="swiperOptionTop"
               class="gallery-top"
               ref="swiperTop"
-              v-if="goodsInfo.lblist.length>0"
-            >
+              v-if="goodsInfo.lblist.length>0">
               <swiper-slide
                 class="itmimg video"
                 v-if="goodsInfo.video!=''&&goodsInfo.video!=null"
-                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}"
-              >
+                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}">
                 <div
                   @click="playVideo"
                   style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
@@ -57,18 +70,15 @@
                 :style="{ backgroundImage:'url('+item+')'}"
               ></swiper-slide>
             </swiper>
-
             <swiper
               :options="swiperOptionThumbs"
               class="gallery-thumbs"
               ref="swiperThumbs"
-              v-if="goodsInfo.lblist.length>0"
-            >
+              v-if="goodsInfo.lblist.length>0">
               <swiper-slide
                 class="itmimg video"
                 v-if="goodsInfo.video!=''&&goodsInfo.video!=null"
-                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}"
-              >
+                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}">
                 <div
                   @click="playVideo"
                   style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
@@ -82,7 +92,7 @@
                 :style="{ backgroundImage:'url('+item+')'}"
               ></swiper-slide>
             </swiper>
-          </div>
+          </div> -->
 
           <div class="goodsInfoDetail" v-if="goodsInfo.des">
             <div class="gname">{{goodsInfo.name}}</div>
@@ -363,10 +373,13 @@ export default {
     return {
       goodsId: "",
 
+      currentIndex: 0,
+      currentImg: '',
+
       swiperOptionTop: {
         spaceBetween: 10,
         loopedSlides: 5, //looped slides should be the same
-        autoplay: 2000,
+        autoplay: false,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
@@ -377,7 +390,7 @@ export default {
         slidesPerView: 4,
         touchRatio: 0.2,
         loop: true,
-        loopedSlides: 5, //looped slides should be the same
+        // loopedSlides: 5, //looped slides should be the same
         slideToClickedSlide: true
       },
 
@@ -521,18 +534,34 @@ export default {
         that.goodsInfo = data.data;
         that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
-        console.log(JSON.parse(data.data.dispose))
+        // console.log(JSON.parse(data.data.dispose))
         that.testDataModel = JSON.parse(data.data.dispose)
         that.attrList = JSON.parse(data.data.leaseAttr);
         that.productImgs = JSON.parse(data.data.leaseInfoImg);
+        let arr = []
+        arr = JSON.parse(data.data.leaseImg);
+        if(data.data.video !=''&&data.data.video!=null){
+          let res = data.data.video+'?vframe/jpg/offset/0'
+          // console.log(res)
+          arr.unshift(res)
+        }
+        that.navlist = arr
+        // console.log(that.navlist)
         that.init();
       });
+    },
+    selectStyle(value,index){
+      if(this.currentIndex != index){
+        this.currentIndex = index
+        this.currentImg = value
+      }
+      // console.log(value)
     },
     //播放视频
     playVideo() {
       console.log(this.goodsInfo.video);
       this.$alert(
-        "<video controls='controls' id='vide'><source src=" +
+        "<video controls='controls' id='vide' style='width:400px;height400px;'><source src=" +
           this.goodsInfo.video +
           " ref='video' type='video/mp4' /></video>",
         "商品视频",
@@ -551,6 +580,8 @@ export default {
     },
     // 初始化配置
     init() {
+      this.currentIndex = 0
+      this.currentImg = this.navlist[0]
       var today = new Date().getTime();
       this.startTime = formatDate(today, "yyyy-MM-dd");
       this.leaseTime = formatDate(today, "yyyy-MM-dd"); //租赁开始日期
@@ -921,6 +952,47 @@ export default {
       .carousel {
         flex: 450px 0 0;
         width: 450px;
+        .gallery-top2 {
+          width: 450px;
+          height: 450px;
+          border: 1px solid #dddddd;
+          .itmimg {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            height: 100%;
+            .videoPlay {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate3d(-50%, -50%, 0);
+              width: 40px;
+              height: 40px;
+                cursor: pointer;
+            }
+            
+          }
+        }
+        .gallery-thumbs2{
+          height: 60px;
+          margin-top: 20px;
+          overflow: hidden;
+          .itmimg{
+            float: left;
+            width: 58px;
+            height: 58px;
+            margin-right: 15px;
+            border: 1px solid #ffffff;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            &.active{
+              border-color: #f08200;
+            }
+          }
+        }
         .gallery-top {
           width: 450px;
           height: 450px;

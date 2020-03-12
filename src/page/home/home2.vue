@@ -208,7 +208,7 @@ export default {
     getGoodsMenu(id){
       let that = this
       mt_selectSecondMenu(id).then(data=>{
-        // console.log(data.data)
+        console.log(data.data)
         that.navList = data.data
       })
     },

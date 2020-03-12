@@ -21,12 +21,17 @@
         <span class="nav">热门服务</span>
         <span class="nav">超值套餐</span>
         <span class="nav">关于我们</span>
-        <span class="nav">合作伙伴</span> -->
+        <span class="nav">合作伙伴</span>-->
       </div>
     </div>
     <div class="type">
       <div class="container box">
-        <div class="title" v-if="name!=''">“{{name}}”</div>
+        <div class="step">
+          <router-link tag="span" to="home">一级分类</router-link>&nbsp;&gt;&nbsp;
+          <span @click="goHome2">二级分类</span>&nbsp;&nbsp;
+          <i v-if="name!=''">“{{name}}”</i>
+        </div>
+        <!-- <div class="title" v-if="name!=''">“{{name}}”</div> -->
         <div class="condition">
           <div class="itm">
             <div class="name">
@@ -50,7 +55,11 @@
                 data-cond="1"
                 @click="selectCond(1,item)"
               >{{item.name}}</span>
-              <div class="more" v-if=" condition.types&&condition.types.length>6" @click="showmoreClick(1)">更多</div>
+              <div
+                class="more"
+                v-if=" condition.types&&condition.types.length>6"
+                @click="showmoreClick(1)"
+              >更多</div>
               <div class="close" v-if="showmore==1" @click="closemoreClick()">关闭</div>
             </div>
           </div>
@@ -76,7 +85,11 @@
                 data-cond="2"
                 @click="selectCond(2,item)"
               >{{item.name}}</span>
-              <div class="more" v-if="condition.brands&&condition.brands.length>6" @click="showmoreClick(2)">更多</div>
+              <div
+                class="more"
+                v-if="condition.brands&&condition.brands.length>6"
+                @click="showmoreClick(2)"
+              >更多</div>
               <div class="close" v-if="showmore==2" @click="closemoreClick()">关闭</div>
             </div>
           </div>
@@ -102,7 +115,11 @@
                 data-cond="3"
                 @click="selectCond(3,item)"
               >{{item.name}}</span>
-              <div class="more" v-if="condition.status&&condition.status.length>6" @click="showmoreClick(3)">更多</div>
+              <div
+                class="more"
+                v-if="condition.status&&condition.status.length>6"
+                @click="showmoreClick(3)"
+              >更多</div>
               <div class="close" v-if="showmore==3" @click="closemoreClick()">关闭</div>
             </div>
           </div>
@@ -128,7 +145,11 @@
                 data-cond="4"
                 @click="selectCond(4,item)"
               >{{item.name}}</span>
-              <div class="more" v-if="condition.moneys&&condition.moneys.length>6" @click="showmoreClick(4)">更多</div>
+              <div
+                class="more"
+                v-if="condition.moneys&&condition.moneys.length>6"
+                @click="showmoreClick(4)"
+              >更多</div>
               <div class="close" v-if="showmore==4" @click="closemoreClick()">关闭</div>
             </div>
           </div>
@@ -154,7 +175,11 @@
                 data-cond="5"
                 @click="selectCond(5,item)"
               >{{item.name}}</span>
-              <div class="more" v-if="condition.ways&&condition.ways.length>6" @click="showmoreClick(5)">更多</div>
+              <div
+                class="more"
+                v-if="condition.ways&&condition.ways.length>6"
+                @click="showmoreClick(5)"
+              >更多</div>
               <div class="close" v-if="showmore==5" @click="closemoreClick()">关闭</div>
             </div>
           </div>
@@ -180,7 +205,11 @@
                 data-cond="6"
                 @click="selectCond(6,item)"
               >{{item.name}}</span>
-              <div class="more" v-if="condition.peoples&&condition.peoples.length>6" @click="showmoreClick(6)">更多</div>
+              <div
+                class="more"
+                v-if="condition.peoples&&condition.peoples.length>6"
+                @click="showmoreClick(6)"
+              >更多</div>
               <div class="close" v-if="showmore==6" @click="closemoreClick()">关闭</div>
             </div>
           </div>
@@ -191,26 +220,50 @@
       <div class="container box">
         <div class="slide">
           <div class="title">精选商品</div>
-            <div class="itm" v-for="(item,index) of spiritList" :key="index" v-if="index<4" @click="viewDetail(item)">
-              <div class="img"><img :src="item.img" alt=""></div>
-              <div class="price">￥{{item.money}}</div>
-              <div class="des ellipsis2">{{item.name}}</div>
-              <div class="num">已有<span>{{item.number}}</span>人评价</div>
+          <div
+            class="itm"
+            v-for="(item,index) of spiritList"
+            :key="index"
+            v-if="index<4"
+            @click="viewDetail(item)"
+          >
+            <div class="img">
+              <img :src="item.img" alt />
             </div>
+            <div class="price">￥{{item.money}}</div>
+            <div class="des ellipsis2">{{item.name}}</div>
+            <div class="num">
+              已有
+              <span>{{item.number}}</span>人评价
+            </div>
+          </div>
         </div>
         <div class="list">
           <div class="cond">
-            <span :class="cond==1?'active':''" @click="condsort(1)"><i>销量</i></span>
-            <span :class="cond==2?'active':''" @click="condsort(2)"><i>价格</i></span>
-            <span :class="cond==3?'active':''" @click="condsort(3)"><i>新旧</i></span>
-            <span :class="cond==4?'active':''" @click="condsort(4)"><i>周期长短</i></span>
+            <span :class="cond==1?'active':''" @click="condsort(1)">
+              <i>销量</i>
+            </span>
+            <span :class="cond==2?'active':''" @click="condsort(2)">
+              <i>价格</i>
+            </span>
+            <span :class="cond==3?'active':''" @click="condsort(3)">
+              <i>新旧</i>
+            </span>
+            <span :class="cond==4?'active':''" @click="condsort(4)">
+              <i>周期长短</i>
+            </span>
           </div>
           <div class="product">
             <div class="itm" v-for="(item,index) of list" :key="index" @click="viewDetail(item)">
-              <div class="img"><img :src="item.img" alt=""></div>
+              <div class="img">
+                <img :src="item.img" alt />
+              </div>
               <div class="price">￥{{item.money}}</div>
               <div class="des ellipsis2">{{item.name}}</div>
-              <div class="num">已有<span>{{item.comments}}</span>人评价</div>
+              <div class="num">
+                已有
+                <span>{{item.comments}}</span>人评价
+              </div>
             </div>
           </div>
           <el-pagination
@@ -219,8 +272,8 @@
             :current-page.sync="page"
             :page-size="limit"
             layout="prev, pager, next, jumper"
-            :total="count">
-          </el-pagination>
+            :total="count"
+          ></el-pagination>
         </div>
       </div>
     </div>
@@ -228,12 +281,18 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex"
-import headTop from "@/components/header/head"
-import footGuide from "@/components/footer/footGuide"
-import search from "@/components/search/search"
-import shoppingcart from "@/components/shopping/shoppingcart"
-import { mt_getGoodsAttr, mt_getGoodsByCondition, mt_getGoodsBySelected } from "@/api/home"
+import { mapState, mapMutations } from "vuex";
+import headTop from "@/components/header/head";
+import footGuide from "@/components/footer/footGuide";
+import search from "@/components/search/search";
+import shoppingcart from "@/components/shopping/shoppingcart";
+import {
+  mt_getGoodsAttr,
+  mt_getGoodsByCondition,
+  mt_getGoodsBySelected,
+  mt_selectFirstMenu
+} from "@/api/home";
+
 export default {
   name: "list",
   components: {
@@ -244,29 +303,27 @@ export default {
   },
   data() {
     return {
-
-      name: "",    //搜索的名字
-      menuId: '',   //目录id
-      money: '',  //搜索的价格
+      name: "", //搜索的名字
+      menuId: "", //目录id
+      money: "", //搜索的价格
 
       condition: {},
       showmore: 0,
 
-      cond1: '',   //分类
-      cond2: '',    //品牌
-      cond3: '',   //新旧
-      cond4: '',   //价格
-      cond5: '',   //租赁方式
-      cond6: '',   //适用人数
-      cond: 1,    //销量1 价格2  新旧3  周期长短4
+      cond1: "", //分类
+      cond2: "", //品牌
+      cond3: "", //新旧
+      cond4: "", //价格
+      cond5: "", //租赁方式
+      cond6: "", //适用人数
+      cond: 1, //销量1 价格2  新旧3  周期长短4
 
       spiritList: [],
       list: [],
 
       page: 1,
       limit: 16,
-      count: 0,
-
+      count: 0
     };
   },
   computed: {
@@ -274,110 +331,117 @@ export default {
   },
   created() {
     // console.log(this.$route.params)
-    this.name = this.$route.params.name != undefined&&this.$route.params.name != null ? this.$route.params.name : ''
-    this.menuId = this.$route.params.menuId != undefined&&this.$route.params.menuId != null ? this.$route.params.menuId : ''
-    this.getGoodsAttr()
-    this.getRecommend()
+    this.name =
+      this.$route.params.name != undefined && this.$route.params.name != null
+        ? this.$route.params.name
+        : "";
+    this.menuId =
+      this.$route.params.menuId != undefined &&
+      this.$route.params.menuId != null
+        ? this.$route.params.menuId
+        : "";
+    this.getGoodsAttr();
+    this.getRecommend();
   },
   mounted() {
     //获取用户信息
   },
-  watch:{
-    cond1(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-        this.getList()
+  watch: {
+    cond1(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
     },
-    cond2(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-        this.getList()
+    cond2(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
     },
-    cond3(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-        this.getList()
+    cond3(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
     },
-    cond4(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-        this.getList()
+    cond4(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
     },
-    cond5(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-       this.getList()
+    cond5(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
     },
-    cond6(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-       this.getList()
+    cond6(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
     },
-    cond(newVal,oldVal){
-      if(newVal!=oldVal){
-        this.page = 1
-        this.getList()
+    cond(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.page = 1;
+        this.getList();
       }
-    },
+    }
   },
   methods: {
     //获取商品分类
-    getGoodsAttr(){
-      let that = this
-      mt_getGoodsAttr().then(data=>{
-        console.log(data.data)
-        data.data.moneys.forEach(item=>{
-          item.name = item.moneyBegin+'-'+ item.moenyEnd+'元'
-        })
-        that.condition = data.data
+    getGoodsAttr() {
+      let that = this;
+      mt_getGoodsAttr().then(data => {
+        console.log(data.data);
+        data.data.moneys.forEach(item => {
+          item.name = item.moneyBegin + "-" + item.moenyEnd + "元";
+        });
+        that.condition = data.data;
         //获取搜索数据
-        that.getList()
-      })
+        that.getList();
+      });
     },
     //获取精选商品
-    getRecommend(){
-      let that = this
-      mt_getGoodsBySelected().then(data=>{
+    getRecommend() {
+      let that = this;
+      mt_getGoodsBySelected().then(data => {
         // console.log(data.data)
-        that.spiritList = data.data
-      })
+        that.spiritList = data.data;
+      });
     },
     //选择条件
     selectCond(num, val) {
       if (num == 1) {
         this.cond1 = val;
-      }else if (num == 2) {
+      } else if (num == 2) {
         this.cond2 = val;
-      }else if (num == 3) {
+      } else if (num == 3) {
         this.cond3 = val;
-      }else if (num == 4) {
+      } else if (num == 4) {
         this.cond4 = val;
-      }else if (num == 5) {
+      } else if (num == 5) {
         this.cond5 = val;
-      }else if (num == 6) {
+      } else if (num == 6) {
         this.cond6 = val;
       }
     },
     //选择不限
-    nolimit(num){
+    nolimit(num) {
       if (num == 1) {
-        this.cond1 = ''
-      }else if (num == 2) {
-        this.cond2 = ''
-      }else if (num == 3) {
-        this.cond3 = ''
-      }else if (num == 4) {
-        this.cond4 = ''
-      }else if (num == 5) {
-        this.cond5 = ''
-      }else if (num == 6) {
-        this.cond6 = ''
+        this.cond1 = "";
+      } else if (num == 2) {
+        this.cond2 = "";
+      } else if (num == 3) {
+        this.cond3 = "";
+      } else if (num == 4) {
+        this.cond4 = "";
+      } else if (num == 5) {
+        this.cond5 = "";
+      } else if (num == 6) {
+        this.cond6 = "";
       }
     },
     //显示更多
@@ -385,51 +449,92 @@ export default {
       this.showmore = val;
     },
     // 关闭显示更多
-    closemoreClick(){
-        this.showmore = 0
+    closemoreClick() {
+      this.showmore = 0;
     },
     //排序
-    condsort(val){
-      this.cond = val
+    condsort(val) {
+      this.cond = val;
     },
     //查询商品信息
-    getList(){
-      let that = this
-      let id1 = that.cond1.id != null &&that.cond1.id != undefined ? that.cond1.id: ''
-      let id2 = that.cond2.id != null &&that.cond2.id != undefined ? that.cond2.id: ''
-      let id3 = that.cond3.id != null &&that.cond3.id != undefined ? that.cond3.id: ''
-      let id4 = that.cond4.id != null &&that.cond4.id != undefined ? that.cond4.id: ''
-      let id5 = that.cond5.id != null &&that.cond5.id != undefined ? that.cond5.id: ''
-      let id6 = that.cond6.id != null &&that.cond6.id != undefined ? that.cond6.id: ''
-      mt_getGoodsByCondition(id1,id2,id3,id4,id5,id6,that.name,that.menuId,that.money,that.cond,that.page,that.limit).then(data=>{
+    getList() {
+      let that = this;
+      let id1 =
+        that.cond1.id != null && that.cond1.id != undefined
+          ? that.cond1.id
+          : "";
+      let id2 =
+        that.cond2.id != null && that.cond2.id != undefined
+          ? that.cond2.id
+          : "";
+      let id3 =
+        that.cond3.id != null && that.cond3.id != undefined
+          ? that.cond3.id
+          : "";
+      let id4 =
+        that.cond4.id != null && that.cond4.id != undefined
+          ? that.cond4.id
+          : "";
+      let id5 =
+        that.cond5.id != null && that.cond5.id != undefined
+          ? that.cond5.id
+          : "";
+      let id6 =
+        that.cond6.id != null && that.cond6.id != undefined
+          ? that.cond6.id
+          : "";
+      mt_getGoodsByCondition(
+        id1,
+        id2,
+        id3,
+        id4,
+        id5,
+        id6,
+        that.name,
+        that.menuId,
+        that.money,
+        that.cond,
+        that.page,
+        that.limit
+      ).then(data => {
         // console.log(data.data)
-        that.list = data.data.data
-        that.count = data.data.count
-      })
+        that.list = data.data.data;
+        that.count = data.data.count;
+      });
     },
     handleSizeChange(val) {
       this.limit = val;
-      this.getList()
+      this.getList();
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.getList()
+      this.getList();
     },
     //搜索
-    searchWordKeyChange(val){
-      console.log(val)
-      this.name = val
-      this.getList()
+    searchWordKeyChange(val) {
+      console.log(val);
+      this.name = val;
+      this.getList();
     },
     //查看详情
-    viewDetail(value){
-      console.log(value)
-      this.$router.push('/goodsdetail/'+value.id)
+    viewDetail(value) {
+      console.log(value);
+      this.$router.push("/goodsdetail/" + value.id);
     },
+    //前往二级
+    goHome2() {
+      if(localStorage.getItem('home2')!=null){
+        let menuId =  JSON.parse(localStorage.getItem('home2')).id
+        this.$router.push("/home2/" + menuId);
+      }else{
+        mt_selectFirstMenu().then(data => {
+          localStorage.setItem("home2", JSON.stringify(data.data[0]));
+          this.$router.push("/home2/" + data.data[0].id);
+        });
+      }
+    }
   },
-  updated(){
-
-  },
+  updated() {}
 };
 </script>>
 <style lang="scss" scoped>
@@ -469,7 +574,25 @@ export default {
 .type {
   background-color: #ffffff;
   .box {
-    padding-top: 20px;
+    .step {
+      padding: 12px 0;
+      font-size: 14px;
+      line-height: 14px;
+      color: #999999;
+      span {
+        color: #666666;
+        &:hover {
+          cursor: pointer;
+          color: $mainColor;
+          text-decoration: underline;
+        }
+      }
+      i{
+        display: inline-block;
+        font-style: normal;
+        color: #666666;
+      }
+    }
     .title {
       font-size: 14px;
       font-weight: bold;
@@ -538,7 +661,7 @@ export default {
               cursor: pointer;
             }
           }
-          .close{
+          .close {
             position: absolute;
             right: 0;
             bottom: 0;
@@ -557,77 +680,77 @@ export default {
     }
   }
 }
-.goods{
+.goods {
   background-color: #ffffff;
   padding: 20px 0;
-  .box{
+  .box {
     display: flex;
-    .slide{
+    .slide {
       flex: 190px 0 0;
       border: 1px solid #dddddd;
-      .title{
+      .title {
         padding: 0 15px;
         font-size: 16px;
         line-height: 42px;
         color: #333333;
         font-weight: bold;
       }
-      .itm{
-        padding:  15px 10px;
-        &:hover{
+      .itm {
+        padding: 15px 10px;
+        &:hover {
           cursor: pointer;
-          box-shadow: 0px 0px 10px 5px rgba(200,200,200,0.4);
+          box-shadow: 0px 0px 10px 5px rgba(200, 200, 200, 0.4);
         }
-        .img{
+        .img {
           width: 170px;
           height: 170px;
-          img{
+          img {
             width: 100%;
             height: 100%;
           }
         }
-        .price{
+        .price {
           font-size: 14px;
           line-height: 14px;
           margin-top: 13px;
           color: $mainColor;
           font-weight: bold;
         }
-        .des{
+        .des {
           margin-top: 14px;
           font-size: 12px;
           line-height: 18px;
           color: #666666;
         }
-        .num{
+        .num {
           margin-top: 15px;
           font-size: 12px;
           line-height: 12px;
           color: #666666;
-          span{
+          span {
             color: #3573d8;
           }
         }
       }
     }
-    .list{
+    .list {
       flex: 1;
       margin-left: 10px;
-      .cond{
+      .cond {
         padding: 6px;
         overflow: hidden;
-        span{
+        span {
           float: left;
           height: 28px;
           padding: 0 10px;
           border-top: 1px solid #dddddd;
           border-bottom: 1px solid #dddddd;
           border-right: 1px solid #dddddd;
-          &:first-child{
+          &:first-child {
             border-left: 1px solid #dddddd;
           }
           cursor: pointer;
-          i{
+          i {
             display: inline-block;
             height: 28px;
             line-height: 28px;
@@ -635,61 +758,63 @@ export default {
             font-size: 12px;
             font-style: normal;
             color: #666666;
-            background: url(/static/icon/black_jiantou.png) no-repeat right center;
+            background: url(/static/icon/black_jiantou.png) no-repeat right
+              center;
           }
-          &.active{
+          &.active {
             background-color: $mainColor;
             border: 1px solid $mainColor;
-            i{
+            i {
               color: #ffffff;
-              background: url(/static/icon/white_jiantou.png) no-repeat right center;
+              background: url(/static/icon/white_jiantou.png) no-repeat right
+                center;
             }
           }
-        }      
+        }
       }
-      .product{
+      .product {
         min-height: 1140px;
         overflow: hidden;
-        .itm{
+        .itm {
           float: left;
           width: 25%;
-          padding:  15px 10px;
-          &:hover{
+          padding: 15px 10px;
+          &:hover {
             cursor: pointer;
-            .des{
+            .des {
               color: $mainColor;
               text-decoration: underline;
             }
           }
-          .img{
+          .img {
             width: 170px;
             height: 170px;
             line-height: 170px;
-            img{
+            img {
               max-width: 100%;
               max-height: 100%;
               vertical-align: middle;
             }
           }
-          .price{
+          .price {
             font-size: 14px;
             line-height: 14px;
             margin-top: 13px;
             color: $mainColor;
             font-weight: bold;
           }
-          .des{
+          .des {
             margin-top: 14px;
             font-size: 12px;
             line-height: 18px;
             color: #666666;
           }
-          .num{
+          .num {
             margin-top: 15px;
             font-size: 12px;
             line-height: 12px;
             color: #666666;
-            span{
+            span {
               color: #3573d8;
             }
           }

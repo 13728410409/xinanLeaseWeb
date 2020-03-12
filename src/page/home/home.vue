@@ -89,7 +89,7 @@
       <div class="list">
         <div
           class="itm"
-          v-if="sortList.goodsList.length!=0"
+          v-if="sortList.goodsList.length!=0&&index<6"
           v-for="(item,index) of sortList.goodsList"
           :key="index"
           @click="viewDetail(item.id)"
@@ -296,6 +296,9 @@ export default {
     this.getPartners();
     //获取首页加盟商
     this.getAllianceBusiness();
+    if(localStorage.getItem('home2')!=null){
+      localStorage.removeItem("home2");
+    }
   },
   mounted() {
     //获取用户信息
@@ -519,6 +522,7 @@ export default {
       margin-right: 10px;
       padding: 20px;
       background-color: #ffffff;
+      overflow: hidden;
       box-shadow: 0px 0px 5px 0px rgba(208, 208, 208, 0.5);
       &:last-child {
         margin-right: 0;
