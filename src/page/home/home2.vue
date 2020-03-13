@@ -20,7 +20,7 @@
     <div class="container bannerBox">
       <div class="nav ">
         <ul>
-          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index)" v-if="index < moreIndex">
+          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index)" v-if="index < moreIndex" :class="currentIndex==index?'active':''">
             <div class="name">{{item.name}}</div>
             <img class="f" v-if="item.img!=''" :src="item.img" alt="">
             <img class="f" v-else src="../../../static/icon/logo.png" alt="">
@@ -226,6 +226,10 @@ export default {
     li{
       padding: 14px 0;
       border-bottom: 1px solid #dddddd;
+      &.active{
+        box-shadow: 0px 0px 10px 0px rgba(210, 207, 207, 0.67);
+        border-bottom: 1px solid #f08200;
+      }
       &:last-child{
         border-bottom: none;
       }
