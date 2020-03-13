@@ -79,6 +79,35 @@
           </swiper>
         </div>
       </div>
+      <!-- 新消息 -->
+      <div class="newInfomation">
+        <div class="welcome">
+          <div class="img"><img src="/static/icon/logo.png" alt=""></div>
+          <div class="info">
+            <div class="tip">HI~欢迎来到信安！</div>
+            <div class="opt" v-if="!isLogin">
+              <router-link tag="span" to="/register">注册</router-link><i>|</i><router-link tag="span" to="/login">登录</router-link>
+            </div>
+            <div class="opt" v-if="isLogin"><div class="u">用户-{{userInfo.nickName}}</div></div>
+          </div>
+        </div>
+        <div class="contact" :class="phoneInfo.list.length>1?'small':''">
+          <div class="title">热线电话</div>
+          <div class="tel">
+            <div class="itm" v-for="(item,index) of phoneInfo.list" :key="index" v-if="index<2">{{item}}</div>
+          </div>
+        </div>
+        <div class="service_goods">
+          <div class="tab">
+            <span :class="service_goods==1?'active':''" @click="selectService_goods(1)">服务内容</span><i>|</i>
+            <span :class="service_goods==2?'active':''" @click="selectService_goods(2)">最新上架</span>
+          </div>
+          <ul class="list">
+            <li  v-for="(item,index) of hList" :key="index" @click="viewDetail(item.id)"><span class="sign">HOT</span><div class="val ellipsis">{{item.name}}</div></li>
+          </ul>
+        </div>
+      </div>
+
     </div>
     <!-- 排行榜 -->
     <div class="container main sort">
@@ -234,7 +263,7 @@ import search from "@/components/search/search";
 import shoppingcart from "@/components/shopping/shoppingcart";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { mt_selectFirstMenu, mt_lunbo, mt_queryHomeGoods } from "@/api/home";
-import { mt_queryPartners, mt_queryAllianceBusiness } from "@/api/common";
+import { mt_queryPartners, mt_queryAllianceBusiness, mt_queryHotOrNewGoods } from "@/api/common";
 let vm = null;
 export default {
   name: "home",
@@ -271,11 +300,21 @@ export default {
 
       productList: [],
       partnersList: [],
-      allianceBusiness: []
+      allianceBusiness: [],
+
+      service_goods: 1, //1服务内容  2最新上架
+      hList: [],
     };
   },
   computed: {
     ...mapState(["userInfo", "phoneInfo"])
+  },
+  watch: {
+    service_goods(val){
+      // console.log(val)
+      this.hList = []
+      this.getHotOrNewGoods(val)
+    }
   },
   created() {
     vm = this;
@@ -290,6 +329,8 @@ export default {
     this.getGoodsMenu();
     //获取首页轮播图
     this.getLunbo();
+    //huoqu
+    this.getHotOrNewGoods(this.service_goods)
     //获取商品
     this.getGoods();
     //获取合作伙伴
@@ -390,7 +431,19 @@ export default {
       } else {
         this.$router.push("/joinCenter");
       }
-    }
+    },
+    //获取热门商品 或者 最新商品的查询
+    getHotOrNewGoods(type){
+      let that = this
+      mt_queryHotOrNewGoods(type).then(data=>{
+        // console.log(data.data.data)
+        that.hList = data.data.data
+      })
+    },
+    //切换登录方式
+    selectService_goods(val){
+      this.service_goods = val
+    },
   }
 };
 </script>
@@ -471,7 +524,7 @@ export default {
   }
   .homeswiper {
     flex: 1;
-    width: 1000px;
+    width: 800px;
     height: 480px;
     background-color: #ffffff;
     .mainswiper {
@@ -482,6 +535,138 @@ export default {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
+      }
+    }
+  }
+  .newInfomation{
+    flex: 0 0 190px;
+    width: 190px;
+    height: 480px;
+    margin-left: 10px;
+    padding: 0 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    .welcome{
+      display: flex;
+      padding: 25px 0 22px 0;
+      border-bottom: 1px solid #ebebeb;
+      .img{
+        flex: 0 0 45px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: #ebebeb;
+        overflow: hidden;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .info{
+        margin-left: 10px;
+        .tip{
+          margin-top: 3px;
+          font-size: 12px;
+          line-height: 12px;
+          color: #666666;
+        }
+        .opt{
+          margin-top: 10px;
+          font-size: 0;
+          span{
+            font-size: 12px;
+            line-height: 14px;
+            color: #333333;
+            &:hover{
+              color: $mainColor;
+              cursor: pointer;
+              text-decoration: underline;
+            }
+          }
+          i{
+            font-style: normal;
+            font-size: 14px;
+            line-height: 14px;
+            padding: 0 6px;
+            color: #333333;
+          }
+          .u{
+            font-size: 10px;
+          }
+        }
+      }
+    }
+    .contact{
+      padding: 20px 0 15px 0;
+      border-bottom: 1px solid #ebebeb;
+      text-align: center;
+      &.small{
+        padding: 14px 0;
+      }
+      .title{
+        font-size: 14px;
+        line-height: 14px;
+        color: #666666;
+      }
+      .tel{
+        margin-top: 10px;
+        .itm{
+          font-size: 14px;
+          line-height: 14px;
+          margin-top: 4px;
+          color: $mainColor;
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
+      }
+    }
+    .service_goods{
+      padding: 20px 0 24px 0; 
+      .tab{
+        font-size: 0;
+        text-align: center;
+        span{
+          font-size: 14px;
+          line-height: 14px;
+          color: #333333;
+          &:hover,&.active{
+            color: $mainColor;
+            cursor: pointer;
+          }
+        }
+        i{
+          font-style: normal;
+          font-size: 14px;
+          line-height: 14px;
+          padding: 0 6px;
+          color: #b7b7b7;
+        }
+      }
+      .list{
+        padding-top: 16px;
+        li{
+          display: flex;
+          height: 18px;
+          line-height: 18px;
+          margin-bottom: 10px;
+          .sign{
+            flex: 32px 0 0;
+            width: 32px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            background-color: rgba(240,130,0,0.2);
+            border-radius: 2px;
+            font-size: 12px;
+            color: $mainColor;
+          }
+          .val{
+            padding-left: 10px;
+            font-size: 14px;
+            line-height: 18px;
+            color: #666666;
+          }
+        }
       }
     }
   }
