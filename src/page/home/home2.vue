@@ -20,17 +20,18 @@
     <div class="container bannerBox">
       <div class="nav ">
         <ul>
-          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index)" v-if="index < moreIndex" :class="currentIndex==index?'active':''">
+          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index,item.name)" v-if="index < moreIndex" :class="currentIndex==index?'active':''">
             <div class="name">{{item.name}}</div>
             <img class="f" v-if="item.img!=''" :src="item.img" alt="">
             <img class="f" v-else src="../../../static/icon/logo.png" alt="">
             <div class="listmask" v-if="currentIndex==index" :style="{'height': rightHeight+'px'}">
+              <div class="eName">当前二级分类：{{currentName}}</div>
               <div class="lItem" v-for="(items,indexs) of navList[index].childMenu" :key="indexs" @click="goList(items)">
                 <div class="itms">{{items.name}}</div>
                 <div class="img"><img :src="items.img" alt=""></div>
               </div>
               <div class="lItem" v-if="navList[index].childMenu.length==0">
-                <span class="itms">暂无分类</span>
+                <span class="itms">暂无更多分类</span>
               </div>
             </div> 
           </li>
@@ -66,10 +67,9 @@ export default {
       navList: [],
 
       currentIndex: 0,
+      currentName: '',
       rightHeight: 810,
-
       showMore: false,
-
       moreIndex: 7,
     }
   },
@@ -117,17 +117,15 @@ export default {
             that.$router.push('/')       
         });
     }
-    if(!this.showMore){
-      this.moreIndex = 7
-    }
   },
   mounted() {
     //获取用户信息
   },
   methods: {
-    hoverNav(index){
+    hoverNav(index,name){
       if(this.currentIndex!=index){
         this.currentIndex = index
+        this.currentName = name
       }
     },
     showMoreIndex(){
@@ -139,8 +137,9 @@ export default {
     getGoodsMenu(id){
       let that = this
       mt_selectSecondMenu(id).then(data=>{
-        // console.log(data.data)
+        console.log(data.data)
         that.navList = data.data
+        that.currentName = that.navList[0].name
       })
     },
     
@@ -269,8 +268,10 @@ export default {
         min-height: 810px;
         padding: 14px 20px;
         background-color: #ffffff;
-        
-        font-size: 0;
+        .eName{
+          font-size: 16px;
+          font-weight: bold;;
+        }
         .lItem{
           float: left;
           width: 160px;
