@@ -20,22 +20,27 @@
     <div class="container bannerBox">
       <div class="nav ">
         <ul>
-          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index,item.name)" v-if="index < moreIndex" :class="currentIndex==index?'active':''">
-            <div class="name">{{item.name}}</div>
-            <img class="f" v-if="item.img!=''" :src="item.img" alt="">
-            <img class="f" v-else src="../../../static/icon/logo.png" alt="">
-            <div class="listmask" v-if="currentIndex==index" :style="{'height': rightHeight+'px'}">
+          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index,item.name)" v-if="index < moreIndex" :class="currentIndex==index?'active':''"  :title="item.name">
+            <img class="fimg" v-if="item.img!=''" :src="item.img" alt="">
+            <img class="fimg" v-else src="../../../static/icon/logo.png" alt="">
+            <div class="name ellipsis" :title="item.name">{{item.name}}</div>
+            <div class="listmask" v-if="currentIndex==index" :style="{'min-height': rightHeight+'px'}">
               <div class="eName">当前二级分类：{{currentName}}</div>
-              <div class="lItem" v-for="(items,indexs) of navList[index].childMenu" :key="indexs" @click="goList(items)">
-                <div class="itms">{{items.name}}</div>
-                <div class="img"><img :src="items.img" alt=""></div>
-              </div>
-              <div class="lItem" v-if="navList[index].childMenu.length==0">
-                <span class="itms">暂无更多分类</span>
+              <div class="box">
+                <div class="lItem" v-for="(items,indexs) of navList[index].childMenu" :key="indexs" @click="goList(items)">
+                  <div class="img"><img :src="items.img" alt=""></div>
+                  <div class="itms">{{items.name}}</div>
+                </div>
+                <div class="lItem" v-if="navList[index].childMenu.length==0">
+                  <div class="itms">暂无更多分类</div>
+                </div>
               </div>
             </div> 
           </li>
-          <li  class="showMore" v-if="!showMore&&navList.length>7" @click="showMoreIndex" title="查看更多二级分类">更多分类</li>
+          <li  class="showMore" v-if="!showMore&&navList.length>5" @click="showMoreIndex" title="查看更多二级分类">
+            <span>更多分类</span>
+            <!-- <img src="/static/icon/right.png" alt=""> -->
+          </li>
         </ul>
       </div>
     </div>
@@ -68,9 +73,9 @@ export default {
 
       currentIndex: 0,
       currentName: '',
-      rightHeight: 810,
+      rightHeight: 843,
       showMore: false,
-      moreIndex: 7,
+      moreIndex: 5,
     }
   },
   computed: {
@@ -131,7 +136,7 @@ export default {
     showMoreIndex(){
       this.showMore = true
       this.moreIndex = this.navList.length
-      this.rightHeight = this.moreIndex * 110
+      this.rightHeight = this.moreIndex * 151
     },
     //获取二级菜单分类
     getGoodsMenu(id){
@@ -212,95 +217,123 @@ export default {
   min-height: 810px;
   margin-bottom: 20px;
   .nav{
-    flex: 190px 0 0;
-    width: 190px;
-    min-height: 770px;
+    flex: 204px 0 0;
+    width: 204px;
+    min-height: 843px;
     margin-right: 10px;
     background-color: #ffffff;
-    border-right: 1px solid #eaeaea;
     position: relative;
     &.scrollbar{
       overflow-y: scroll;
     }
     li{
-      padding: 14px 0;
-      border-bottom: 1px solid #dddddd;
-      &.active{
-        box-shadow: 0px 0px 10px 0px rgba(210, 207, 207, 0.67);
-        border-bottom: 1px solid #f08200;
-      }
+      padding: 20px 0;
+      border-bottom: 1px solid #ededed;
       &:last-child{
         border-bottom: none;
       }
       &.showMore{
-        padding:0;
-        line-height: 40px;
-        font-size: 14px;
-        color: #666666;
+        padding: 34px 0;
+        height: 88px;
+        font-size: 0;
         text-align: center;
-        &:hover{
+        span{
+          display: inline-block;
+          font-size: 14px;
+          line-height: 20px;
           color: #f08200;
-          cursor: pointer;
-          text-decoration: underline;
+          position: relative;
+          &:hover{
+            cursor: pointer;
+            text-decoration: underline;
+          }
+          &::before{
+            content: "";
+            position: absolute;
+            right: -25px;
+            width: 20px;
+            height: 20px;
+            background: url('/static/icon/right.png') no-repeat;
+            background-size: 100% 100%;
+          }
         }
+        // img{
+        //   display: inline-block;
+        //   width: 20px;
+        //   height: 20px;
+        //   line-height: 88px;
+        //   vertical-align: middle;
+        // }
       }
-      
-      .name{
-        font-size: 16px;
-        font-weight: bold;;
-        line-height: 16px;
-        text-align: center;
-        margin-bottom: 5px;
-      }
-      .f{
+      .fimg{
         display: block;
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
         margin: 0 auto;
       }
-      
+      .name{
+        font-size: 14px;
+        font-weight: bold;;
+        line-height: 20px;
+        text-align: center;
+        margin-top: 10px;
+        padding: 0 10px;
+      }
+      &.active{
+        box-shadow: 0px 0px 10px 0px rgba(210, 207, 207, 0.67);
+        border-bottom: 1px solid #ff7c00;
+        .name{
+          color: #f08200;
+        }
+      }
       .listmask{
         position: absolute;
-        left: 190px;
+        left: 220px;
         top: 0;
         z-index: 6;
         width: 1000px;
-        min-height: 810px;
-        padding: 14px 20px;
+        min-height: 843px;
         background-color: #ffffff;
         .eName{
-          font-size: 16px;
-          font-weight: bold;;
+          font-size: 12px;
+          line-height: 40px;
+          color: #333333;
+          padding-left: 16px;
+          border-bottom: 1px solid #ededed;
         }
-        .lItem{
-          float: left;
-          width: 160px;
-          height: 190px;
-          padding: 10px;
-          .itms{
-            font-size: 14px;
-            line-height: 30px;
-            color: #333333;
-            text-align: center;
-            &:hover{
-              cursor: pointer;
-              color: $mainColor;
+        .box{
+          padding: 0 0 0 16px;
+          .lItem{
+            float: left;
+            width: 180px;
+            margin: 16px 16px 0 0;
+            .img{
+              width: 180px;
+              height: 180px;
+              position: relative;
+              background-color: #f4f4f4;
+              img{
+                position: absolute;
+                left: 50%;
+                top:50%;
+                transform: translate3d(-50%,-50%,0);
+                max-width: 90%;
+                max-height: 90%;
+              }
             }
-          }
-          .img{
-            width: 140px;
-            height: 140px;
-            position: relative;
-            img{
-              position: absolute;
-              left: 50%;
-              top:50%;
-              transform: translate3d(-50%,-50%,0);
-              max-width: 100%;
-              max-height: 100%;
+            .itms{
+              margin-top: 16px;
+              font-size: 14px;
+              line-height: 14px;
+              color: #333333;
+              text-align: center;
+              &:hover{
+                cursor: pointer;
+                color: $mainColor;
+              }
             }
+            
           }
-          
         }
       }
     }
