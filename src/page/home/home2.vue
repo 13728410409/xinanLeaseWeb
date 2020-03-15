@@ -18,12 +18,12 @@
     </div>
     <!-- 主菜单、轮播及信息 -->
     <div class="container bannerBox">
-      <div class="nav ">
+      <div class="nav" v-if="navList.length>0">
         <ul>
-          <li v-for="(item,index) of navList" :key="index" @mouseover="hoverNav(index,item.name)" v-if="index < moreIndex" :class="currentIndex==index?'active':''"  :title="item.name">
-            <img class="fimg" v-if="item.img!=''" :src="item.img" alt="">
-            <img class="fimg" v-else src="../../../static/icon/logo.png" alt="">
-            <div class="name ellipsis" :title="item.name">{{item.name}}</div>
+          <li v-for="(item,index) of navList" :key="index" v-if="index < moreIndex" :class="currentIndex==index?'active':''"  :title="item.name">
+            <img class="fimg" v-if="item.img!=''" :src="item.img" @mouseover="hoverNav(index,item)">
+            <img class="fimg" v-else src="../../../static/icon/logo.png" @mouseover="hoverNav(index,item)">
+            <div class="name ellipsis" :title="item.name"  @mouseover="hoverNav(index,item)">{{item.name}}</div>
             <div class="listmask" v-if="currentIndex==index" :style="{'min-height': rightHeight+'px'}">
               <div class="eName">当前二级分类：{{currentName}}</div>
               <div class="box">
@@ -43,6 +43,7 @@
           </li>
         </ul>
       </div>
+      <div v-if="navList.length==0" style="flex: 1;background-color:#ffffff;padding:16px;font-size:14px;color:#333333;">暂无“{{name}}”分类数据</div>
     </div>
     <foot-guide></foot-guide>
   </div>
@@ -127,10 +128,20 @@ export default {
     //获取用户信息
   },
   methods: {
-    hoverNav(index,name){
+    hoverNav(index,value){
       if(this.currentIndex!=index){
+        let num = Math.ceil(value.childMenu.length/5)
         this.currentIndex = index
-        this.currentName = name
+        this.currentName = value.name
+        if(this.showMore==false && (num*266+40)>843){
+          this.rightHeight = num*266+40
+        }
+        if(this.showMore==true && (num*266+40)>this.moreIndex * 151){
+          this.rightHeight = num*266+40
+        }
+        if(this.showMore==true && (num*266+40)<this.moreIndex * 151){
+          this.rightHeight = this.moreIndex * 151
+        }
       }
     },
     showMoreIndex(){
@@ -142,9 +153,11 @@ export default {
     getGoodsMenu(id){
       let that = this
       mt_selectSecondMenu(id).then(data=>{
-        console.log(data.data)
+        // console.log(data.data)
         that.navList = data.data
-        that.currentName = that.navList[0].name
+        if(data.data.length>0){
+          that.currentName = that.navList[0].name
+        }
       })
     },
     
