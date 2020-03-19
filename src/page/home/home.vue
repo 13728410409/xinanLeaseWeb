@@ -898,12 +898,17 @@ export default {
         // box-shadow: 0px 0px 3px 0px #d0d0d0;
         border-radius: 5px;
         text-align: center;
+        position: relative;
         &:nth-child(6n) {
           margin-right: 0;
         }
         img {
-          display: inline-block;
-          height: 100%;
+          max-height: 100%;
+          max-width: 100%;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate3d(-50%, -50%, 0);
         }
       }
     }
