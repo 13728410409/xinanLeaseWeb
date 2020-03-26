@@ -352,7 +352,7 @@ export default {
     getGoodsMenu() {
       let that = this;
       mt_selectFirstMenu().then(data => {
-        console.log(data.data)
+        // console.log(data.data)
         that.navList = data.data;
       });
     },
@@ -373,7 +373,7 @@ export default {
     getGoods() {
       let that = this;
       mt_queryHomeGoods().then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         that.sortList = data.data.length > 0 ? data.data[0] : [];
         that.productList = [];
         // console.log(data.data.length)
