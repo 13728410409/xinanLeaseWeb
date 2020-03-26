@@ -259,7 +259,7 @@
                 <img :src="item.img" alt />
               </div>
               <div class="price">￥{{item.money}}</div>
-              <div class="des ellipsis2">{{item.name}}</div>
+              <div class="des ellipsis" :title="item.name">{{item.name}}</div>
               <div class="num">
                 已有
                 <span>{{item.comments}}</span>人评价
@@ -273,6 +273,7 @@
             :page-size="limit"
             layout="prev, pager, next, jumper"
             :total="count"
+            style="margin-top:30px;"
           ></el-pagination>
         </div>
       </div>
@@ -395,7 +396,7 @@ export default {
     getGoodsAttr() {
       let that = this;
       mt_getGoodsAttr().then(data => {
-        console.log(data.data);
+        // console.log(data.data);
         data.data.moneys.forEach(item => {
           item.name = item.moneyBegin + "-" + item.moenyEnd + "元";
         });
@@ -497,7 +498,7 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        // console.log(data.data)
+        console.log(data.data.data)
         that.list = data.data.data;
         that.count = data.data.count;
       });
@@ -512,13 +513,13 @@ export default {
     },
     //搜索
     searchWordKeyChange(val) {
-      console.log(val);
+      // console.log(val);
       this.name = val;
       this.getList();
     },
     //查看详情
     viewDetail(value) {
-      console.log(value);
+      // console.log(value);
       this.$router.push("/goodsdetail/" + value.id);
     },
     //前往二级

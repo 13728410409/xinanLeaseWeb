@@ -530,7 +530,7 @@ export default {
     getGoodsById(id) {
       let that = this;
       mt_getGoodsById(id).then(data => {
-        // console.log(data.data);
+        console.log(data.data);
         // that.goodsInfo.lblist = JSON.parse(data.data.leaseImg);
         that.goodsInfo.des = data.data.proIntroduction;
         that.testDataModel = JSON.parse(data.data.dispose)
