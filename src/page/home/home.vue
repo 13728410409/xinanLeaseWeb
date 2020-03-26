@@ -91,10 +91,10 @@
             <div class="opt" v-if="isLogin"><div class="u">用户-{{userInfo.nickName}}</div></div>
           </div>
         </div>
-        <div class="contact" :class="phoneInfo.list.length>1?'small':''">
+        <div class="contact" :class="phoneInfo.list.length>1?'small':''" v-if="phoneInfo.list">
           <div class="title">热线电话</div>
           <div class="tel">
-            <div class="itm" v-for="(item,index) of phoneInfo.list" :key="index" v-if="index<2">{{item}}</div>
+            <div class="itm" v-for="(item,index) of phoneInfo.list" :key="index" v-if="phoneInfo.list&&index<2">{{item}}</div>
           </div>
         </div>
         <div class="service_goods">
@@ -352,7 +352,7 @@ export default {
     getGoodsMenu() {
       let that = this;
       mt_selectFirstMenu().then(data => {
-        // console.log(that.isArray(data.data))
+        console.log(data.data)
         that.navList = data.data;
       });
     },
@@ -373,7 +373,7 @@ export default {
     getGoods() {
       let that = this;
       mt_queryHomeGoods().then(data => {
-        // console.log(data.data);
+        console.log(data.data);
         that.sortList = data.data.length > 0 ? data.data[0] : [];
         that.productList = [];
         // console.log(data.data.length)

@@ -25,7 +25,7 @@
           >消息</el-badge>
         </router-link>
         <router-link tag="span" to="/help">帮助中心</router-link>
-        <i>咨询电话：{{phoneInfo.list[0]}}</i>
+        <i v-if="phoneInfo.list">咨询电话：{{phoneInfo.list[0]}}</i>
         <span @click="quit" v-if="isLogin">退出</span>
       </div>
     </div>
