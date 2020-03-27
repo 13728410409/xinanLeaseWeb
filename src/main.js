@@ -11,11 +11,11 @@ import store from '@/config/store'
 import md5 from 'js-md5'
 Vue.prototype.$md5 = md5
 
-//引用rem配置
-// import '@/config/rem'
+// if(document.documentElement.clientWidth<=768){
+//   // 引用rem配置
+//   import '@/config/rem'
+// }
 
-//引用rem配置
-// import '@/config/rem'
 
 Vue.config.productionTip = false
 import VueAwesomeSwiper from 'vue-awesome-swiper'

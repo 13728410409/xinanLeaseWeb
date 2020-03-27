@@ -45,54 +45,7 @@
               @mouseover="selectStyle(item,index)"></div>
             </div>
           </div>  
-
-
-          <!-- <div class="carousel" style="height: 530px"  v-if="goodsInfo.lblist">
-            <swiper
-              :options="swiperOptionTop"
-              class="gallery-top"
-              ref="swiperTop"
-              v-if="goodsInfo.lblist.length>0">
-              <swiper-slide
-                class="itmimg video"
-                v-if="goodsInfo.video!=''&&goodsInfo.video!=null"
-                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}">
-                <div
-                  @click="playVideo"
-                  style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
-                ></div>
-                <img class="videoPlay" src="/static/icon/video.png" alt />
-              </swiper-slide>
-              <swiper-slide
-                class="itmimg"
-                v-for="(item,index) of goodsInfo.lblist"
-                :key="index"
-                :style="{ backgroundImage:'url('+item+')'}"
-              ></swiper-slide>
-            </swiper>
-            <swiper
-              :options="swiperOptionThumbs"
-              class="gallery-thumbs"
-              ref="swiperThumbs"
-              v-if="goodsInfo.lblist.length>0">
-              <swiper-slide
-                class="itmimg video"
-                v-if="goodsInfo.video!=''&&goodsInfo.video!=null"
-                :style="{ backgroundImage:'url('+goodsInfo.video+'?vframe/jpg/offset/0)'}">
-                <div
-                  @click="playVideo"
-                  style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:2;"
-                ></div>
-                <img class="videoPlay" src="/static/icon/video.png" alt />
-              </swiper-slide>
-              <swiper-slide
-                class="itmimg"
-                v-for="(item,index) of goodsInfo.lblist"
-                :key="index"
-                :style="{ backgroundImage:'url('+item+')'}"
-              ></swiper-slide>
-            </swiper>
-          </div> -->
+         
 
           <div class="goodsInfoDetail" v-if="goodsInfo.name">
             <div class="gname">{{goodsInfo.name}}</div>
@@ -104,13 +57,6 @@
             <div class="item collocation">
               <div class="name">选择配置:</div>
               <div class="val">
-                <!-- <div
-                  class="itm"
-                  :class="collocation.val==item.val?'active':''"
-                  v-for="(item,index) of goodsInfo.pzList"
-                  :key="index"
-                  @click="selectcollocation(item)"
-                >{{item.val}}</div> -->
                 <div
                   class="itm"
                   :class="collocation.config==item.config?'active':''"
@@ -130,10 +76,6 @@
                   <span>￥{{deposit }}</span>
                 </div>
               </div>
-              <!-- <div class="date">
-                <div class="name">租赁方式：{{goodsInfo.goodsWay | filterWay}}</div>
-                <span></span>
-              </div>-->
               <div class="date">
                 <div class="name">租赁时间：</div>
                 <el-select v-model="leaseTerm" placeholder="请选择">
@@ -146,12 +88,6 @@
                 </el-select>
               </div>
             </div>
-            <!-- <div class="item address">
-              <div class="name">租赁地址：</div>
-              <div class="val">
-                <addressbox :data="addressArr" @click="openAddress" @selectVal="sureAddress"></addressbox>
-              </div>
-            </div>-->
             <div class="item startTime">
               <div class="name">开始日期：</div>
               <div class="val">
@@ -186,7 +122,6 @@
             <div class="special">
               <span v-if="deposit==0">商品免押金</span>
               <span>起租时间{{goodsInfo.leaseTime}}个月</span>
-              <!-- <span v-if="per<1&&per>0" style="background-color:red;color:#ffffff;font-weight:bold;">租期越长优惠越大，当前优惠{{ per * 10 | filterPer }}折</span> -->
             </div>
             <div class="opt">
               <span class="addCart" @click="addCart">加入购物车</span>
@@ -448,12 +383,9 @@ export default {
           this.deposit = item.depositMoney
         }
       });
-      // console.log(newVal);
-      // console.log(this.per);
     },
     //数量
     num(newVal, oldVal) {
-      // console.log(newVal);
     },
     showFlag(newVal, oldVal) {
       if (newVal == 2) {
@@ -558,9 +490,9 @@ export default {
     //播放视频
     playVideo() {
       this.$alert(
-        "<video controls='controls' id='vide' style='width:400px;height400px;'><source src=" +
+        "<div style='width:500px;height:500px;'><video controls='controls' id='vide' style='margin:0 auto;display:block;max-width:100%;max-height:100%;'><source src=" +
           this.goodsInfo.video +
-          " ref='video' type='video/mp4' /></video>",
+          " ref='video' type='video/mp4' /></video></div>",
         "商品视频",
         {
           showClose: false,
@@ -792,6 +724,9 @@ export default {
   }
 };
 </script>>
+<style>
+.el-message-box {width: auto !important;}
+</style>
 <style lang="scss" scoped>
 @import "src/style/mixin";
 @import "../../../node_modules/swiper/dist/css/swiper.min.css";
@@ -1318,7 +1253,9 @@ export default {
             }
           }
           .pimg {
-            width: 100%;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
           }
         }
       }

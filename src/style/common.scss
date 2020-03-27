@@ -173,33 +173,40 @@ body {
 }
 
 .ellipsis {
-  overflow: hidden;
+  display: -webkit-box;
+  word-break: break-all;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:1;
 }
 
 .ellipsis2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp:2;
+
 }
 
 .ellipsis3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp:3;
 }
 
 .ellipsis4 {
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp:4;
 }
 
 .w {
@@ -274,25 +281,4 @@ body {
   }
 }
 
-// 移动端 头部样式
-#header{
-  display: block;
-  position: relative;
-  height: 44px;
-  line-height: 44px;
-  background: #fff;
-  font-size: 17px;
-  z-index: 999;
-  text-align: center;
-  .back{
-    top: 10px;
-    background-image: url(/static/icon/iconback.png);
-    width: 24px;
-    height: 24px;
-    overflow: hidden;
-    display: block;
-    position: absolute;
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-  }
-}
+

@@ -14,13 +14,21 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import loading from '@/components/common/loading'
+window.alert = function (name) {
+  var iframe = document.createElement("IFRAME");
+  iframe.style.display = "none";
+  iframe.setAttribute("src", 'data:text/plain,');
+  document.documentElement.appendChild(iframe);
+  window.frames[0].window.alert(name);
+  iframe.parentNode.removeChild(iframe);
+}
 export default {
   components:{
     loading
   },
   data () {
     return {
-      // fullWidth:document.documentElement.clientWidth
+      fullWidth: document.documentElement.clientWidth
     }
   },
   computed:{
@@ -30,23 +38,42 @@ export default {
       'path',
       'direction'
     ]),
-    // rightWidth(){
-    //   let leftWidth = this.isCollapse ? '64' : '200';
-    //   console.log(this.fullWidth)
-    //   return (this.fullWidth-leftWidth)+'px'
-    // }
   },
   created(){
-    //  window.addEventListener('resize', this.handleResize)
+    if(this.fullWidth<769){
+      let a = {}
+      a.result = true
+      this.setMobileMode(a)
+    }else{
+      let a = {}
+      a.result = false
+      this.setMobileMode(a)
+    }
+    window.addEventListener('resize', this.handleResize)
     this.setCacheData();
   },
   beforeDestroy: function () {
-    // window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('resize', this.handleResize)
+  },
+  computed: {
+    ...mapState(["mobileMode"])
   },
   methods:{
-    // handleResize (event) {
-    //   this.fullWidth = document.documentElement.clientWidth
-    // },
+    ...mapMutations(["setMobileMode"]),
+    handleResize (event) {
+      this.fullWidth = document.documentElement.clientWidth
+      if(this.fullWidth<769){
+        let a = {}
+        a.result = true
+        this.setMobileMode(a)
+        console.log(this.fullWidth)
+        console.log(a)
+      }else{
+        let a = {}
+        a.result = false
+        this.setMobileMode(a)
+      }
+    },
     ...mapMutations([
       'setCacheData'
     ])

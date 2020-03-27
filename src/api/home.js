@@ -10,8 +10,7 @@ var mt_lunbo = () => async ('/web/lunbo/selectFirstAll', {
 },"GET");
 
 //首页商品
-var mt_queryHomeGoods= (page,limit) => async ('/web/goods/queryHomeGoods', {
-  page,limit
+var mt_queryHomeGoods= () => async ('/web/goods/queryHomeGoods', {
 },"GET");
 
 //获取二级菜单

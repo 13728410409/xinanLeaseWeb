@@ -24,10 +24,10 @@ const state = {
   },
   newsInfo: {},
   phoneInfo: {},
-  
+  mobileMode: { result: false },
 }
 //缓存浏览器的数据名称
-const cacheNameList = ["userInfo", "shoppingInfo","newsInfo",'phoneInfo'];
+const cacheNameList = ["userInfo", "shoppingInfo","newsInfo",'phoneInfo','mobileMode'];
 //数据处理
 const mutations = { //触发状态
   //取出缓存数据
@@ -83,6 +83,14 @@ const mutations = { //触发状态
       setStore('phoneInfo', state.phoneInfo);
     }
   },
+  //储存平台电话信息
+  setMobileMode(state, payload) {
+    if (payload) {
+      state.mobileMode = modifyJson(payload, state.mobileMode);
+      setStore('mobileMode', state.mobileMode);
+    }
+  },
+  
   
 }
 //异步处理

@@ -31,7 +31,7 @@ function async (url = '', data = {}, type = 'GET', options = {}, httpUrl = baseU
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
     }
     if (type == 'GET') {
-      url = url + '?' + dataStr;
+      url = dataStr!=''&&dataStr!=null ? url + '?' + dataStr : url
       dataStr = "";
     } else if (type == 'JSONP') {
       url = url + '?' + dataStr + '&callback=process';
@@ -48,6 +48,7 @@ function async (url = '', data = {}, type = 'GET', options = {}, httpUrl = baseU
       }
       var script = document.createElement("script");
       script.src = url;
+      
       document.head.appendChild(script);
       // 及时删除，防止加载过多的JS
       document.head.removeChild(script);
@@ -71,25 +72,13 @@ function async (url = '', data = {}, type = 'GET', options = {}, httpUrl = baseU
       if (options.language) {
         requestObj.setRequestHeader("Accept-Language", "zh-CN,zh;q=0.8");
       }
-
-      // if(httpUrl == baseUrl){
-      //   let userInfo = JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo")) : '';
-      //   let user_token = userInfo.token
-      //   // requestObj.setRequestHeader("user_token", user_token);
-      //   if(userInfo!=''){
-      //     console.log(userInfo)
-      //     requestObj.setRequestHeader("user_token", user_token);
-      //   }
-      // }
-
       if(httpUrl == baseUrl){
-        let userInfo = JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo")) : '';
-        let user_token = userInfo.token
-        // console.log(user_token)
-        requestObj.setRequestHeader("user_token", user_token);
+        let user_token = JSON.parse(localStorage.getItem("userInfo")) ? JSON.parse(localStorage.getItem("userInfo")).token : '';
+        // let user_token = userInfo.token
+        if(user_token!=''){
+          requestObj.setRequestHeader("user_token", user_token);
+        }
       }
-
-      
       requestObj.send(dataStr);
       requestObj.onreadystatechange = () => {
         if (requestObj.readyState == 4) {
@@ -101,12 +90,6 @@ function async (url = '', data = {}, type = 'GET', options = {}, httpUrl = baseU
             if(handle(obj).code=='0000'){
               resolve(handle(obj))
             }else if(handle(obj).code=='1000'){
-              // Message({
-              //   showClose: true,
-              //   message: '登录失效，请重新登录',
-              //   type: 'warning',
-              //   duration: 1000
-              // })
               localStorage.removeItem('userInfo')
               localStorage.removeItem('shoppingInfo')
               localStorage.removeItem('newsInfo')

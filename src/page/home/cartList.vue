@@ -134,29 +134,6 @@ export default {
   },
   data() {
     return {
-      // leaseTermOptions: [
-      //   {
-      //     value: 1,
-      //     label: "1个月"
-      //   },
-      //   {
-      //     value: 3,
-      //     label: "3个月"
-      //   },
-      //   {
-      //     value: 6,
-      //     label: "6个月"
-      //   },
-      //   {
-      //     value: 12,
-      //     label: "1年"
-      //   },
-      //   {
-      //     value: 36,
-      //     label: "3年"
-      //   }
-      // ],
-
       cartList: [],
       checkedAll: false,
 
