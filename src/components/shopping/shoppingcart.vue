@@ -17,7 +17,7 @@ export default {
   },
   created(){
     if(this.$route.name!='cartList'&&localStorage.getItem('userInfo')!=null){
-      this.getCarList()
+      // this.getCarList()
     }
   },
   mounted() {
