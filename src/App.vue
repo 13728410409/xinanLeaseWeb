@@ -64,10 +64,9 @@ export default {
       this.fullWidth = document.documentElement.clientWidth
       if(this.fullWidth<769){
         let a = {}
-        a.result = true
+        // a.result = true
+        a.result = false
         this.setMobileMode(a)
-        console.log(this.fullWidth)
-        console.log(a)
       }else{
         let a = {}
         a.result = false

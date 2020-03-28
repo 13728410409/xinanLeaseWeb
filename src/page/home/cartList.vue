@@ -16,7 +16,7 @@
     </div>
     <div class="shoppingcartlist">
       <div class="container box">
-        <div class="goods" v-if="cartList.length>0">
+        <div class="goods" v-if="cartList">
           <el-row class="itm title">
             <el-col :span="2" class="sel">
               <el-checkbox v-model="checkedAll" @change="checkAll">全选</el-checkbox>
@@ -65,7 +65,7 @@
                 @change="changeLeaseTerm(index,item)"
               >
                 <el-option
-                  v-for="items of item.leaseTermOptions"
+                  v-for="items of item.leaseTermOptions00"
                   :key="items.value"
                   :label="items.label"
                   :value="items.value"
@@ -162,8 +162,17 @@ export default {
     let arr = [];
     Object.assign(arr, this.shoppingInfo.list);
     this.cartList = arr;
+    this.cartList.forEach(item => {
+      item.leaseTermOptions00 = JSON.parse(item.leaseTermOptions)
+      item.leaseTermOptions00.forEach(items=>{
+        if(item.leaseTerm==items.value){
+          item.rent = items.rentMoney
+          item.deposit = items.depositMoney
+        }
+      })
+    });
+    // console.log(this.cartList)
     let userInfo = localStorage.getItem('userInfo')
-    // console.log(userInfo)
     if (userInfo) {
       this.getCarList();
     }
@@ -179,8 +188,8 @@ export default {
         let arr1 = data.data.data;
         arr1.forEach(item => {
           item.collocation = JSON.parse(item.collocation);
-          item.leaseTermOptions = JSON.parse(item.leaseTermOptions)
-          item.leaseTermOptions.forEach(items=>{
+          item.leaseTermOptions00 = JSON.parse(item.leaseTermOptions)
+          item.leaseTermOptions00.forEach(items=>{
             if(item.leaseTerm==items.value){
               item.rent = items.rentMoney
               item.deposit = items.depositMoney
@@ -318,7 +327,7 @@ export default {
       // console.log(value);
       this.cartList[index].selected = true;
       // console.log(this.cartList);
-      value.leaseTermOptions.forEach(item=>{
+      value.leaseTermOptions00.forEach(item=>{
         if(value.leaseTerm==item.value){
           this.cartList[index].rent = item.rentMoney
           this.cartList[index].deposit = item.depositMoney

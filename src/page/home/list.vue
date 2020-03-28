@@ -277,7 +277,7 @@
       <foot-guide></foot-guide>
     </div>
     <div class="mobile" v-if="mobileMode.result">
-      <searchm @getKey="searchWordKeyChange"></searchm>
+      <searchm :homeState="homeState" @getKey="searchWordKeyChange"></searchm>
       <div class="condition_m">
         <div class="itm" :class="cond==1?'active':''" @click="condsort(1)">销量</div>
         <div class="itm" :class="cond==2?'active':''" @click="condsort(2)">价格</div>
@@ -288,7 +288,6 @@
           <img src="/static/icon_m/screen.png" />
         </div>
       </div>
-
       <div class="wrapper" ref="wrapper" @scroll="gd_add">
         <div class="listItem">
           <div class="itm" v-for="(item,index) of list" :key="index" @click="viewDetail(item)">
@@ -304,7 +303,6 @@
           </div>
         </div>
       </div>
-
       <div class="listMask" v-if="conditionMask">
         <div class="mask" @click="toggleConditionMask"></div>
         <div class="container">
@@ -394,8 +392,8 @@ export default {
       page: 1,
       limit: 16,
       count: 0,
-
-      conditionMask: false //筛选弹窗是否显示
+      homeState: true, //显示home图标
+      conditionMask: false, //筛选弹窗是否显示
     };
   },
   computed: {
@@ -1008,7 +1006,9 @@ export default {
           .info .name {
             font-size: 14px;
             line-height: 14px;
+            height: 14px;
             color: #333;
+            overflow: hidden;
           }
           .info .des {
             margin-top: 8px;

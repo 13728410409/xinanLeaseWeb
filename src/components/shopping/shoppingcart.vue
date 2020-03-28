@@ -32,7 +32,6 @@ export default {
     getCarList() {
       let that = this;
       mt_selectAllcart().then(data => {
-        // let arr = that.shoppingInfo.list !=null && that.shoppingInfo.list !=undefined && that.shoppingInfo.list.length >0 ? that.shoppingInfo.list : []
         // console.log(data.data.data)
         data.data.data.forEach(item => {
           item.address = JSON.parse(item.address);
@@ -42,15 +41,15 @@ export default {
         let obj = {};
         obj.list = data.data.data;
         this.setShoppingInfo(obj);
-        that.updateCart(that.shoppingInfo);
+        // that.updateCart(that.shoppingInfo);
       });
     },
     //更新购物车
-    updateCart(arr) {
-      mt_insertcart(JSON.stringify(arr)).then(data => {
-        // console.log(data);
-      });
-    },
+    // updateCart(arr) {
+    //   mt_insertcart(JSON.stringify(arr)).then(data => {
+    //     // console.log(data);
+    //   });
+    // },
   }
 };
 </script>

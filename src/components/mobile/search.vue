@@ -9,6 +9,9 @@
       </div>
       <div class="input">搜索</div>
     </div>
+    <div class="homeIconBox" v-if="showHome" @click="viewHome">
+      <img src="/static/icon_m/homeIcon.png" alt="">
+    </div>
     <searchinput @searchinput="searchSure" ref="searchm"></searchinput>
   </div>
 </template>
@@ -18,22 +21,35 @@ export default {
   components: {
     searchinput
   },
+  props: {
+    homeState: {
+      type: Boolean,
+      default() {
+        return false
+      }
+    }
+  },
   data() {
     return {
-      
+      showHome: false,
     };
   },
   watch: {},
   filters: {},
   created() {
-    
+    this.showHome = this.homeState
   },
   mounted() {},
   computed: {
   },
   methods: {
+    //查看分类
     viewType() {
       this.$router.push("/type");
+    },
+    //前往首页
+    viewHome() {
+      this.$router.push("/");
     },
     //移动端搜索组件显示
     goSearch() {
@@ -75,8 +91,7 @@ export default {
 
 .type_search .searchBox {
   flex: 1;
-  margin-left: 10px;
-  margin-top: 7px;
+  margin: 7px 10px 0 10px;
   display: flex;
   border-radius: 10px;
   height: 30px;
@@ -103,5 +118,17 @@ export default {
   color: #999;
   height: 30px;
   line-height: 30px;
+}
+.type_search .homeIconBox{
+  flex: 20px 0 0;
+  position: relative;
+  img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>

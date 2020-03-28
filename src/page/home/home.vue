@@ -269,17 +269,6 @@
     <div class="mobile" v-if="mobileMode.result">
       <!-- 搜索 -->
       <searchm @getKey="searchWordKeyChange"></searchm>
-      <!-- <div class="type_search">
-        <div class="typeImg" @click="viewType">
-          <img class="type" src="/static/icon_m/typeWhite.png" />
-        </div>
-        <div class="searchBox" @click="goSearch">
-          <div class="search">
-            <img src="/static/icon_m/search.png" />
-          </div>
-          <div class="input">搜索</div>
-        </div>
-      </div> -->
       <!-- 轮播 -->
       <div class="navBox">
         <swiper :options="swiperOption">
@@ -305,6 +294,7 @@
                   <img :src="item.img" />
                 </div>
                 <div class="price">￥{{item.money}}</div>
+                <div @click="viewDetail(item.id)" class="clk"></div>
               </swiper-slide>
             </swiper>
           </div>
@@ -395,7 +385,6 @@ export default {
 
       service_goods: 2, //1服务内容  2最新上架
       hList: [],
-      searchmFalg: false,
     };
   },
   computed: {
@@ -505,6 +494,7 @@ export default {
     },
     //查看详情
     viewDetail(val) {
+      console.log(val)
       this.$router.push("/goodsdetail/" + val);
     },
     jump(val) {
@@ -1107,6 +1097,7 @@ export default {
         .imgs{
           .swiper-container {
             .swiper-slide {
+              position: relative;
               .img{
                 position: relative;
                 height: 0;
@@ -1129,6 +1120,14 @@ export default {
                 color: red;
                 font-weight: bold;
 
+              }
+              .clk{
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 2;
               }
             }
           }
