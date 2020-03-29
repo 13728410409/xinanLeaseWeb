@@ -1,63 +1,95 @@
 <template>
   <div>
-    <head-top></head-top>
-    <div class="ordertop">
-      <div class="container box">
-        <router-link tag="div" to="/" class="img" title="信安首页">
-          <img src="/static/icon/logo_black.png" alt />
-        </router-link>
-        <div class="navs">
-          <router-link tag="span" to="/home" class="nav">首页</router-link>
-          <span class="nav active">信安帮助中心</span>
+    <div class="pc"  v-if="!mobileMode.result">
+      <head-top></head-top>
+      <div class="ordertop">
+        <div class="container box">
+          <router-link tag="div" to="/" class="img" title="信安首页">
+            <img src="/static/icon/logo_black.png" alt />
+          </router-link>
+          <div class="navs">
+            <router-link tag="span" to="/home" class="nav">首页</router-link>
+            <span class="nav active">信安帮助中心</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="search">
-      <div class="container box">
-        <div class="inp">
-          <input type="text" placeholder="请输入内容" v-model="searchKey" >
-          <span @click="search">搜索</span>
+      <div class="search">
+        <div class="container box">
+          <div class="inp">
+            <input type="text" placeholder="请输入内容" v-model="searchKey" />
+            <span @click="search">搜索</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="help">
-      <div class="container box">
-        <div class="aslide">
-          <div class="title">常见问题</div>
-          <el-collapse v-model="activeNames" @change="handleChange" style="padding-left:20px;">
-            <el-collapse-item
-              :title="item.name"
-              :name="index+1"
-              v-for="(item,index) of list"
-              :key="index">
-              <div
-                v-for="(items,indexs) of item.list"
-                :key="indexs"
-                class="itm"
-                :class="currentWord == items.name?'active':''"
-                @click="selItm(items.id,items.name)"
-              >{{items.name}}</div>
-            </el-collapse-item>
-          </el-collapse>
-        </div>
-        <div class="main">
-          <div class="title">关于<span>{{currentWord}}</span>问题</div>
-          <div class="cont" v-html="currentCont"></div>
+      <div class="help">
+        <div class="container box">
+          <div class="aslide">
+            <div class="title">常见问题</div>
+            <el-collapse v-model="activeNames" @change="handleChange" style="padding-left:20px;">
+              <el-collapse-item
+                :title="item.name"
+                :name="index+1"
+                v-for="(item,index) of list"
+                :key="index"
+              >
+                <div
+                  v-for="(items,indexs) of item.list"
+                  :key="indexs"
+                  class="itm"
+                  :class="currentWord == items.name?'active':''"
+                  @click="selItm(items.id,items.name)"
+                >{{items.name}}</div>
+              </el-collapse-item>
+            </el-collapse>
+          </div>
+          <div class="main">
+            <div class="title">
+              关于
+              <span>{{currentWord}}</span>问题
+            </div>
+            <div class="cont" v-html="currentCont"></div>
+          </div>
         </div>
       </div>
+      <foot-guide></foot-guide>
     </div>
-    <foot-guide></foot-guide>
+    <div class="mobile"  v-if="mobileMode.result">
+      <headertop :value="headValue"></headertop>
+      <div class="itm" v-for="(item,index) of list" :key="index" >
+        <div class="title">{{item.name}}</div>
+        <div class="box">
+          <div class="items" v-for="(items,indexs) of item.list" :key="indexs" @click="getData(items.id,items.name)">{{items.name}}</div>
+        </div>
+      </div>
+
+      <el-dialog
+        :title="currentWord"
+        :visible.sync="dialogPAddress"
+        :fullscreen="true"
+        :close-on-click-modal="false"
+      >
+        <div class="infoList">
+          {{currentCont}}
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="danger" @click="dialogPAddress = false">关闭</el-button>
+        </span>
+      </el-dialog>
+
+    </div>
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from "vuex";
 import headTop from "@/components/header/head";
 import footGuide from "@/components/footer/footGuide";
+import headertop from "@/components/mobile/header";
 import { mt_questionselectAll } from "@/api/common";
 export default {
   components: {
     headTop,
-    footGuide
+    footGuide,
+    headertop
   },
   data() {
     return {
@@ -124,49 +156,58 @@ export default {
         }
       ],
 
-      activeNames: [1,2,3,4],   //默认打开第一个
-      currentWord: '',  //标题
-      currentCont: '',  //内容
+      activeNames: [1, 2, 3, 4], //默认打开第一个
+      currentWord: "", //标题
+      currentCont: "", //内容
 
       type: 1,
-      searchKey: '', //搜索关键字
+      searchKey: "", //搜索关键字
+      headValue: '帮助',
+      dialogPAddress: false
     };
   },
   watch: {},
   filters: {},
   created() {
     // console.log(this.$route.params)
-    if(this.$route.params.type!=''&&this.$route.params.type!=null&&this.$route.params.type!=undefined){
-      this.getData(this.$route.params.type,this.$route.params.name)
-    }else{
+    if (
+      this.$route.params.type != "" &&
+      this.$route.params.type != null &&
+      this.$route.params.type != undefined
+    ) {
+      this.getData(this.$route.params.type, this.$route.params.name);
+    } else {
       this.currentWord = this.list[0].list[0].name;
       this.currentCont = this.list[0].list[0].cont;
-      this.getData(this.type,this.currentWord)
+      this.getData(this.type, this.currentWord);
     }
   },
   mounted() {},
   computed: {
-    ...mapState(["userInfo", "shoppingInfo"])
+    ...mapState(["userInfo", "shoppingInfo", "mobileMode"])
   },
   methods: {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
-    search(){
-      this.getData()
+    search() {
+      this.getData();
     },
-    selItm(id,name) {
-      if(this.currentWord!=name){
-        this.getData(id,name)
+    selItm(id, name) {
+      if (this.currentWord != name) {
+        this.getData(id, name);
       }
     },
-    getData(type,name){
+    getData(type, name) {
       let that = this;
-      mt_questionselectAll(type,that.searchKey).then(data => {
+      mt_questionselectAll(type, that.searchKey).then(data => {
         // console.log(data)
-        this.currentWord = name
-        if(data.data.data.length>0){
-          this.currentCont = data.data.data[0].content
-        }else{
-          this.currentCont = '暂无数据'
+        this.currentWord = name;
+        if (data.data.data.length > 0) {
+          this.currentCont = data.data.data[0].content;
+        } else {
+          this.currentCont = "暂无数据";
+        }
+        if(that.mobileMode.result){
+          that.dialogPAddress = true
         }
       });
     },
@@ -175,86 +216,116 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../../style/mixin";
-.search{
-  .box{
-    padding: 0 300px;
-    .inp{
-      display: flex;
-      margin: 30px 0;
-      
-      input{
-        flex: 1;
-        display: inline-block;
-        line-height: 50px;
-        padding: 0 20px;
-        border: 1px solid #dddddd;
-        border-right: none;
-        outline-style: none;
+.pc{
+  .search {
+    .box {
+      padding: 0 300px;
+      .inp {
+        display: flex;
+        margin: 30px 0;
+
+        input {
+          flex: 1;
+          display: inline-block;
+          line-height: 50px;
+          padding: 0 20px;
+          border: 1px solid #dddddd;
+          border-right: none;
+          outline-style: none;
+        }
+        span {
+          flex: 100px 0 0;
+          width: 100px;
+          line-height: 50px;
+          text-align: center;
+          background-color: $mainColor;
+          font-size: 14px;
+          color: #ffffff;
+          &:hover {
+            cursor: pointer;
+            background-color: $mainHoverColor;
+          }
+        }
       }
-      span{
-        flex: 100px 0 0;
-        width: 100px;
-        line-height: 50px;
-        text-align: center;
-        background-color: $mainColor;
-        font-size: 14px;
-        color: #ffffff;
-        &:hover{
-          cursor: pointer;
-          background-color: $mainHoverColor;
+    }
+  }
+  .help {
+    .box {
+      display: flex;
+      padding-bottom: 30px;
+      .aslide {
+        flex: 210px 0 0;
+        width: 210px;
+        background-color: #ffffff;
+        border: 1px solid #f1f1f1;
+        .title {
+          background-color: #eaeaea;
+          line-height: 40px;
+          font-size: 16px;
+          font-weight: bold;
+          padding-left: 20px;
+        }
+        .itm {
+          font-size: 12px;
+          line-height: 30px;
+          &:hover,
+          &.active {
+            cursor: pointer;
+            color: $mainColor;
+            text-decoration: underline;
+          }
+        }
+      }
+      .main {
+        flex: 1;
+        margin-left: 20px;
+        background-color: #ffffff;
+        .title {
+          background-color: #eaeaea;
+          font-size: 14px;
+          color: #666666;
+          padding-left: 20px;
+          line-height: 40px;
+          span {
+            margin: 0 5px;
+            color: $mainColor;
+          }
+        }
+        .cont {
+          padding: 20px;
+          font-size: 14px;
+          color: #666666;
         }
       }
     }
   }
 }
-.help {
-  .box {
-    display: flex;
-    padding-bottom: 30px;
-    .aslide {
-      flex: 210px 0 0;
-      width: 210px;
-      background-color: #ffffff;
-      border: 1px solid #f1f1f1;
-      .title{
-        background-color: #eaeaea;
-        line-height: 40px;
-        font-size: 16px;
-        font-weight: bold;
-        padding-left: 20px;
-      }
-      .itm {
-        font-size: 12px;
-        line-height: 30px;
-        &:hover,
-        &.active {
-          cursor: pointer;
-          color: $mainColor;
-          text-decoration: underline;
-        }
-      }
-    }
-    .main {
-      flex: 1;
-      margin-left: 20px;
-      background-color: #ffffff;
-      .title{
-        background-color: #eaeaea;
-        font-size: 14px;
-        color: #666666;
-        padding-left: 20px;
-        line-height: 40px;
-        span{
-          margin: 0 5px;
-          color: $mainColor;
-        }
-      }
-      .cont{
-        padding: 20px;
-        font-size: 14px;
-        color: #666666;
-      }
-    }
-  }
+@media screen and (max-width: 769px) {
+.mobile{
+  .itm{
+  border-bottom: 1px solid #dddddd;
+}
+.itm .title{
+  background-color: #999999;
+  line-height: 44px;
+  padding: 0 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.box{
+  padding-left: 15px; 
+}
+.items{
+  line-height: 40px;
+  font-size: 13px;
+  color: #666666;
+  text-decoration: underline;
+  border-bottom: 1px solid #dddddd;
+} 
+.items:last-child{
+  border-bottom: none;
+}
+}
 }
 </style>

@@ -326,11 +326,12 @@ export default {
     viewNews() {
       this.$router.push("/news");
     },
+    //帮助中心
+    viewHelp() {
+      this.$router.push("/help");
+    },
     //新闻中心
     viewNewsCenter() {
-      alert("移动端界面优化中");
-    },
-    viewHelp() {
       alert("移动端界面优化中");
     },
     //查看加盟信息
