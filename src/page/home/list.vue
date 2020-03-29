@@ -557,7 +557,7 @@ export default {
       let scroll_height = document.getElementsByClassName("listItem")[0]
         .offsetHeight; //内容的高度
       let is_height = scroll_height - wrap_height - scroll_top;
-      if (is_height == 0 && this.count > this.list.length) {
+      if (is_height <0.1 && this.count > this.list.length) {
         if(!this.scrollBottom){
            this.page++;
            this.getList();

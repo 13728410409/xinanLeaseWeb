@@ -39,6 +39,7 @@ export default {
 <style lang="scss" scoped>
 @import "src/style/mixin";
 .headerm {
+  width:100%;
   height: 44px;
   line-height: 44px;
   padding: 0 15px;
@@ -47,6 +48,7 @@ export default {
   text-align: center;
   position: relative;
   border-bottom: 1px solid #dddddd;
+  background-color: #ffffff;
   .back {
     position: absolute;
     left: 0;

@@ -242,8 +242,7 @@ export default {
         });
       });
     },
-    //账户管理
-    viewAccount() {},
+    
     //编辑个人信息弹窗显示
     editInfo() {
       // console.log(this.userInfo)
@@ -315,30 +314,43 @@ export default {
         that.accountDetail = data.data;
       });
     },
+    //账户管理
+    viewAccount() {
+      alert('移动端界面优化中')
+    },
     //查看我的资产记录
-    viewAssets() {},
+    viewAssets() {
+      alert('移动端界面优化中')
+    },
     //查看消息
-    viewNews() {},
+    viewNews() {
+      this.$router.push('/news')
+    },
     //新闻中心
-    viewNewsCenter() {},
-    viewHelp() {},
+    viewNewsCenter() {
+      alert('移动端界面优化中')
+    },
+    viewHelp() {
+      alert('移动端界面优化中')
+    },
     //查看加盟信息
     viewjoinCenter(){
-      let jsonUserInfo = localStorage.getItem('userInfo')
-      if (jsonUserInfo!=null) {
-        let userInfo = JSON.parse(jsonUserInfo)
-        if(userInfo.angelState==3){
-          if(userInfo.joinStatus == 0){
-            this.$router.push('/joinCenter')
-          }else{
-            this.$router.push('/join')
-          }
-        }else{
-          this.$router.push('/joinAngle')
-        }
-      } else {
-        this.$router.push("/joinCenter");
-      }
+      alert('移动端界面优化中')
+      // let jsonUserInfo = localStorage.getItem('userInfo')
+      // if (jsonUserInfo!=null) {
+      //   let userInfo = JSON.parse(jsonUserInfo)
+      //   if(userInfo.angelState==3){
+      //     if(userInfo.joinStatus == 0){
+      //       this.$router.push('/joinCenter')
+      //     }else{
+      //       this.$router.push('/join')
+      //     }
+      //   }else{
+      //     this.$router.push('/joinAngle')
+      //   }
+      // } else {
+      //   this.$router.push("/joinCenter");
+      // }
     },
   }
 };

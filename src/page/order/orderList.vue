@@ -173,10 +173,7 @@
     </div>
 
     <div class="mobile" v-if="mobileMode.result">
-      <headertop
-        :value="headValue"
-        style="position:fixed;top:0;right:0;height:44px;width:100%;z-index:2;background-color:#fff;"
-      ></headertop>
+      <headertop :value="headValue" style="position:fixed;top:0;right:0;height:44px;z-index:2;"></headertop>
       <div class="tab">
         <div class="itm" :class="showStatus==''?'active':''" @click="changeStatus('')">
           <span>全部</span>
@@ -378,7 +375,7 @@ export default {
     viewOrder(id) {
       this.$router.push("/orderDetail/" + id);
     },
-    //加载更多商品
+    //加载更多
     gd_add() {
       let wrap_height = document.getElementsByClassName("wrapper")[0]
         .offsetHeight; //容器的高度
@@ -386,7 +383,7 @@ export default {
       let scroll_height = document.getElementsByClassName("listItem")[0]
         .offsetHeight; //内容的高度
       let is_height = scroll_height - wrap_height - scroll_top;
-      if (is_height == 0 && this.count > this.orderList.length) {
+      if (is_height<0.1 && this.count > this.orderList.length) {
         if(!this.scrollBottom){
            this.page++;
            this.scrollBottom = true
@@ -416,11 +413,11 @@ export default {
           item.createTime = formatDate(item.createTime, "yyyy-MM-dd hh:mm");
         });
         that.count = data.data.count;
-        that.scrollBottom = false
         if (!that.mobileMode.result) {
           that.orderList = data.data.data;
         } else if (that.mobileMode.result) {
           that.orderList = that.orderList.concat(data.data.data);
+          that.scrollBottom = false
         }
         console.log(that.orderList.length);
       });
@@ -450,11 +447,11 @@ export default {
           });
         });
         that.count = data.data.count;
-        that.scrollBottom = false
         if (!that.mobileMode.result) {
           that.orderList = data.data.data;
         } else {
           that.orderList = that.orderList.concat(data.data.data);
+          that.scrollBottom = false
         }
         console.log(that.orderList.length);
       });
