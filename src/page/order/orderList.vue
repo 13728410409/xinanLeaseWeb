@@ -388,10 +388,8 @@ export default {
            this.page++;
            this.scrollBottom = true
           if (this.type == 1) {
-            console.log("我的订单");
             this.getMyOrder();
           } else {
-            console.log("我的续租订单");
             this.getMyReletOrder();
           }
         }
@@ -419,7 +417,6 @@ export default {
           that.orderList = that.orderList.concat(data.data.data);
           that.scrollBottom = false
         }
-        console.log(that.orderList.length);
       });
     },
     //获取我的续租订单

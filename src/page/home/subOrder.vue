@@ -542,8 +542,8 @@
                 <div class="middle" v-if="item.address!=''">{{item.addressV}}</div>
               </div>
               <div class="nbtn">
-                <span class="y" @click="edit(item)">改</span>
-                <span class="b" @click="deleteA(item.id,index)">删</span>
+                <span class="y" @click.stop="edit(item)">改</span>
+                <span class="b" @click.stop="deleteA(item.id,index)">删</span>
               </div>
             </div>
             <div class="nodata" v-if="addressList.length==0">
@@ -650,7 +650,7 @@
       <el-dialog
         title="地址管理"
         :visible.sync="dialogPAddress"
-        width="360px"
+        :fullscreen="true"
         :close-on-click-modal="false"
       >
         <div class="infoList">
@@ -697,7 +697,7 @@
       <el-dialog
         title="发票信息"
         :visible.sync="dialogInvoice"
-        width="300px"
+        :fullscreen="true"
         :close-on-click-modal="false"
       >
         <div class="infoList">
@@ -726,9 +726,7 @@
       <el-dialog
         title="信安租赁租赁协议"
         :visible.sync="centerDialogVisible"
-        width="100%"
-        top="0"
-        bottom="0"
+        :fullscreen="true"
         custom-class="leaseAggrement"
       >
         <el-row>
@@ -1186,8 +1184,7 @@ export default {
           data.data.data.forEach(item => {
             item.addressArr = item.address.split(",");
             item.addressV = item.addressArr.join("");
-            item.phones =
-              item.phone.substr(0, 3) + "****" + item.phone.substr(7);
+            item.phones = item.phone.substr(0, 3) + "****" + item.phone.substr(7);
             if (item.isDefault == 1) {
               arr.unshift(item);
               if (

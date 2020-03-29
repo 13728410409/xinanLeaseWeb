@@ -242,7 +242,7 @@ export default {
         });
       });
     },
-    
+
     //编辑个人信息弹窗显示
     editInfo() {
       // console.log(this.userInfo)
@@ -316,26 +316,26 @@ export default {
     },
     //账户管理
     viewAccount() {
-      alert('移动端界面优化中')
+      alert("移动端界面优化中");
     },
     //查看我的资产记录
     viewAssets() {
-      alert('移动端界面优化中')
+      this.$router.push("/assets");
     },
     //查看消息
     viewNews() {
-      this.$router.push('/news')
+      this.$router.push("/news");
     },
     //新闻中心
     viewNewsCenter() {
-      alert('移动端界面优化中')
+      alert("移动端界面优化中");
     },
     viewHelp() {
-      alert('移动端界面优化中')
+      alert("移动端界面优化中");
     },
     //查看加盟信息
-    viewjoinCenter(){
-      alert('移动端界面优化中')
+    viewjoinCenter() {
+      alert("移动端界面优化中");
       // let jsonUserInfo = localStorage.getItem('userInfo')
       // if (jsonUserInfo!=null) {
       //   let userInfo = JSON.parse(jsonUserInfo)
@@ -351,236 +351,234 @@ export default {
       // } else {
       //   this.$router.push("/joinCenter");
       // }
-    },
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
 @import "../../style/mixin";
-@media screen and (max-width: 769px) {
-  .mobile {
-    .headerm {
-      height: 44px;
-      line-height: 44px;
-      padding: 0 15px;
-      font-size: 16px;
-      color: #333333;
-      text-align: center;
-      position: relative;
-      border-bottom: 1px solid #dddddd;
-    }
-
-    .headbox {
-      padding: 30px 15px 15px 15px;
-      margin-bottom: 15px;
-      background: linear-gradient(90deg, #eb3c3c, #f08200);
-      position: relative;
-    }
-    .headbox .set {
-      position: absolute;
-      right: 15px;
-      top: 12px;
-      font-size: 12px;
-      line-height: 16px;
-      color: #ffffff;
-    }
-    .headbox .set img {
-      float: left;
-      width: 16px;
-      height: 16px;
-    }
-    .headbox .infoBox {
-      display: flex;
-    }
-    .headbox .infoBox .img {
-      flex: 60px 0 0;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      overflow: hidden;
-      position: relative;
-    }
-    .headbox .infoBox .img img {
-      width: 60px;
-      height: 60px;
-    }
-    .headbox .infoBox .img .inp {
-      position: absolute;
-      right: 10px;
-      top: 0;
-      z-index: 2;
-      width: 60px;
-      height: 60px;
-      opacity: 0;
-    }
-    .headbox .infoBox .info {
-      flex: 1;
-      padding-left: 15px;
-    }
-    .headbox .infoBox .info .btnlogin {
-      width: 60px;
-      line-height: 30px;
-      height: 30px;
-      text-align: center;
-      font-size: 14px;
-      color: #666666;
-      background-color: #ffffff;
-      border-radius: 5px;
-      position: relative;
-      top: 15px;
-    }
-
-    .headbox .infoBox .top {
-      line-height: 21px;
-      color: #ffffff;
-      display: flex;
-    }
-    .headbox .infoBox .name {
-      font-size: 14px;
-      color: #ffffff;
-    }
-
-    .headbox .infoBox .level {
-      margin-left: 10px;
-      padding: 0 5px 0 0;
-      font-size: 10px;
-      background-color: #c8483f;
-      border-radius: 12px;
-      color: #ffffff;
-    }
-    .headbox .infoBox .level img {
-      float: left;
-      width: 21px;
-      height: 21px;
-    }
-    .headbox .infoBox .middle {
-      font-size: 12px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.7);
-    }
-    .headbox .infoBox .edit {
-      width: 40px;
-      line-height: 16px;
-      font-size: 10px;
-      color: #ffffff;
-    }
-    .headbox .infoBox .edit img {
-      float: left;
-      width: 16px;
-      height: 16px;
-    }
+.mobile {
+  .headerm {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #333333;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #dddddd;
   }
 
-  .infoList {
-    .item {
-      margin-bottom: 10px;
-      .einp {
-        width: 100%;
-      }
-      .name {
-        line-height: 40px;
-        padding-right: 20px;
-        font-size: 14px;
-        color: #333333;
-        text-align: right;
-      }
-      .line40 {
-        line-height: 40px;
-      }
-      .himg {
+  .headbox {
+    padding: 30px 15px 15px 15px;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #eb3c3c, #f08200);
+    position: relative;
+  }
+  .headbox .set {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #ffffff;
+  }
+  .headbox .set img {
+    float: left;
+    width: 16px;
+    height: 16px;
+  }
+  .headbox .infoBox {
+    display: flex;
+  }
+  .headbox .infoBox .img {
+    flex: 60px 0 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+  }
+  .headbox .infoBox .img img {
+    width: 60px;
+    height: 60px;
+  }
+  .headbox .infoBox .img .inp {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    z-index: 2;
+    width: 60px;
+    height: 60px;
+    opacity: 0;
+  }
+  .headbox .infoBox .info {
+    flex: 1;
+    padding-left: 15px;
+  }
+  .headbox .infoBox .info .btnlogin {
+    width: 60px;
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #666666;
+    background-color: #ffffff;
+    border-radius: 5px;
+    position: relative;
+    top: 15px;
+  }
+
+  .headbox .infoBox .top {
+    line-height: 21px;
+    color: #ffffff;
+    display: flex;
+  }
+  .headbox .infoBox .name {
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  .headbox .infoBox .level {
+    margin-left: 10px;
+    padding: 0 5px 0 0;
+    font-size: 10px;
+    background-color: #c8483f;
+    border-radius: 12px;
+    color: #ffffff;
+  }
+  .headbox .infoBox .level img {
+    float: left;
+    width: 21px;
+    height: 21px;
+  }
+  .headbox .infoBox .middle {
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .headbox .infoBox .edit {
+    width: 40px;
+    line-height: 16px;
+    font-size: 10px;
+    color: #ffffff;
+  }
+  .headbox .infoBox .edit img {
+    float: left;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.infoList {
+  .item {
+    margin-bottom: 10px;
+    .einp {
+      width: 100%;
+    }
+    .name {
+      line-height: 40px;
+      padding-right: 20px;
+      font-size: 14px;
+      color: #333333;
+      text-align: right;
+    }
+    .line40 {
+      line-height: 40px;
+    }
+    .himg {
+      height: 72px;
+      position: relative;
+      img {
+        width: 72px;
         height: 72px;
-        position: relative;
-        img {
-          width: 72px;
-          height: 72px;
-          border-radius: 50%;
-        }
-        .btnimg {
+        border-radius: 50%;
+      }
+      .btnimg {
+        position: absolute;
+        left: 92px;
+        top: 21px;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 14px;
+        background-color: $mainColor;
+        color: #ffffff;
+        cursor: pointer;
+        border-radius: 3px;
+        input {
           position: absolute;
-          left: 92px;
-          top: 21px;
+          right: 0;
           width: 80px;
           height: 30px;
-          line-height: 30px;
-          text-align: center;
-          font-size: 14px;
-          background-color: $mainColor;
-          color: #ffffff;
-          cursor: pointer;
-          border-radius: 3px;
-          input {
-            position: absolute;
-            right: 0;
-            width: 80px;
-            height: 30px;
-            opacity: 0;
-          }
+          opacity: 0;
         }
       }
     }
   }
+}
 
-  .group {
-    display: flex;
-    padding: 14px 0;
-    margin-bottom: 15px;
-    background-color: #ffffff;
-  }
-  .group {
-    display: flex;
-  }
-  .group .itm {
-    flex: 1;
-  }
-  .group .itm .img {
-    height: 32px;
-    text-align: center;
-    position: relative;
-  }
-  .group .itm .img img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    width: 20px;
-    height: 20px;
-  }
-  .group .itm .n {
-    font-size: 12px;
-    color: #666666;
-    line-height: 24px;
-    text-align: center;
-  }
+.group {
+  display: flex;
+  padding: 14px 0;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+}
+.group {
+  display: flex;
+}
+.group .itm {
+  flex: 1;
+}
+.group .itm .img {
+  height: 32px;
+  text-align: center;
+  position: relative;
+}
+.group .itm .img img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 20px;
+  height: 20px;
+}
+.group .itm .n {
+  font-size: 12px;
+  color: #666666;
+  line-height: 24px;
+  text-align: center;
+}
 
-  .group {
-    display: flex;
-    padding: 14px 0;
-  }
-  .group .box {
-    flex: 1;
-    display: flex;
-  }
-  .group .box .itm {
-    flex: 1;
-    text-align: center;
-    font-size: 12px;
-  }
-  .group .box .itm .v {
-    height: 20px;
-    line-height: 20px;
-    color: #eb3c3c;
-    position: relative;
-  }
-  .group .box .itm .v img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    width: 20px;
-    height: 20px;
-  }
-  .group .box .itm .n {
-    color: #666666;
-  }
+.group {
+  display: flex;
+  padding: 14px 0;
+}
+.group .box {
+  flex: 1;
+  display: flex;
+}
+.group .box .itm {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+}
+.group .box .itm .v {
+  height: 20px;
+  line-height: 20px;
+  color: #eb3c3c;
+  position: relative;
+}
+.group .box .itm .v img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 20px;
+  height: 20px;
+}
+.group .box .itm .n {
+  color: #666666;
 }
 </style>
