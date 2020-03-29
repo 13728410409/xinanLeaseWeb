@@ -232,7 +232,7 @@ export default {
         const div = document.createElement("div");
         div.innerHTML = form;
         document.body.appendChild(div);
-        document.forms[0].target = "_blank";
+        // document.forms[0].target = "_blank";
         document.forms[0].submit();
         clearTimeout(that.lxtimer);
         that.lxtimer = false;

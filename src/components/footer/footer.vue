@@ -10,11 +10,11 @@
           <i class="icon"></i>
           <span>分类</span>
         </router-link>
-        <router-link tag="div" to="/cart">
+        <router-link tag="div" to="/cartList">
           <i class="icon"></i>
           <span>购物车</span>
         </router-link>
-        <router-link tag="div" to="/my">
+        <router-link tag="div" to="/mymobile">
           <i class="icon"></i>
           <span>我的</span>
         </router-link>

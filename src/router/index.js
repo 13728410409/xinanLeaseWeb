@@ -247,6 +247,12 @@ const routes = [
     name: 'type',
     component: resolve => require(['@/page/mobile/type.vue'], resolve)
   },
+  //分类
+  {
+    path: '/mymobile',
+    name: 'mymobile',
+    component: resolve => require(['@/page/mobile/mymobile.vue'], resolve)
+  },
 ];
 let router = new Router({
   //模式

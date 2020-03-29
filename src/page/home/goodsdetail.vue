@@ -685,7 +685,9 @@ export default {
       }
     },
     //移动端查看购物车
-    viewCartm() {},
+    viewCartm() {
+      this.$router.push('/cartList')
+    },
     //点击搜索
     search() {
       this.$router.push({ name: "list", params: { name: "", menuId: "" } });

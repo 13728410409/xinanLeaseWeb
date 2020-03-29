@@ -45,12 +45,9 @@ export default {
       this.showFlag = false;
     },
     searchNow() {
-      if (this.wordkey != "") {
         this.showFlag = false;
-        this.$emit("searchinput", this.wordkey);
-      } else {
-        alert("请输入关键字");
-      }
+        this.$emit("searchinput", this.wordkey != ""?this.wordkey:'');
+      
     }
   }
 };

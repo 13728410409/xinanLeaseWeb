@@ -513,17 +513,20 @@
     </div>
     <div class="mobile" v-if="mobileMode.result">
       <headertop :value="headValue"></headertop>
-      <div class="addressBox" @click="addressListShow" v-if="selectedAddress.consignee">
+      <div class="addressBox" @click="addressListToggle" v-if="selectedAddress.consignee">
         <div class="top">
           <div class="name">{{selectedAddress.consignee}}</div>
           <div class="phone">{{selectedAddress.phones}}</div>
         </div>
         <div class="bottom">{{selectedAddress.addressV}}</div>
       </div>
-      <div class="addressBox" @click="addressListShow" v-else>
+      <div class="addressBox" @click="addressListToggle" v-else>
         <div class="nodata">请选择地址</div>
       </div>
       <div class="addressListBox" v-if="addressListState">
+        <header>
+          <span class="back" @click="addressListToggle" style></span>我的地址
+        </header>
         <div class="address">
           <div class="nbox">
             <div
@@ -574,6 +577,7 @@
             </div>
           </div>
         </div>
+
         <div class="oInfo">
           <div class="n">
             配送方式：
@@ -600,10 +604,10 @@
             <span class="btn" v-else @click="addInvoice">添加发票信息</span>
           </div>
           <div class="v">
-            <span class="tx" v-if="invoice.type">类型：{{invoice.type}}</span>
-            <span class="tx" v-if="invoice.type">名称：{{invoice.name}}</span>
-            <span class="tx" v-if="invoice.type">税号：{{invoice.taxNum}}</span>
-            <span class="tx" v-if="invoice.type">地址：{{invoice.address}}</span>
+            <span class="tx" v-if="invoice.type">类型：{{invoice.type | filterInvoiceType}}</span>
+            <span class="tx" v-if="invoice.name">名称：{{invoice.name}}</span>
+            <span class="tx" v-if="invoice.taxNum">税号：{{invoice.taxNum}}</span>
+            <span class="tx" v-if="invoice.address">地址：{{invoice.address}}</span>
             <span class="tx" v-else>暂未填写</span>
           </div>
         </div>
@@ -652,12 +656,12 @@
         <div class="infoList">
           <el-row class="item">
             <el-col :span="24" class="line40">
-              <el-input v-model="name" maxlength="12" placeholder="收货人" class=""></el-input>
+              <el-input v-model="name" maxlength="12" placeholder="收货人" class></el-input>
             </el-col>
           </el-row>
           <el-row class="item">
             <el-col :span="24" class="line40">
-              <el-input v-model="phone" maxlength="11" placeholder="联系方式" class=""></el-input>
+              <el-input v-model="phone" maxlength="11" placeholder="联系方式" class></el-input>
             </el-col>
           </el-row>
           <el-row class="item">
@@ -1138,12 +1142,12 @@ export default {
   methods: {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
     //显示地址列表
-    addressListShow() {
-      this.addressListState = true;
+    addressListToggle() {
+      this.addressListState = !this.addressListState;
     },
     //选中
     selectedAddressValue(value) {
-      console.log(value)
+      console.log(value);
       this.selectedAddress = value;
       this.addressListState = false;
     },
@@ -1406,6 +1410,7 @@ export default {
     addInvoice() {
       this.dialogInvoice = true;
       mt_getinvoice().then(data => {
+        console.log(data);
         if (data.data.type != "" && data.data.type != undefined) {
           this.invoicetype = data.data.type;
           this.invoicename = data.data.name;
@@ -1453,12 +1458,13 @@ export default {
           that.invoice.id ? that.invoice.id : ""
         ).then(data => {
           // console.log(data)
-          that.$message({
-            message: "发票添加成功",
-            type: "success",
-            duration: 1000
-          });
-
+          if (!that.mobileMode.result) {
+            that.$message({
+              message: "发票添加成功",
+              type: "success",
+              duration: 1000
+            });
+          }
           that.dialogInvoice = false;
           that.getInvoice();
         });
@@ -1510,12 +1516,16 @@ export default {
           if (!that.mobileMode.result) {
             that.$router.push("/pay/" + data.data);
           } else {
-            this.$confirm("请前往信安IT租赁电脑端或小程序端支付?", "支付提示", {
-              confirmButtonText: "确定",
-              showClose: false,
-              showCancelButton: false,
-              type: "warning"
-            })
+            this.$confirm(
+              "订单创建成功！请前往信安IT租赁电脑端或小程序端支付?",
+              "支付提示",
+              {
+                confirmButtonText: "确定",
+                showClose: false,
+                showCancelButton: false,
+                type: "warning"
+              }
+            )
               .then(() => {
                 that.$router.replace("/orderList");
               })
@@ -2236,12 +2246,29 @@ export default {
     top: 0;
     left: 0;
     right: 0;
-    bottom:0;
+    bottom: 0;
     z-index: 2;
     background-color: #fff;
+    header {
+      height: 44px;
+      line-height: 44px;
+      padding: 0 15px;
+      font-size: 16px;
+      color: #333333;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid #dddddd;
+      span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 44px;
+        height: 44px;
+        background: url(/static/icon_m/jt_left.png) no-repeat center center;
+        background-size: 24px 24px;
+      }
+    }
     .address {
-      border-top: 1px solid #f1f1f1;
-
       .nbox .nzxItm {
         background-color: #ffffff;
         border-radius: 5px;
@@ -2354,10 +2381,9 @@ export default {
       }
     }
     /deep/ .el-input__inner,
-    /deep/ .el-cascader-menu__item{
+    /deep/ .el-cascader-menu__item {
       font-size: 10px;
     }
-    
   }
 }
 </style>

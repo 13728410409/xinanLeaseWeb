@@ -277,7 +277,7 @@
       <foot-guide></foot-guide>
     </div>
     <div class="mobile" v-if="mobileMode.result">
-      <searchm :homeState="homeState" @getKey="searchWordKeyChange"></searchm>
+      <searchm :homeState="homeState" @getKey="searchWordKeyChange" style="position: fixed;"></searchm>
       <div class="condition_m">
         <div class="itm" :class="cond==1?'active':''" @click="condsort(1)">销量</div>
         <div class="itm" :class="cond==2?'active':''" @click="condsort(2)">价格</div>
@@ -301,6 +301,7 @@
               <div class="num">{{item.comments}}条评价</div>
             </div>
           </div>
+          <div class="noContent" v-if="list.length==0">暂无该分类商品</div>
         </div>
       </div>
       <div class="listMask" v-if="conditionMask">
@@ -394,6 +395,7 @@ export default {
       count: 0,
       homeState: true, //显示home图标
       conditionMask: false, //筛选弹窗是否显示
+      scrollBottom: false,
     };
   },
   computed: {
@@ -547,6 +549,22 @@ export default {
     condsort(val) {
       this.cond = val;
     },
+    //加载更多商品
+    gd_add() {
+      let wrap_height = document.getElementsByClassName("wrapper")[0]
+        .offsetHeight; //容器的高度
+      let scroll_top = document.getElementsByClassName("wrapper")[0].scrollTop; //滚动条的scrolltop
+      let scroll_height = document.getElementsByClassName("listItem")[0]
+        .offsetHeight; //内容的高度
+      let is_height = scroll_height - wrap_height - scroll_top;
+      if (is_height == 0 && this.count > this.list.length) {
+        if(!this.scrollBottom){
+           this.page++;
+           this.getList();
+           this.scrollBottom = true
+        }
+      }
+    },
     //查询商品信息
     getList() {
       let that = this;
@@ -588,9 +606,15 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        // console.log(data.data.data);
-        that.list = data.data.data;
+        console.log(data.data);
+        if(!that.mobileMode.result){
+          that.list = data.data.data;
+        }else{
+          that.list = that.list.concat(data.data.data)
+        }
+        console.log(that.page)
         that.count = data.data.count;
+        that.scrollBottom = false
       });
     },
     handleSizeChange(val) {
@@ -624,20 +648,7 @@ export default {
         });
       }
     },
-    //加载更多商品
-    gd_add() {
-      let wrap_height = document.getElementsByClassName("wrapper")[0]
-        .offsetHeight; //容器的高度
-      let scroll_top = document.getElementsByClassName("wrapper")[0].scrollTop; //滚动条的scrolltop
-      let scroll_height = document.getElementsByClassName("listItem")[0]
-        .offsetHeight; //内容的高度
-      let is_height = scroll_height - wrap_height - scroll_top;
-      if (is_height == 0 && this.count > this.list.length) {
-        console.log(0);
-        this.page++;
-        this.getList();
-      }
-    }
+    
   },
   updated() {
 
@@ -940,6 +951,14 @@ export default {
     right: 0;
     bottom: 0;
     top: 0;
+    .noContent {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
     .condition_m {
       position: fixed;
       left: 0;
@@ -973,7 +992,7 @@ export default {
         vertical-align: middle;
       }
     }
-
+    
     .wrapper {
       position: fixed;
       top: 88px;
