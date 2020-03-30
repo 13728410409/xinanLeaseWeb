@@ -842,7 +842,29 @@ export default {
         that.detail.companyName != null ? that.detail.companyName : ""
       ).then(data => {
         ////console.log(data.data);
-        that.$router.push("/pay/" + data.data);
+        if(!that.mobileMode.result){
+          that.$router.push("/pay/" + data.data);
+        }else{
+          this.$confirm(
+            "续租订单创建成功！请前往信安IT租赁电脑端或小程序端支付?",
+            "支付提示",
+            {
+              confirmButtonText: "确定",
+              showClose: false,
+              showCancelButton: false,
+              type: "warning"
+            }
+          )
+            .then(() => {
+              that.$router.push({
+                name: "orderList",
+                params: {
+                  type: 2
+                }
+              });
+            })
+            .catch(() => {});
+        }
       });
     }
   }

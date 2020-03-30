@@ -629,7 +629,9 @@ export default {
     },
     //搜索
     searchWordKeyChange(val) {
-      // //console.log(val);
+      // console.log(val);
+      this.page = 1
+      this.list = []
       this.name = val;
       this.getList();
     },
