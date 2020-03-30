@@ -58,7 +58,7 @@
       <div class="itm" v-for="(item,index) of list" :key="index" >
         <div class="title">{{item.name}}</div>
         <div class="box">
-          <div class="items" v-for="(items,indexs) of item.list" :key="indexs" @click="getData(items.id,items.name)">{{items.name}}</div>
+          <div class="items" v-for="(items,indexs) of item.list" :key="indexs" @click="selItm(items.id,items.name)">{{items.name}}</div>
         </div>
       </div>
       <el-dialog
@@ -191,6 +191,9 @@ export default {
       if (this.currentWord != name) {
         this.getData(id, name);
       }
+      if(this.mobileMode.result){
+        this.dialogPAddress = true
+      }
     },
     getData(type, name) {
       let that = this;
@@ -201,9 +204,6 @@ export default {
           this.currentCont = data.data.data[0].content;
         } else {
           this.currentCont = "暂无数据";
-        }
-        if(that.mobileMode.result){
-          that.dialogPAddress = true
         }
       });
     },

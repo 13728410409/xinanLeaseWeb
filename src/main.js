@@ -25,7 +25,6 @@ Vue.use(VueClipboard)
 
 import Video from 'video.js'
 import 'video.js/dist/video-js.css'
-
 Vue.prototype.$video = Video
 
 /* eslint-disable no-new */
