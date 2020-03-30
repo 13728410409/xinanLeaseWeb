@@ -61,13 +61,11 @@
           <div class="items" v-for="(items,indexs) of item.list" :key="indexs" @click="getData(items.id,items.name)">{{items.name}}</div>
         </div>
       </div>
-
       <el-dialog
         :title="currentWord"
         :visible.sync="dialogPAddress"
         :fullscreen="true"
-        :close-on-click-modal="false"
-      >
+        :close-on-click-modal="false">
         <div class="infoList">
           {{currentCont}}
         </div>
@@ -75,7 +73,6 @@
           <el-button type="danger" @click="dialogPAddress = false">关闭</el-button>
         </span>
       </el-dialog>
-
     </div>
   </div>
 </template>
@@ -169,7 +166,6 @@ export default {
   watch: {},
   filters: {},
   created() {
-    // console.log(this.$route.params)
     if (
       this.$route.params.type != "" &&
       this.$route.params.type != null &&

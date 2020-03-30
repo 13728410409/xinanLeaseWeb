@@ -237,24 +237,24 @@ export default {
         clearTimeout(that.lxtimer);
         that.lxtimer = false;
         // console.log(that.lxtimer)
-        that
-          .$confirm(
-            "如果已经支付完成请点击下方‘支付完成’按钮！",
-            "订单支付提示",
-            {
-              confirmButtonText: "支付完成",
-              cancelButtonText: "取消",
-              showClose: false
-            }
-          )
-          .then(() => {
-            let timestamp = new Date().getTime() + 180 * 1000;
-            that.validateIsPaySuccess(data.data.outTradeNo, timestamp);
-          })
-          .catch(() => {
-            clearTimeout(that.lxtimer);
-            that.lxtimer = false;
-          });
+        // that
+        //   .$confirm(
+        //     "如果已经支付完成请点击下方‘支付完成’按钮！",
+        //     "订单支付提示",
+        //     {
+        //       confirmButtonText: "支付完成",
+        //       cancelButtonText: "取消",
+        //       showClose: false
+        //     }
+        //   )
+        //   .then(() => {
+        //     let timestamp = new Date().getTime() + 180 * 1000;
+        //     that.validateIsPaySuccess(data.data.outTradeNo, timestamp);
+        //   })
+        //   .catch(() => {
+        //     clearTimeout(that.lxtimer);
+        //     that.lxtimer = false;
+        //   });
       });
     },
     //轮询微信支付是否成功

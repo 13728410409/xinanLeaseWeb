@@ -60,6 +60,20 @@
     </div>
     <div class="mobile news" v-if="mobileMode.result">
       <headertop :value="headValue"></headertop>
+      <div class="item" @click="join(5)">
+        <div class="name">金牌入驻</div>
+        <div class="val" style="color:#959595;">立即申请</div>
+        <div class="next">
+          <img src="/static/icon_m/rightGray.png" />
+        </div>
+      </div>
+      <div class="item" @click="join(3)">
+        <div class="name">代理商</div>
+        <div class="val" style="color:#959595;">立即申请</div>
+        <div class="next">
+          <img src="/static/icon_m/rightGray.png" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -242,7 +256,36 @@ export default {
 }
 @media screen and (max-width: 769px) {
   .mobile {
-    
+    .item {
+      display: flex;
+      justify-content: flex-start;
+      padding: 15px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #eeeeee;
+    }
+    .item .name {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      color: #000000;
+    }
+    .item .val {
+      font-size: 15px;
+      color: #252525;
+      padding-right: 10px;
+      position: relative;
+    }
+    .item .next {
+      flex: 0 7px 0;
+      display: flex;
+      align-items: center;
+      width: 10px;
+    }
+    .item .next img {
+      width: 7px;
+      height: 14px;
+    }
   }
 }
 </style>

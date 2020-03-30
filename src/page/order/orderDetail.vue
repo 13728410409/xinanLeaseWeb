@@ -523,24 +523,22 @@
         >续租</router-link>
         <span class="b" v-if="detail.orderState==1" @click="paymoney">立即支付</span>
         <span v-if="detail.orderState>2&&detail.orderState!=7" @click="viewLogistics">查看物流</span>
-         <router-link tag="span" :to="'/comment/'+id" v-if="detail.orderState==5">去评价</router-link>
+        <router-link tag="span" :to="'/comment/'+id" v-if="detail.orderState==5">去评价</router-link>
         <span v-if="detail.orderState==7" style="border:none;">待确认付款</span>
       </div>
 
       <el-dialog
-      title="物流信息"
-      :visible.sync="dialogLogistics"
-      width="100%"
-      :fullscreen="true"
-      :close-on-click-modal="false"
-    >
-      <logistics :data="logistics"></logistics>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="danger" @click="dialogLogistics = false">确认</el-button>
-      </span>
-    </el-dialog>
-
-
+        title="物流信息"
+        :visible.sync="dialogLogistics"
+        width="100%"
+        :fullscreen="true"
+        :close-on-click-modal="false"
+      >
+        <logistics :data="logistics"></logistics>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="danger" @click="dialogLogistics = false">确认</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -572,7 +570,7 @@ export default {
       centerDialogVisible: false, //信安租赁协议弹窗
       contract: {},
       headValue: "订单详情",
-      dialogLogistics: false,
+      dialogLogistics: false
     };
   },
   computed: {
@@ -623,7 +621,10 @@ export default {
       let that = this;
       mt_getOrderDetail(id).then(data => {
         console.log(data.data);
-        that.logistics = data.data.express!=null ? JSON.parse(data.data.express.content) : [];
+        that.logistics =
+          data.data.express != null
+            ? JSON.parse(data.data.express.content)
+            : [];
         if (
           data.data.goods[0].reletId != "" &&
           data.data.goods[0].reletId != null &&
@@ -644,7 +645,10 @@ export default {
         that.goods = data.data.goods;
         that.detail = data.data.order;
         that.detail.addressV = data.data.order.address.split(",").join("");
-        that.detail.phone = data.data.order.consigneePhone.substr(0, 3) + "****" + data.data.order.consigneePhone.substr(7);
+        that.detail.phone =
+          data.data.order.consigneePhone.substr(0, 3) +
+          "****" +
+          data.data.order.consigneePhone.substr(7);
       });
     },
     //查看租赁协议
@@ -684,7 +688,7 @@ export default {
     },
     //移动端立即支付
     paymoney() {
-      if (this.mobileMode.result){
+      if (this.mobileMode.result) {
         this.$confirm("请前往电脑端或小程序端支付?", "支付提示", {
           confirmButtonText: "确定",
           showClose: false,
@@ -694,7 +698,7 @@ export default {
           .then(() => {})
           .catch(() => {});
       }
-    },
+    }
   }
 };
 </script>

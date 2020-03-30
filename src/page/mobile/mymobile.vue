@@ -330,29 +330,28 @@ export default {
     viewHelp() {
       this.$router.push("/help");
     },
+    //查看加盟信息
+    viewjoinCenter() {
+      let jsonUserInfo = localStorage.getItem('userInfo')
+      if (jsonUserInfo!=null) {
+        let userInfo = JSON.parse(jsonUserInfo)
+        if(userInfo.angelState==3){
+          if(userInfo.joinStatus == 0){
+            this.$router.push('/joinCenter')
+          }else{
+            this.$router.push('/join')
+          }
+        }else{
+          this.$router.push('/joinAngle')
+        }
+      } else {
+        this.$router.push("/joinCenter");
+      }
+    },
     //新闻中心
     viewNewsCenter() {
       alert("移动端界面优化中");
     },
-    //查看加盟信息
-    viewjoinCenter() {
-      alert("移动端界面优化中");
-      // let jsonUserInfo = localStorage.getItem('userInfo')
-      // if (jsonUserInfo!=null) {
-      //   let userInfo = JSON.parse(jsonUserInfo)
-      //   if(userInfo.angelState==3){
-      //     if(userInfo.joinStatus == 0){
-      //       this.$router.push('/joinCenter')
-      //     }else{
-      //       this.$router.push('/join')
-      //     }
-      //   }else{
-      //     this.$router.push('/joinAngle')
-      //   }
-      // } else {
-      //   this.$router.push("/joinCenter");
-      // }
-    }
   }
 };
 </script>
