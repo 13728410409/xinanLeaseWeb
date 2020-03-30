@@ -11,11 +11,8 @@ import store from '@/config/store'
 import md5 from 'js-md5'
 Vue.prototype.$md5 = md5
 
-// if(document.documentElement.clientWidth<=768){
-//   // 引用rem配置
-//   import '@/config/rem'
-// }
-
+//引用rem配置
+//import '@/config/rem'
 
 Vue.config.productionTip = false
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -25,6 +22,11 @@ Vue.use(ELEMENT)
 
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
+
+import Video from 'video.js'
+import 'video.js/dist/video-js.css'
+
+Vue.prototype.$video = Video
 
 /* eslint-disable no-new */
 new Vue({

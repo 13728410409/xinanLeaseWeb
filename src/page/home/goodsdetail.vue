@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="pc" v-if="!mobileMode.result">
       <head-top></head-top>
       <div class="hometop2">
@@ -290,9 +289,25 @@
               @click="playVideo"
               class="clk"
             ></div>
+            <img
+              v-if="goodsInfo.video!=''&&goodsInfo.video!=null&&index==0"
+              class="videoPlay"
+              src="/static/icon/video.png"
+              alt
+            />
           </swiper-slide>
         </swiper>
       </div>
+      <div class="commodity_screen" @click="hideVideo" v-if="showVideo" style="z-index: 998;"></div>
+      <video
+        controls
+        id="myVideo"
+        class="video-js"
+        v-if="goodsInfo.video!=''&&goodsInfo.video!=null&&showVideo"
+        style="position: fixed;top: 25%;left: 0;width:100%;height:50%;z-index: 999;"
+      >
+        <source :src="goodsInfo.video" />
+      </video>
       <div class="goodInfo">
         <div class="price">￥{{rent}}/月</div>
         <div class="des">{{goodsInfo.name}}</div>
@@ -584,7 +599,8 @@ export default {
       ], //配置信息
 
       headValue: "商品详情", //头部
-      showModalStatus: false //配置弹窗显示状态
+      showModalStatus: false, //配置弹窗显示状态
+      showVideo: false
     };
   },
   computed: {
@@ -650,7 +666,9 @@ export default {
     }
   },
   updated() {},
-  mounted() {},
+  mounted() {
+    this.initVideo();
+  },
   methods: {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
     // 显示配置项遮罩层
@@ -686,7 +704,7 @@ export default {
     },
     //移动端查看购物车
     viewCartm() {
-      this.$router.push('/cartList')
+      this.$router.push("/cartList");
     },
     //点击搜索
     search() {
@@ -738,23 +756,47 @@ export default {
     },
     //播放视频
     playVideo() {
-      this.$alert(
-        "<div style='width:500px;height:500px;'><video controls='controls' id='vide' style='margin:0 auto;display:block;max-width:100%;max-height:100%;'><source src=" +
-          this.goodsInfo.video +
-          " ref='video' type='video/mp4' /></video></div>",
-        "商品视频",
-        {
-          showClose: false,
-          dangerouslyUseHTMLString: true,
-          callback: action => {
-            if (action == "confirm") {
-              // //console.log(111);
-              let vide = document.getElementById("vide");
-              vide.pause();
+      if (!this.mobileMode.result) {
+        this.$alert(
+          "<div style='width:500px;height:500px;'><video controls='controls' id='vide' style='margin:0 auto;display:block;max-width:100%;max-height:100%;'><source src=" +
+            this.goodsInfo.video +
+            " ref='video' type='video/mp4' /></video></div>",
+          "商品视频",
+          {
+            showClose: false,
+            dangerouslyUseHTMLString: true,
+            fullScreen: true,
+            callback: action => {
+              if (action == "confirm") {
+                // //console.log(111);
+                let vide = document.getElementById("vide");
+                vide.pause();
+              }
             }
           }
-        }
-      );
+        );
+      } else {
+        this.showVideo = true;
+      }
+    },
+    hideVideo(){
+      this.showVideo = false;
+
+    },
+    initVideo() {
+      //初始化视频方法
+      let myPlayer = this.$video(myVideo, {
+        //确定播放器是否具有用户可以与之交互的控件。没有控件，启动视频播放的唯一方法是使用autoplay属性或通过Player API。
+        controls: true,
+        //自动播放属性,muted:静音播放
+        autoplay: "muted",
+        //建议浏览器是否应在<video>加载元素后立即开始下载视频数据。
+        preload: "auto",
+        //设置视频播放器的显示宽度（以像素为单位）
+        width: "800px",
+        //设置视频播放器的显示高度（以像素为单位）
+        height: "400px"
+      });
     },
     // 初始化配置
     init() {
@@ -846,13 +888,14 @@ export default {
         arr.forEach(item => {
           ids.push(item.gid);
         });
-        if (isInArray(ids,  Number(that.goodsId))) {
-          let state = false,ind = -1;
+        if (isInArray(ids, Number(that.goodsId))) {
+          let state = false,
+            ind = -1;
           arr.forEach((item, index) => {
             if (
               that.goodsId == item.gid &&
               that.leaseTerm == item.leaseTerm &&
-              that.collocation.id == item.collocation.id 
+              that.collocation.id == item.collocation.id
             ) {
               //console.log('同商品同配置，数量增加')
               state = true;
@@ -916,10 +959,10 @@ export default {
           });
         }
       } else {
-        if(!this.mobileMode.result){
+        if (!this.mobileMode.result) {
           that.$message.success("加入购物车成功", 500);
-        }else{
-          alert('加入购物车成功')
+        } else {
+          alert("加入购物车成功");
         }
       }
     },

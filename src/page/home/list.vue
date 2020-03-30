@@ -259,8 +259,10 @@
                 <div class="num">
                   已有
                   <span>{{item.comments}}</span>人评价
+                  <span style="float:right;color:#666666;">销量：{{item.salesVolume!=null?item.salesVolume:0}}</span>
                 </div>
               </div>
+              <div class="noContent" v-if="list.length==0">暂无该分类商品</div>
             </div>
             <el-pagination
               @size-change="handleSizeChange"
@@ -277,7 +279,7 @@
       <foot-guide></foot-guide>
     </div>
     <div class="mobile" v-if="mobileMode.result">
-      <searchm :homeState="homeState" @getKey="searchWordKeyChange" style="position: fixed;"></searchm>
+      <searchm :homeState="homeState" @getKey="searchWordKeyChange" ></searchm>
       <div class="condition_m">
         <div class="itm" :class="cond==1?'active':''" @click="condsort(1)">销量</div>
         <div class="itm" :class="cond==2?'active':''" @click="condsort(2)">价格</div>
@@ -298,7 +300,7 @@
               <div class="name ellipsis">{{item.name}}</div>
               <div class="des ellipsis2">{{item.proIntroduction}}</div>
               <div class="price">￥{{item.money}}</div>
-              <div class="num">{{item.comments}}条评价</div>
+              <div class="num">{{item.comments}}条评价&nbsp;&nbsp;销量：{{item.salesVolume!=null?item.salesVolume:0}}</div>
             </div>
           </div>
           <div class="noContent" v-if="list.length==0">暂无该分类商品</div>
@@ -606,7 +608,7 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        //console.log(data.data);
+        // console.log(data.data);
         if(!that.mobileMode.result){
           that.list = data.data.data;
         }else{
@@ -658,6 +660,14 @@ export default {
 <style lang="scss" scoped>
 @import "src/style/mixin";
 .pc {
+  .noContent {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
   .hometop3 {
     height: 40px;
     background-color: #ffffff;

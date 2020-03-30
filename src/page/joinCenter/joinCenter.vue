@@ -3,9 +3,9 @@
     <div class="pc" v-if="!mobileMode.result">
       <head-top></head-top>
       <account-head></account-head>
-      <div class="banner">
+      <!-- <div class="banner">
         <img src="/static/icon/joincenter.png" alt />
-      </div>
+      </div> -->
       <div class="joinCenter">
         <div class="container box">
           <div class="sign">
@@ -97,7 +97,7 @@ export default {
     return {
       companyName: "",
       phone: "",
-      eamil: "",
+      email: "",
       conact: "",
       remark: "",
       headValue: "加盟中心"
@@ -143,7 +143,7 @@ export default {
         mt_insertLeaseJoinUs(
           that.companyName,
           that.phone,
-          that.eamil,
+          that.email,
           that.conact,
           that.remark
         ).then(data => {

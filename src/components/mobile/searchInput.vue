@@ -78,7 +78,7 @@ export default {
     top: 0;
     width: 44px;
     height: 44px;
-    background: url(/static/icon/jt_left.png) no-repeat center center;
+    background: url(/static/icon_m/jt_left.png) no-repeat center center;
     background-size: 24px 24px;
   }
 }
