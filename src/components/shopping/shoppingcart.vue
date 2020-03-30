@@ -32,7 +32,7 @@ export default {
     getCarList() {
       let that = this;
       mt_selectAllcart().then(data => {
-        // console.log(data.data.data)
+        // //console.log(data.data.data)
         data.data.data.forEach(item => {
           item.address = JSON.parse(item.address);
           item.collocation = JSON.parse(item.collocation);
@@ -47,7 +47,7 @@ export default {
     //更新购物车
     // updateCart(arr) {
     //   mt_insertcart(JSON.stringify(arr)).then(data => {
-    //     // console.log(data);
+    //     // //console.log(data);
     //   });
     // },
   }

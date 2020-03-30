@@ -108,7 +108,7 @@ export default {
             localStorage.setItem("address", JSON.stringify(data));
           },
           err => {
-            console.log(err);
+            //console.log(err);
           }
         );
       }

@@ -317,7 +317,7 @@ export default {
     //余额
     filterMoney(val) {
       if (val != "" && val != null) {
-        // console.log(formatDate(val,'yyyy-MM-dd'))
+        // //console.log(formatDate(val,'yyyy-MM-dd'))
         return val;
       } else {
         return 0;
@@ -363,7 +363,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         that.userInfoData = data.data;
         that.setUserInfo(data.data);
       });
@@ -372,7 +372,7 @@ export default {
     getMoneyLog() {
       let that = this;
       mt_leaseMoneyDetail(that.page, that.limit).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.moneylogList = data.data.data;
         that.count = data.data.count;
       });
@@ -381,7 +381,7 @@ export default {
     getMyEarnings() {
       let that = this;
       mt_selectMyEarnings().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.accountDetail = data.data;
       });
     },
@@ -400,7 +400,7 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         data.data.data.forEach(item=>{
           item.createTime = formatDate(item.createTime,'yyyy-MM-dd hh:mm')
         })
@@ -432,7 +432,7 @@ export default {
     },
     // 销毁微信二维码
     destriyQrcode() {
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
       var childs = wxcode.childNodes;
       if (childs != null) {
@@ -475,13 +475,13 @@ export default {
     //获取对公账号信息
     querySystemBank(){
       mt_querySystemBank().then(data => {
-        console.log(data.data)
+        //console.log(data.data)
         this.bankInfo = data.data
       })
     },
     // 销毁微信二维码
     destriyQrcode1() {
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode1");
       var childs = wxcode.childNodes;
       if (childs != null) {

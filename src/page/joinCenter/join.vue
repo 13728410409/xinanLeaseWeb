@@ -493,7 +493,7 @@
                     <el-col :span="24">
                       <div class="n">法人姓名：</div>
                       <div class="val">
-                        <el-input v-model="conact"></el-input>
+                        <el-input v-model="conact" placeholder="输入法人姓名"></el-input>
                       </div>
                     </el-col>
                   </el-row>
@@ -501,7 +501,7 @@
                     <el-col :span="24">
                       <div class="n">法人手机号：</div>
                       <div class="val">
-                        <el-input maxlength="11" v-model="phone"></el-input>
+                        <el-input maxlength="11" v-model="phone" placeholder="输入法人手机号"></el-input>
                       </div>
                     </el-col>
                   </el-row>
@@ -674,12 +674,11 @@
             </div>
           </div>
         </div>
-        <div style="padding: 20px 15px;">
+        <div style="padding: 20px 15px;" v-if="status==0||status==3">
           <el-button
             type="primary"
             style="width: 100%;"
             @click="submit"
-            v-if="status==0||status==3"
           >提交审核</el-button>
         </div>
         <div class="mInfo" v-if="status==1||status==2">
@@ -883,7 +882,7 @@ export default {
     //监听图片变化
     yyzz(newValue, oldValue) {
       if (newValue != oldValue) {
-        // console.log(this.eHeadImg)
+        // //console.log(this.eHeadImg)
       }
     }
   },
@@ -921,7 +920,7 @@ export default {
     //获取对公账号信息
     querySystemBank() {
       mt_querySystemBank().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         this.bankInfo = data.data;
       });
     },
@@ -929,14 +928,14 @@ export default {
     getAddress() {
       let that = this;
       let str = localStorage.getItem("addressOnlyCity");
-      // console.log(str)
+      // //console.log(str)
       if (str) {
         that.addressData = JSON.parse(str);
       } else {
         axios
           .get("/static/other/onlycity.json")
           .then(data => {
-            // console.log(data.data.data)
+            // //console.log(data.data.data)
             that.addressData = data.data.data;
             localStorage.setItem(
               "addressOnlyCity",
@@ -950,7 +949,7 @@ export default {
         arrCity.push({ value: item.name, label: item.name });
       });
       this.options = arrCity;
-      // console.log(this.options )
+      // //console.log(this.options )
     },
     //切换代理商入驻和金牌入驻
     selectType(val) {
@@ -963,7 +962,7 @@ export default {
     getJinPaiInfo() {
       let that = this;
       mt_getJinPaiInfo().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         data.data.forEach(item => {
           if (
             item.type == 5 ||
@@ -974,7 +973,7 @@ export default {
             that.optionsType.push({ value: item.type, label: item.name });
           }
         });
-        console.log(that.optionsType)
+        //console.log(that.optionsType)
       });
     },
     //加盟天使
@@ -1009,10 +1008,10 @@ export default {
           userInfo.joinStatus = data.data.status;
           that.setUserInfo(userInfo);
           //payState支付状态 1成功 2失败 0未支付
-          console.log(data.data);
+          //console.log(data.data);
           if (data.data.status == 1 && data.data.payState != 1) {
             mt_payJoinUs_wxpay(data.data.id).then(data => {
-              console.log(data.data);
+              //console.log(data.data);
               data.data.forms = JSON.parse(data.data.form);
               that.useqrcode(data.data);
             });
@@ -1050,7 +1049,7 @@ export default {
           that.optionsType.forEach(item => {
             if (item.value == data.data.userType) {
               that.JoinTypeText = item.label;
-              console.log(that.JoinTypeText);
+              //console.log(that.JoinTypeText);
             }
           });
           that.applyType = data.data.userType;
@@ -1147,7 +1146,7 @@ export default {
           } else {
             alert('加盟信息提交成功');
           }
-          // console.log(data);
+          // //console.log(data);
           that.getCompanyInfo();
         });
       } else {
@@ -1169,7 +1168,7 @@ export default {
     },
     // 销毁微信二维码
     destriyQrcode() {
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
       var childs = wxcode.childNodes;
       if (childs != null) {
@@ -1196,7 +1195,7 @@ export default {
     payAlipay() {
       let that = this;
       mt_payJoinUs_alipay(that.authentication.id).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.html = data.data.form;
         var form = data.data.form;
         const div = document.createElement("div");

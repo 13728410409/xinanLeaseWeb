@@ -157,7 +157,7 @@ export default {
       if (regSJH.test(that.phone)) {
         //发送验证码请求
         mt_register_code(that.phone, 2).then(data => {
-          console.log(data);
+          //console.log(data);
           that.code = "";
           that.settime();
           that.$message.success("短信发送成功");
@@ -179,7 +179,7 @@ export default {
       }
       if (state) {
         mt_registerByAngel(that.phone, that.code, that.shareCode).then(data => {
-          console.log(data.data);
+          //console.log(data.data);
           that.setUserInfo(data.data);
           that.$message.success("天使注册成功，立即前往支付");
           that.$router.push("/joinAngle");

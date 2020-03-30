@@ -186,7 +186,7 @@ export default {
     getData() {
       let that = this;
       mt_getMsg(that.type, that.page, that.limit).then(data => {
-        // console.log(data.data.data);
+        // //console.log(data.data.data);
         data.data.data.forEach(item => {
           item.time = formatDate(item.createTime, "yyyy-MM-dd hh:mm");
         });
@@ -197,14 +197,14 @@ export default {
           that.scrollBottom = false;
         }
         this.count = data.data.count;
-        console.log(that.list.length);
+        //console.log(that.list.length);
       });
     },
     //标记为已读
     setReaded(value, index) {
       let that = this;
       mt_alreadyRead(value.id).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.list[index].state = 1;
         let arr = {};
         if (that.type == 2) {
@@ -214,7 +214,7 @@ export default {
           arr.myCount = that.newsInfo.myCount;
           arr.sysCount = that.newsInfo.sysCount - 1;
         }
-        // console.log(arr);
+        // //console.log(arr);
         that.setNewsInfo(arr);
       });
     },
@@ -222,14 +222,14 @@ export default {
     setAllReaded() {
       let that = this;
       mt_readAll().then(data => {
-        console.log(data);
+        //console.log(data);
         that.list.forEach(item => {
           item.state = 1;
         });
         let arr = {};
         arr.myCount = 0;
         arr.sysCount = 0;
-        // console.log(arr);
+        // //console.log(arr);
         that.setNewsInfo(arr);
       });
     },

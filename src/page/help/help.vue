@@ -195,7 +195,7 @@ export default {
     getData(type, name) {
       let that = this;
       mt_questionselectAll(type, that.searchKey).then(data => {
-        // console.log(data)
+        // //console.log(data)
         this.currentWord = name;
         if (data.data.data.length > 0) {
           this.currentCont = data.data.data[0].content;

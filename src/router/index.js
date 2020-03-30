@@ -247,17 +247,23 @@ const routes = [
     name: 'type',
     component: resolve => require(['@/page/mobile/type.vue'], resolve)
   },
-  //分类
+  //个人中心-移动
   {
     path: '/mymobile',
     name: 'mymobile',
     component: resolve => require(['@/page/mobile/mymobile.vue'], resolve)
   },
-  //分类
+  //资产
   {
     path: '/assets',
     name: 'assets',
     component: resolve => require(['@/page/mobile/assets.vue'], resolve)
+  },
+  //账户管理
+  {
+    path: '/myAccount',
+    name: 'myAccount',
+    component: resolve => require(['@/page/mobile/myAccount.vue'], resolve)
   },
   
 ];
@@ -286,6 +292,9 @@ const history = window.sessionStorage
 history.clear()
 let historyCount = history.getItem('count') * 1 || 0
 history.setItem('/', 0)
+history.setItem('/type', 1)
+history.setItem('/cart', 2)
+history.setItem('/mymobile', 3)
 //页面加载时
 router.beforeEach(function (to, from, next) {
   store.commit('setPageLoading', true);
@@ -295,7 +304,7 @@ router.beforeEach(function (to, from, next) {
 
   // 判断该路由是否需要登录权限
   if (to.meta.requireAuth) {  
-    // console.log('beforeEach获取当前的token是否存在'+store.state.userInfo.token)
+    // //console.log('beforeEach获取当前的token是否存在'+store.state.userInfo.token)
     let userInfo = localStorage.getItem("userInfo")
     if (userInfo && userInfo!=null) {  
       // var htmlHref = window.location.href
@@ -330,7 +339,7 @@ router.beforeEach(function (to, from, next) {
       // let routerStr = htmlHref.split('?')[0].substring(1)  //截取掉‘/’
 
       let routerStr = (from.path).split('?')[0].substring(1)
-      console.log(routerStr)
+      //console.log(routerStr)
       localStorage.setItem("routerHref", routerStr)
       next({
         path: '/login',

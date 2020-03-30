@@ -134,7 +134,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         data.data.birthday =
           data.data.birthday != "" && data.data.birthday != undefined
             ? formatDate(data.data.birthday, "yyyy-MM-dd")
@@ -170,7 +170,7 @@ export default {
         }
         mt_edituserInfo(hImg, that.nickName, that.birthday, that.gender).then(
           data => {
-            // console.log(data);
+            // //console.log(data);
             that.$message({
               message: "修改成功",
               type: "success",

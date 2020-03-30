@@ -196,7 +196,7 @@ export default {
       let that = this;
         //发送验证码请求
       mt_register_code(that.userInfo.phone,3).then(data => {
-        console.log(data)
+        //console.log(data)
           that.code = "";
           that.settime();
           that.$message.success("短信发送成功");
@@ -220,7 +220,7 @@ export default {
       } else {
         let psd = that.$md5(that.password);
         mt_updatePwd(that.userInfo.phone,that.code,psd).then(data => {
-          console.log(data)
+          //console.log(data)
           that.clearTimer()
             that.dialogEditPsd = false
             that.code = "";
@@ -242,7 +242,7 @@ export default {
     
     // 销毁微信二维码
     destriyQrcode() {
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
       var childs = wxcode.childNodes;
       if (childs != null) {

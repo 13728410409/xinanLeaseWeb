@@ -115,12 +115,12 @@ export default {
   watch: {
     data(val) {
       // this.userInfo = val;
-      // console.log(val);
+      // //console.log(val);
     },
     //监听图片变化
     eHeadImg(newValue, oldValue) {
       if (newValue != oldValue) {
-        // console.log(this.eHeadImg)
+        // //console.log(this.eHeadImg)
       }
     },
   },
@@ -194,7 +194,7 @@ export default {
       let that = this;
       mt_getJinPaiInfo(
       ).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         data.data.forEach(item=>{
           if(that.userInfo.type == item.type){
             that.JoinTypeText = item.name
@@ -204,7 +204,7 @@ export default {
     },
     //编辑个人信息弹窗显示
     editInfo() {
-      // console.log(this.userInfo)
+      // //console.log(this.userInfo)
       this.dialogPinfo = true;
       this.eHeadImg = this.userInfo.headImg;
       this.eNickName = this.userInfo.nickName;
@@ -215,7 +215,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         that.setUserInfo(data.data);
       });
     },
@@ -237,7 +237,7 @@ export default {
         }
         mt_edituserInfo(hImg, that.eNickName,that.birthday,that.gender).then(
           data => {
-            // console.log(data);
+            // //console.log(data);
             that.$message({
               message: "修改成功",
               type: "success",

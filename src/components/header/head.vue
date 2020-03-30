@@ -79,7 +79,7 @@ export default {
     getCommonPhone() {
       let that = this;
       mt_commonPhone(1, 100).then(data => {
-        // console.log(data.data.data)
+        // //console.log(data.data.data)
         let obj = {}
         obj.list = []
          data.data.data.forEach(item=>{
@@ -96,7 +96,7 @@ export default {
     getUnRead() {
       let that = this;
       mt_queryUnRead().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.setNewsInfo(data.data);
       });
     },

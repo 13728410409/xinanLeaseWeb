@@ -150,7 +150,7 @@ export default {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
     //查看销售详情
     viewDetail(val) {
-      console.log(val);
+      //console.log(val);
       this.$router.push("/saleDetail/" + val.code + "/" + val.nickName);
     },
     //搜索
@@ -162,7 +162,7 @@ export default {
     getList() {
       let that = this;
       mt_queryMySales(that.phone, that.page, that.limit).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         data.data.data.forEach(item=>{
           item.earningsMoney = item.earningsMoney!=null ? item.earningsMoney : 0
         })
@@ -197,9 +197,9 @@ export default {
         };
         let arr = [];
         arr.push(data);
-        console.log(JSON.stringify(arr))
+        //console.log(JSON.stringify(arr))
         mt_batchAddUser(JSON.stringify(arr)).then(data => {
-          console.log(data);
+          //console.log(data);
           this.dialogAddSale = false;
           that.getList();
         });
@@ -225,7 +225,7 @@ export default {
         })
         .then(() => {
           mt_disableSale(id, isEnable).then(data => {
-            console.log(data.data);
+            //console.log(data.data);
             that.$message.success(title + "成功", 1000);
             that.getList();
           });

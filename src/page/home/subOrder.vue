@@ -543,7 +543,7 @@
               </div>
               <div class="nbtn">
                 <span class="y" @click.stop="edit(item)">改</span>
-                <span class="b" @click.stop="deleteA(item.id,index)">删</span>
+                <span class="b" @click.stop="deleteA(item)">删</span>
               </div>
             </div>
             <div class="nodata" v-if="addressList.length==0">
@@ -956,6 +956,7 @@ import {
   mt_addAddress,
   mt_editAddress,
   mt_setDefaultAddress,
+  mt_deleteAddress,
   mt_queryCompanyInfo
 } from "@/api/my";
 import { mt_createOrder } from "@/api/order";
@@ -1033,14 +1034,14 @@ export default {
   watch: {
     //数量
     num(newVal, oldVal) {
-      console.log(newVal);
+      ////console.log(newVal);
     },
     $route() {
       this.subTime = this.$route.params.subTime;
       let obj = this.shoppingInfo;
-      // console.log(this.shoppingInfo);
+      // ////console.log(this.shoppingInfo);
       if (obj) {
-        // console.log(obj.list);
+        // ////console.log(obj.list);
         if (this.subTime != "") {
           let arr = [];
           obj.list.forEach(item => {
@@ -1076,7 +1077,7 @@ export default {
     }
   },
   created() {
-    // console.log(this.shoppingInfo);
+    // ////console.log(this.shoppingInfo);
     // 组装地址数据
     let arrCity = [];
     cityData.forEach((item, index) => {
@@ -1099,9 +1100,9 @@ export default {
 
     this.subTime = this.$route.params.subTime;
     let obj = this.shoppingInfo;
-    // console.log(this.shoppingInfo);
+    // ////console.log(this.shoppingInfo);
     if (obj) {
-      console.log(obj.list);
+      ////console.log(obj.list);
       if (this.subTime != "") {
         let arr = [];
         obj.list.forEach(item => {
@@ -1118,7 +1119,7 @@ export default {
           }
         });
         this.cartList = arr;
-        // console.log(this.cartList)
+        // ////console.log(this.cartList)
         if (this.cartList.length == 0) {
           this.noData = true;
           this.$message({
@@ -1145,21 +1146,21 @@ export default {
     },
     //选中
     selectedAddressValue(value) {
-      console.log(value);
+      ////console.log(value);
       this.selectedAddress = value;
       this.addressListState = false;
     },
     //计算运费
     getUserPostage() {
       mt_getUserPostage().then(data => {
-        // console.log(data.data);
+        // ////console.log(data.data);
         let userPostage = data.data.data;
         let arr = [];
-        // console.log(this.cartList);
+        // ////console.log(this.cartList);
         this.cartList.forEach(item => {
           arr.push(item.gcreator);
         });
-        // console.log(arr);
+        // ////console.log(arr);
         let creators = Array.from(new Set(arr)); //去重后的商家id集合
         let fprice = 0;
         creators.forEach((item, index) => {
@@ -1169,7 +1170,7 @@ export default {
             }
           });
         });
-        // console.log(fprice);
+        // ////console.log(fprice);
         this.freight = fprice;
         this.computedPrice();
       });
@@ -1178,13 +1179,14 @@ export default {
     getAddressList() {
       let that = this;
       mt_getAddressList().then(data => {
-        console.log(data.data.data);
+        ////console.log(data.data.data);
         let arr = [];
         if (data.data.data.length > 0) {
           data.data.data.forEach(item => {
             item.addressArr = item.address.split(",");
             item.addressV = item.addressArr.join("");
-            item.phones = item.phone.substr(0, 3) + "****" + item.phone.substr(7);
+            item.phones =
+              item.phone.substr(0, 3) + "****" + item.phone.substr(7);
             if (item.isDefault == 1) {
               arr.unshift(item);
               if (
@@ -1227,9 +1229,34 @@ export default {
       this.phone = "";
       this.detailAddress = "";
     },
+    //删除地址
+    deleteA(value) {
+      let that = this;
+      ////console.log(value);
+      that
+        .$confirm("此操作将永久删除该地址，是否继续？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+        .then(() => {
+          mt_deleteAddress(value.id).then(data => {
+            // ////console.log(data);
+            if (!that.mobileMode.result) {
+              that.$message({
+                message: "删除成功",
+                type: "success",
+                duration: 1000
+              });
+            }
+            that.getAddressList();
+          });
+        })
+        .catch(() => {});
+    },
     //修改地址
     edit(value) {
-      // console.log(value);
+      // ////console.log(value);
       this.editId = value.id;
       this.addressArr = [];
       this.dialogPAddress = true;
@@ -1242,12 +1269,10 @@ export default {
       this.addressArr.push(value.addressArr[2]);
       this.detailAddress = value.addressArr[3];
     },
-    //删除地址
-    deleteA(id, index) {},
     //设为默认
     setDefault(value) {
       let that = this;
-      // console.log(value);
+      // ////console.log(value);
       mt_editAddress(
         value.id,
         value.consignee,
@@ -1261,7 +1286,7 @@ export default {
           value.addressArr[3],
         1
       ).then(data => {
-        // console.log(data);
+        // ////console.log(data);
         that.$message({
           message: "设为默认成功",
           type: "success",
@@ -1272,44 +1297,64 @@ export default {
     },
     //当地址选择变化
     handleChange(value) {
-      // console.log(value);
+      // ////console.log(value);
       this.addressArr = value;
-      // console.log(this.addressArr);
+      // ////console.log(this.addressArr);
     },
     //确认添加或修改地址
     submit() {
       let that = this;
       let aa = /[,]/g;
       if (that.name == "" || aa.test(that.name)) {
-        that.$message({
-          message: "收货人输入错误",
-          type: "warning",
-          duration: 1000
-        });
+        if (!that.mobileMode.result) {
+          that.$message({
+            message: "收货人输入错误",
+            type: "warning",
+            duration: 1000
+          });
+        } else {
+          alert("收货人输入错误");
+        }
       } else if (that.phone == "") {
-        that.$message({
-          message: "手机号不能为空",
-          type: "warning",
-          duration: 1000
-        });
+        if (!that.mobileMode.result) {
+          that.$message({
+            message: "手机号不能为空",
+            type: "warning",
+            duration: 1000
+          });
+        } else {
+          alert("手机号不能为空");
+        }
       } else if (!regSJH.test(that.phone)) {
-        that.$message({
-          message: "手机号格式不正确",
-          type: "warning",
-          duration: 1000
-        });
+        if (!that.mobileMode.result) {
+          that.$message({
+            message: "手机号格式不正确",
+            type: "warning",
+            duration: 1000
+          });
+        } else {
+          alert("手机号格式不正确");
+        }
       } else if (that.addressArr.length == 0) {
-        that.$message({
-          message: "所在地区不能为空",
-          type: "warning",
-          duration: 1000
-        });
+        if (!that.mobileMode.result) {
+          that.$message({
+            message: "所在地区不能为空",
+            type: "warning",
+            duration: 1000
+          });
+        } else {
+          alert("所在地区不能为空");
+        }
       } else if (that.detailAddress == "" || aa.test(that.detailAddress)) {
-        that.$message({
-          message: "详细地址输入错误",
-          type: "warning",
-          duration: 1000
-        });
+        if (!that.mobileMode.result) {
+          that.$message({
+            message: "详细地址输入错误",
+            type: "warning",
+            duration: 1000
+          });
+        } else {
+          alert("详细地址输入错误");
+        }
       } else {
         let tip = "";
         if (that.opType == 1) {
@@ -1324,11 +1369,13 @@ export default {
               "," +
               that.detailAddress
           ).then(data => {
-            that.$message({
-              message: "添加收货地址成功",
-              type: "success",
-              duration: 1000
-            });
+            if (!that.mobileMode.result) {
+              that.$message({
+                message: "添加收货地址成功",
+                type: "success",
+                duration: 1000
+              });
+            }
             that.dialogPAddress = false;
             that.getAddressList();
           });
@@ -1347,11 +1394,13 @@ export default {
               that.detailAddress,
             that.isDefault
           ).then(data => {
-            that.$message({
-              message: "修改收货地址成功",
-              type: "success",
-              duration: 1000
-            });
+            if (!that.mobileMode.result) {
+              that.$message({
+                message: "修改收货地址成功",
+                type: "success",
+                duration: 1000
+              });
+            }
             that.dialogPAddress = false;
             that.getAddressList();
           });
@@ -1360,11 +1409,11 @@ export default {
     },
     //查看租赁协议
     viewLease() {
-      // console.log(1111);
+      // ////console.log(1111);
 
       //获取实名认证信息
       mt_queryCompanyInfo().then(data => {
-        // console.log(data.data);
+        // ////console.log(data.data);
         let date = new Date();
         this.htDate.push(date.getFullYear());
         this.htDate.push(date.getMonth() + 1);
@@ -1379,7 +1428,7 @@ export default {
     },
     //数量加减
     changeNum(index, item) {
-      // console.log(index);
+      // ////console.log(index);
       this.cartList[index].selected = true;
       this.computedPrice();
     },
@@ -1407,7 +1456,7 @@ export default {
     addInvoice() {
       this.dialogInvoice = true;
       mt_getinvoice().then(data => {
-        console.log(data);
+        ////console.log(data);
         if (data.data.type != "" && data.data.type != undefined) {
           this.invoicetype = data.data.type;
           this.invoicename = data.data.name;
@@ -1454,7 +1503,7 @@ export default {
           that.invoiceaddress,
           that.invoice.id ? that.invoice.id : ""
         ).then(data => {
-          // console.log(data)
+          // ////console.log(data)
           if (!that.mobileMode.result) {
             that.$message({
               message: "发票添加成功",
@@ -1472,7 +1521,7 @@ export default {
       let that = this,
         state = true,
         title = "";
-      // console.log(this.selectedAddress);
+      // ////console.log(this.selectedAddress);
       if (
         that.selectedAddress.id == "" ||
         that.selectedAddress.id == undefined
@@ -1480,9 +1529,9 @@ export default {
         state = false;
         title = "地址不能为空";
       }
-      // console.log(that.invoice);
+      // ////console.log(that.invoice);
       if (state) {
-        // console.log(that.cartList);
+        // ////console.log(that.cartList);
         let arr = [];
         that.cartList.forEach(item => {
           let d = {
@@ -1499,7 +1548,7 @@ export default {
           arr.push(d);
         });
         let leaseOrderGoodsInfo = JSON.stringify(arr);
-        // console.log(that.selectedAddress);
+        // ////console.log(that.selectedAddress);
         mt_createOrder(
           that.selectedAddress.id,
           leaseOrderGoodsInfo,
@@ -1508,7 +1557,7 @@ export default {
           that.companyName,
           that.freight
         ).then(data => {
-          // console.log(data.data);
+          // ////console.log(data.data);
           that.remove();
           if (!that.mobileMode.result) {
             that.$router.push("/pay/" + data.data);
@@ -1530,11 +1579,15 @@ export default {
           }
         });
       } else {
-        that.$message({
-          message: title,
-          type: "warning",
-          duration: 1000
-        });
+        if (!that.mobileMode.result) {
+          that.$message({
+            message: title,
+            type: "warning",
+            duration: 1000
+          });
+        } else {
+          alert(title)
+        }
       }
     },
     // 移除购物车数据
@@ -1548,7 +1601,7 @@ export default {
         val = "",
         ids = [];
       obj.forEach(item => {
-        // console.log(item);
+        // ////console.log(item);
         if (item.subTime == this.subTime) {
           ids.push(item.id);
         }
@@ -1558,13 +1611,13 @@ export default {
     //更新购物车
     updateCart(arr) {
       mt_insertcart(JSON.stringify(arr)).then(data => {
-        // console.log(data);
+        // ////console.log(data);
       });
     },
     deleteCart(ids) {
-      // console.log(ids);
+      // ////console.log(ids);
       mt_deletecart(ids).then(data => {
-        // console.log(data);
+        // ////console.log(data);
         this.getCarList();
       });
     },
@@ -1572,7 +1625,7 @@ export default {
     getCarList() {
       let that = this;
       mt_selectAllcart().then(data => {
-        // console.log(data.data);
+        // ////console.log(data.data);
         let arr =
           that.shoppingInfo.list != null && that.shoppingInfo.list != undefined
             ? that.shoppingInfo.list
@@ -2277,25 +2330,6 @@ export default {
       .nbox .nzxItm:last-child {
         margin-bottom: 0;
       }
-      .nzxItm .nicon {
-        flex: 35px 0 0;
-        height: 55px;
-        line-height: 55px;
-        text-align: right;
-        padding-right: 7px;
-      }
-      .nzxItm .nicon .sl {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        border: 1rpx solid #b4b4b4;
-        border-radius: 50%;
-      }
-      .nzxItm .nicon image {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-      }
 
       .nbox .nzxItm .ninfo {
         flex: 1;
@@ -2358,16 +2392,15 @@ export default {
       .submit {
         padding: 15px;
       }
-      .submit view {
-        width: 150px;
+      .submit div {
+        width: 100%;
         height: 40px;
         line-height: 40px;
         margin: 0 auto;
         text-align: center;
         font-size: 14px;
-        color: #333333;
-        background-color: #ffffff;
-        border: 1px solid #ffffff;
+        color: #ffffff;
+        background-color: #00bcf4;
         border-radius: 5px;
       }
       .nodata {

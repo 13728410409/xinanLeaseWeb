@@ -74,7 +74,7 @@ export function formatNum(str){
    str = newStr + (str + "00").substr((str + "00").indexOf("."),3);
   }
   // return str
-  console.log(Number(str))
+  //console.log(Number(str))
   return Number(str)
 }
 
@@ -105,7 +105,7 @@ export function firstShow(arr, item) {
   } else {
     for (var i = 0; i < arr.length; i++) {
       if (arr[i] === item) {
-        console.log(i)
+        //console.log(i)
         return i;
       } else {
         return -1;

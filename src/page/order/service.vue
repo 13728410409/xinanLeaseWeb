@@ -279,7 +279,7 @@ export default {
     getOrderDetail(id) {
       let that = this;
       mt_queryReletOrderGoods(id).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.detail = data.data.detail;
         if (data.data.goods.length == 1) {
           data.data.goods[0].dispose = JSON.parse(
@@ -329,7 +329,7 @@ export default {
           that.remark,
           JSON.stringify(that.imgs)
         ).then(data => {
-          console.log(data.data);
+          //console.log(data.data);
           this.$alert(
             "售后申请提交成功，平台将派遣工作人员在24小时内与您联系，请保持电话畅通！",
             "售后提示！",

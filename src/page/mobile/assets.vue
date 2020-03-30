@@ -83,7 +83,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.userInfoData = data.data;
         that.setUserInfo(data.data);
       });
@@ -108,7 +108,7 @@ export default {
     getMoneyLog() {
       let that = this;
       mt_leaseMoneyDetail(that.page, that.limit).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.moneylogList = that.moneylogList.concat(data.data.data)
         that.count = data.data.count;
       });

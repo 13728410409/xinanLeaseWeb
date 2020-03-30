@@ -184,7 +184,7 @@ export default {
       if (regSJH.test(that.phone)) {
         //发送验证码请求
         mt_register_code(that.phone, 3).then(data => {
-          console.log(data);
+          //console.log(data);
           that.code = "";
           that.settime();
           that.$message.success("短信发送成功");
@@ -223,7 +223,7 @@ export default {
       if (state) {
         let psd = that.$md5(that.password);
         mt_updatePwd(that.phone, that.code, psd).then(data => {
-          console.log(data);
+          //console.log(data);
           that.$alert("密码修改成功，立即前往登录", "密码修改提示", {
             confirmButtonText: "确定",
             showClose: false,

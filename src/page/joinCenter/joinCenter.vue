@@ -109,13 +109,13 @@ export default {
   watch: {},
   filters: {},
   created() {
-    console.log();
+    //console.log();
   },
   mounted() {},
   methods: {
     //查看加盟信息
     join(type) {
-      console.log(type);
+      //console.log(type);
       this.$router.push("joinDes/" + type);
     },
     //提交咨询信息
@@ -147,7 +147,7 @@ export default {
           that.conact,
           that.remark
         ).then(data => {
-          // console.log(data)
+          // //console.log(data)
           that.$message({
             message: "加盟咨询提交成功，稍后平台会主动联系你！",
             type: "success",

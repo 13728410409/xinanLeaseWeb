@@ -50,7 +50,7 @@ export default {
       let title = "",
         content = "";
       mt_aggrement(that.type).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.title = data.data.name;
         that.content = data.data.content;
       });

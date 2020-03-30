@@ -112,7 +112,7 @@ export default {
     ...mapMutations(["setUserInfo", "setShoppingInfo"]),
     //查看客户详情
     viewDetail(val) {
-      console.log(val);
+      //console.log(val);
       this.$router.push("/customerDetail/" + val.creator + "/" + val.name);
       // this.$router.push({ name:'customerDetail', params:{ id: val.id, name: val.name  } })
     },
@@ -125,7 +125,7 @@ export default {
     getList() {
       let that = this;
       mt_queryMyCustomer(that.phone, that.page, that.limit).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.bList = data.data.data;
         that.count = data.data.count;
       });

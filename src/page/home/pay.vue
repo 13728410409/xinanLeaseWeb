@@ -137,7 +137,7 @@ export default {
       let that = this;
       this.orderList = [];
       mt_getOrderDetail(id).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         let gDes = "";
         if (data.data.order.id != "") {
           data.data.goods.forEach(item => {
@@ -187,7 +187,7 @@ export default {
       let that = this,
         title = "微信网页支付";
       mt_wxpayByPc(id, title).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         data.data.forms = JSON.parse(data.data.form);
         that.useqrcode(data.data);
       });
@@ -210,7 +210,7 @@ export default {
     },
     // 销毁微信二维码
     destriyQrcode() {
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
       if (wxcode != null) {
         var childs = wxcode.childNodes;
@@ -226,7 +226,7 @@ export default {
       let that = this,
         title = "支付宝网页支付";
       mt_payByPc(that.id, title).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.html = data.data.form;
         var form = data.data.form;
         const div = document.createElement("div");
@@ -236,7 +236,7 @@ export default {
         document.forms[0].submit();
         clearTimeout(that.lxtimer);
         that.lxtimer = false;
-        // console.log(that.lxtimer)
+        // //console.log(that.lxtimer)
         // that
         //   .$confirm(
         //     "如果已经支付完成请点击下方‘支付完成’按钮！",
@@ -263,7 +263,7 @@ export default {
       let timestamp = new Date().getTime();
       if (timestamp <= time) {
         mt_validateIsPaySuccess(outTradeNo).then(data => {
-          console.log(data);
+          //console.log(data);
           if (data.data == 1) {
             that.destriyQrcode();
             clearTimeout(that.lxtimer);
@@ -299,7 +299,7 @@ export default {
     //获取对公账号信息
     querySystemBank() {
       mt_querySystemBank().then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         this.bankInfo = data.data;
         clearTimeout(this.lxtimer);
         this.lxtimer = false;
@@ -308,7 +308,7 @@ export default {
     //确认支付完成
     makeConfirm() {
       let that = this
-      console.log(1111)
+      //console.log(1111)
       that.$confirm(
         "已支付成功点击‘确定’，请等待平台确认到款",
         "对公账户付款提示",
@@ -321,7 +321,7 @@ export default {
       )
         .then(() => {
           mt_makeConfirm(that.id,'用户提交打款确认申请').then(data => {
-            console.log(data.data);
+            //console.log(data.data);
             that.$router.push("/orderList");
           });
         })

@@ -32,7 +32,7 @@ export default {
   watch: {
     name(val) {
       this.wordkey = val
-      console.log(val)
+      //console.log(val)
     },
   },
   created(){

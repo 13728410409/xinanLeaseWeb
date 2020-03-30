@@ -131,7 +131,7 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.bList = data.data.data;
         that.count = data.data.count;
       });

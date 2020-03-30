@@ -612,7 +612,7 @@ export default {
   methods: {
     //查看物流
     viewLogistics() {
-      // console.log(value);
+      // //console.log(value);
       this.getOrderDetail(this.id);
       this.dialogLogistics = true;
     },
@@ -620,7 +620,7 @@ export default {
     getOrderDetail(id) {
       let that = this;
       mt_getOrderDetail(id).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.logistics =
           data.data.express != null
             ? JSON.parse(data.data.express.content)
@@ -655,16 +655,16 @@ export default {
     viewLease() {
       let that = this;
       mt_queryLeaseContractByUserId().then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         if (data.data) {
-          console.log(that.detail.orderNum);
+          //console.log(that.detail.orderNum);
           data.data.forEach(item => {
             if (item.uid == that.detail.orderNum) {
               that.contract = item;
               that.contract.imgs1 = JSON.parse(item.imgs);
               that.contract.imgs2 = JSON.parse(item.legalManImgs);
               that.centerDialogVisible = true;
-              console.log(that.contract);
+              //console.log(that.contract);
             }
           });
         }

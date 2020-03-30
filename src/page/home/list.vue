@@ -402,7 +402,7 @@ export default {
     ...mapState(["userInfo", "mobileMode"])
   },
   created() {
-    // console.log(this.$route.params)
+    // //console.log(this.$route.params)
     this.name =
       this.$route.params.name != undefined && this.$route.params.name != null
         ? this.$route.params.name
@@ -488,7 +488,7 @@ export default {
     getGoodsAttr() {
       let that = this;
       mt_getGoodsAttr().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         data.data.moneys.forEach(item => {
           item.name = item.moneyBegin + "-" + item.moenyEnd + "元";
         });
@@ -501,7 +501,7 @@ export default {
     getRecommend() {
       let that = this;
       mt_getGoodsBySelected().then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         that.spiritList = data.data;
       });
     },
@@ -606,13 +606,13 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         if(!that.mobileMode.result){
           that.list = data.data.data;
         }else{
           that.list = that.list.concat(data.data.data)
         }
-        console.log(that.page)
+        //console.log(that.page)
         that.count = data.data.count;
         that.scrollBottom = false
       });
@@ -627,13 +627,13 @@ export default {
     },
     //搜索
     searchWordKeyChange(val) {
-      // console.log(val);
+      // //console.log(val);
       this.name = val;
       this.getList();
     },
     //查看详情
     viewDetail(value) {
-      // console.log(value);
+      // //console.log(value);
       this.$router.push("/goodsdetail/" + value.id);
     },
     //前往二级

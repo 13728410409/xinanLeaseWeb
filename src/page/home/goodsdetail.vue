@@ -673,7 +673,7 @@ export default {
     },
     //选中时间
     selectleaseTerm(val) {
-      // console.log(val);
+      // //console.log(val);
       if (this.leaseTerm != val.value) {
         this.goodsInfo.leaseTermOptions.forEach(item => {
           if (item.value == val.value) {
@@ -696,7 +696,7 @@ export default {
     getCarList() {
       let that = this;
       mt_selectAllcart().then(data => {
-        // console.log(data.data.data);
+        // //console.log(data.data.data);
         let arr1 = data.data.data;
         arr1.forEach(item => {
           item.address = JSON.parse(item.address);
@@ -712,7 +712,7 @@ export default {
     getGoodsById(id) {
       let that = this;
       mt_getGoodsById(id).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.goodsInfo.des = data.data.proIntroduction;
         that.testDataModel = JSON.parse(data.data.dispose);
         that.attrList = JSON.parse(data.data.leaseAttr);
@@ -724,7 +724,7 @@ export default {
           arr.unshift(res);
         }
         that.navlist = arr;
-        // console.log(that.navlist);
+        // //console.log(that.navlist);
         that.goodsInfo = data.data;
         that.init();
       });
@@ -734,7 +734,7 @@ export default {
         this.currentIndex = index;
         this.currentImg = value;
       }
-      // console.log(value)
+      // //console.log(value)
     },
     //播放视频
     playVideo() {
@@ -748,7 +748,7 @@ export default {
           dangerouslyUseHTMLString: true,
           callback: action => {
             if (action == "confirm") {
-              // console.log(111);
+              // //console.log(111);
               let vide = document.getElementById("vide");
               vide.pause();
             }
@@ -764,7 +764,7 @@ export default {
       this.startTime = formatDate(today, "yyyy-MM-dd");
       this.leaseTime = formatDate(today, "yyyy-MM-dd"); //租赁开始日期
       this.collocation = this.testDataModel[0]; //配置
-      console.log(this.collocation);
+      //console.log(this.collocation);
       this.rent = this.testDataModel[0].value[0].rentMoney;
       this.deposit = this.testDataModel[0].value[0].depositMoney;
       this.leaseTerm = this.testDataModel[0].value[0].term; //租期
@@ -774,7 +774,7 @@ export default {
     // 更新日期数据选项
     changeDateData() {
       let leaseTermOptions = [];
-      // console.log(this.collocation)
+      // //console.log(this.collocation)
       this.collocation.value.forEach((item, index) => {
         leaseTermOptions.push({
           value: item.term,
@@ -799,16 +799,16 @@ export default {
     },
     //地址选择
     sureAddress(value) {
-      // console.log(value);
+      // //console.log(value);
       this.addressArr = value;
     },
     //改变租赁数量
     changeNum() {
-      // console.log(this.num);
+      // //console.log(this.num);
     },
     //切换查看产品参数和产品评价
     selectShowFlag(val) {
-      // console.log(val)
+      // //console.log(val)
       if (this.showFlag != val) {
         this.showFlag = val;
       }
@@ -817,8 +817,8 @@ export default {
     addCart(type) {
       let that = this;
       let subTime = new Date().getTime();
-      // console.log(subTime)
-      console.log(that.goodsInfo.leaseTermOptions)
+      // //console.log(subTime)
+      //console.log(that.goodsInfo.leaseTermOptions)
       let data = {
         gid: that.goodsId,
         img: that.navlist[0],
@@ -854,7 +854,7 @@ export default {
               that.leaseTerm == item.leaseTerm &&
               that.collocation.id == item.collocation.id 
             ) {
-              console.log('同商品同配置，数量增加')
+              //console.log('同商品同配置，数量增加')
               state = true;
               ind = index;
             }
@@ -875,11 +875,11 @@ export default {
         arr.unshift(data);
         obj.list = arr;
       }
-      // console.log(obj.list)
+      // //console.log(obj.list)
       //存本地购物车缓存
       that.setShoppingInfo(obj);
       let userInfo = localStorage.getItem("userInfo");
-      // console.log(userInfo)
+      // //console.log(userInfo)
       if (userInfo) {
         mt_insertcart(JSON.stringify(obj)).then(data => {
           that.getCarList();
@@ -887,10 +887,10 @@ export default {
       }
       if (type == 2) {
         let userInfo = localStorage.getItem("userInfo");
-        // console.log(userInfo);
+        // //console.log(userInfo);
         if (userInfo != null && userInfo != undefined) {
           mt_getuserInfo().then(data => {
-            // console.log(data.data)
+            // //console.log(data.data)
             that.setUserInfo(data.data);
             if (data.data.status == 2) {
               that.$router.push("/subOrder/" + subTime);
@@ -929,11 +929,11 @@ export default {
     },
     //咨询
     consult() {
-      console.log(this.consultCont);
+      //console.log(this.consultCont);
       let that = this;
       if (that.consultCont != "") {
         mt_goodsinsert(that.goodsId, that.consultCont).then(data => {
-          console.log(data);
+          //console.log(data);
           that.consultCont = "";
           that.$message.success(
             "商品咨询提交成功，稍后平台会主动联系你！",
@@ -946,7 +946,7 @@ export default {
     },
     //切换评价类型
     selectComentType(val) {
-      console.log(val);
+      //console.log(val);
       if (this.commentType != val) {
         this.commentType = val;
         this.page = 1;
@@ -963,7 +963,7 @@ export default {
         that.goodsId,
         that.commentType
       ).then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         data.data.data.forEach(item => {
           item.imgs =
             item.img != "" && item.img != null ? JSON.parse(item.img) : [];

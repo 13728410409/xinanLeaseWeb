@@ -392,7 +392,7 @@ export default {
   },
   watch: {
     service_goods(val) {
-      // console.log(val)
+      // //console.log(val)
       this.hList = [];
       this.getHotOrNewGoods(val);
     }
@@ -440,7 +440,7 @@ export default {
     getLunbo() {
       let that = this;
       mt_lunbo().then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         data.data.forEach(item => {
           if (item.jumpType == 2) {
             item.record = JSON.parse(item.record);
@@ -453,7 +453,7 @@ export default {
     getGoods() {
       let that = this;
       mt_queryHomeGoods().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.sortList = data.data.length > 0 ? data.data[0] : [];
         that.productList = [];
         that.productList.push(data.data[1]);
@@ -464,7 +464,7 @@ export default {
     getGoodsMenu() {
       let that = this;
       mt_selectFirstMenu().then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         that.navList = data.data;
       });
     },
@@ -479,7 +479,7 @@ export default {
     getAllianceBusiness() {
       let that = this;
       mt_queryAllianceBusiness().then(data => {
-        // console.log(data.data.data);
+        // //console.log(data.data.data);
         that.allianceBusiness = data.data.data;
       });
     },
@@ -494,18 +494,18 @@ export default {
     },
     //查看详情
     viewDetail(val) {
-      console.log(val)
+      //console.log(val)
       this.$router.push("/goodsdetail/" + val);
     },
     jump(val) {
-      // console.log(val);
+      // //console.log(val);
     },
     //查看加盟信息
     viewJoinInfo() {
       let jsonUserInfo = localStorage.getItem("userInfo");
       if (jsonUserInfo != null) {
         let userInfo = JSON.parse(jsonUserInfo);
-        // console.log(userInfo);
+        // //console.log(userInfo);
         if (userInfo.angelState == 3) {
           if (userInfo.joinStatus == 0) {
             this.$router.push("/joinCenter");
@@ -543,7 +543,7 @@ export default {
     },
     //执行搜索
     searchWordKeyChange(value){
-      console.log(value)
+      //console.log(value)
       this.$router.push({ name:'list', params:{ name : value, menuId: ''  } })
     },
   }

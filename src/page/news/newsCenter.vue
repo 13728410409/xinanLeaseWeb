@@ -149,7 +149,7 @@ export default {
       let that = this;
       mt_newselectAll(that.type, that.title, that.page, that.limit).then(
         data => {
-          // console.log(data.data.data)
+          // //console.log(data.data.data)
           data.data.data.forEach(item => {
             item.time = formatDate(item.createTime, "yyyy-MM-dd hh:mm");
           });
@@ -160,7 +160,7 @@ export default {
             that.scrollBottom = false;
           }
           that.count = data.data.count;
-          console.log(that.list)
+          //console.log(that.list)
         }
       );
     },

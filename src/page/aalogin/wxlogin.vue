@@ -26,7 +26,7 @@ export default {
   },
   created() {
     let hrefValue = this.$route.params.parameter
-    // console.log(hrefValue.length)
+    // //console.log(hrefValue.length)
     if(hrefValue.length<10){
       if(hrefValue==2){
         this.text = '您的账户不存在，请先登录绑定微信'
@@ -51,7 +51,7 @@ export default {
         uinfo.token = value.t
         this.setUserInfo(uinfo);
         mt_getuserInfo().then(data => {
-          // console.log(data.data)
+          // //console.log(data.data)
           this.setUserInfo(data.data);
           this.$router.push('/')
         });

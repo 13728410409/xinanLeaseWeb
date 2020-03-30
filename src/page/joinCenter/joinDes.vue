@@ -62,12 +62,12 @@ export default {
     //获取入驻类型描述
     getData(type) {
       mt_queryJoinDescribe(type).then(data => {
-        console.log(data);
+        //console.log(data);
         this.data = data.data;
       });
     },
     join() {
-      console.log(this.type);
+      //console.log(this.type);
       this.$router.push({ name: "join", params: { type: this.type } });
     }
   }

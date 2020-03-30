@@ -210,7 +210,7 @@ export default {
     getOrderDetail(id) {
       let that = this;
       mt_getOrderDetail(id).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.goods = data.data.goods;
         that.detail = data.data.order;
       });
@@ -237,7 +237,7 @@ export default {
           img = that.imgs.join(",");
         }
         mt_insertComment(that.id, that.cont, that.score, img).then(data => {
-          console.log(data.data);
+          //console.log(data.data);
           
           if(!that.mobileMode.result){
             that.$message({

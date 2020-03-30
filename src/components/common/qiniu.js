@@ -29,7 +29,7 @@ export default function (files) {
     mt_getQnToken().then(data => {
       //地区
       storageArea = data.data.storageArea
-      console.log(storageArea)
+      //console.log(storageArea)
       callback(data.data);
     })    
     // axios.get(httpUrl.qnUpload,).then(data => {
@@ -107,11 +107,11 @@ export default function (files) {
       var subscription = observable.subscribe(
         res => {
           //图片上传进度
-          // console.log("图片上传进度", res.total.percent);
+          // //console.log("图片上传进度", res.total.percent);
         },
         err => {
           //图片报错
-          // console.log(err);
+          // //console.log(err);
           reject(err);
         },
         res => {

@@ -217,7 +217,7 @@ export default {
       if (regSJH.test(that.phone)) {
         //发送验证码请求
         mt_register_code(that.phone, 1).then(data => {
-          console.log(data);
+          //console.log(data);
           that.code = "";
           that.settime();
           that.$message.success("短信发送成功");
@@ -228,12 +228,12 @@ export default {
     },
     //更新购物车
     updateCart(arr) {
-      // console.log(this.userInfo)
+      // //console.log(this.userInfo)
       let token = JSON.parse(localStorage.getItem("userInfo")).token;
-      // console.log(token)
+      // //console.log(token)
       if (token) {
         mt_insertcart(arr).then(data => {
-          console.log(data);
+          //console.log(data);
         });
       }
     },
@@ -251,7 +251,7 @@ export default {
           that.butState = true;
           let psd = that.$md5(that.password);
           mt_login(that.phone, psd).then(data => {
-            // console.log(data);
+            // //console.log(data);
             that.setUserInfo(data.data);
             if (obj) {
               that.updateCart(obj);
@@ -272,12 +272,12 @@ export default {
         } else {
           that.butState = true;
           mt_loginByPhone(that.phone, that.code).then(data => {
-            // console.log(data.data);
+            // //console.log(data.data);
             that.setUserInfo(data.data);
             if (obj) {
               that.updateCart(obj);
             }
-            // console.log(localStorage.getItem("routerHref"));
+            // //console.log(localStorage.getItem("routerHref"));
             let href =
               localStorage.getItem("routerHref") != null
                 ? localStorage.getItem("routerHref")

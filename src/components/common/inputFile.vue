@@ -46,7 +46,7 @@ export default {
     upType(val,oldVal) {
       if (val!=oldVal) {
         this.accept = val
-        // console.log(val)
+        // //console.log(val)
       }
     },
   },
@@ -59,12 +59,12 @@ export default {
       //文件数据体
       var files = event.target.files;
       qiniuUpload(files).then(res => {
-        // console.log("图片上传完成", res);
+        // //console.log("图片上传完成", res);
         if (_this.fileUrl.length >= _this.length) {
           _this.fileUrl.splice(0, 1);
         }
         _this.fileUrl.push(res);
-        // console.log(_this.fileUrl);
+        // //console.log(_this.fileUrl);
         if (_this.type == "Array") {
           _this.$emit("input", _this.fileUrl);
           _this.$emit("change", _this.fileUrl[0]);

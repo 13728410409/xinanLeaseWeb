@@ -121,7 +121,7 @@ export default {
     ...mapState(["userInfo", "shoppingInfo"])
   },
   created() {
-    console.log(this.$route.params);
+    //console.log(this.$route.params);
     this.code = this.$route.params.code;
     this.salename = this.$route.params.name;
     this.getList();
@@ -145,7 +145,7 @@ export default {
         that.page,
         that.limit
       ).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         data.data.data.forEach(item=>{
           item.createTime = formatDate(item.createTime,'yyyy-MM-dd hh:mm')
         })

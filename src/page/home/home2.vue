@@ -87,7 +87,7 @@ export default {
   },
   created(){
     let that = this
-    // console.log(JSON.parse(localStorage.getItem('userInfo')).token)
+    // //console.log(JSON.parse(localStorage.getItem('userInfo')).token)
     if(localStorage.getItem('userInfo')!=null){
       that.isLogin = JSON.parse(localStorage.getItem('userInfo')).token !=null ? true:false
 
@@ -153,7 +153,7 @@ export default {
     getGoodsMenu(id){
       let that = this
       mt_selectSecondMenu(id).then(data=>{
-        // console.log(data.data)
+        // //console.log(data.data)
         that.navList = data.data
         if(data.data.length>0){
           that.currentName = that.navList[0].name
@@ -163,7 +163,7 @@ export default {
     
     //前往商品分类
     goList(value){
-      // console.log(value)
+      // //console.log(value)
       this.$router.push({ name:'list', params:{ name : '', menuId: value.id  } })
     },
     //查看加盟信息

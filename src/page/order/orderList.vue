@@ -406,7 +406,7 @@ export default {
         that.orderNum,
         that.buyTime
       ).then(data => {
-        // console.log(data.data.data);
+        // //console.log(data.data.data);
         data.data.data.forEach(item => {
           item.createTime = formatDate(item.createTime, "yyyy-MM-dd hh:mm");
         });
@@ -450,7 +450,7 @@ export default {
           that.orderList = that.orderList.concat(data.data.data);
           that.scrollBottom = false
         }
-        console.log(that.orderList.length);
+        //console.log(that.orderList.length);
       });
     },
     //搜索订单
@@ -488,7 +488,7 @@ export default {
     },
     //查看物流
     viewLogistics(value) {
-      // console.log(value.id);
+      // //console.log(value.id);
       this.getOrderDetail(value.id);
       this.dialogLogistics = true;
     },
@@ -496,7 +496,7 @@ export default {
     getOrderDetail(id) {
       let that = this;
       mt_getOrderDetail(id).then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.logistics =
           data.data.express != null
             ? JSON.parse(data.data.express.content)
@@ -507,7 +507,7 @@ export default {
     confirmOrder(value) {
       let that = this;
       mt_confirmOrder(value.id).then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.$message.success("确认收货成功", 1000);
         that.page = 1;
         that.getMyOrder();

@@ -34,12 +34,12 @@ export default {
   watch: {
     data(val) {
       this.addressVal = val;
-      // console.log(this.addressVal)
+      // //console.log(this.addressVal)
     },
   },
   created() {
     this.getAddress();
-    console.log(this.data)
+    //console.log(this.data)
     if (this.data instanceof Array) {
       this.addressVal = this.data;
       this.provice = this.data[0]
@@ -61,7 +61,7 @@ export default {
         that.addressData = JSON.parse(str);
       } else {
         axios.get("/static/other/city.json").then(data => {
-          // console.log(data.data)
+          // //console.log(data.data)
           that.addressData = data.data;
           localStorage.setItem("address", JSON.stringify(data.data));
         }).catch(response => {});
@@ -78,7 +78,7 @@ export default {
     //当绑定值变化时触发的事件
     handleChange(value) {
       this.addressVal = value
-      // console.log(this.addressArr);
+      // //console.log(this.addressArr);
       this.$emit('selectVal',value)
     },
   }

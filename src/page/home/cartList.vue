@@ -151,6 +151,7 @@
             ></el-input-number>
           </div>
         </div>
+        <div class="noContent" v-if="cartList.length==0">购物车暂无商品</div>
       </div>
       <div class="btn" v-if="cartList.length>0">
         <div class="price">
@@ -173,7 +174,7 @@
           </div>
         </div>
       </div>
-
+      
       <footerm></footerm>
     </div>
   </div>
@@ -212,7 +213,7 @@ export default {
   watch: {
     //数量
     num(newVal, oldVal) {
-      console.log(newVal);
+      ////console.log(newVal);
     }
   },
   filters: {
@@ -234,7 +235,7 @@ export default {
         }
       });
     });
-    // console.log(this.cartList)
+    // ////console.log(this.cartList)
     let userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       this.getCarList();
@@ -258,7 +259,7 @@ export default {
       } else {
         this.isAllSelected = true;
       }
-      console.log(this.cartList);
+      ////console.log(this.cartList);
       this.computedPrice();
     },
     // 全选商品
@@ -279,7 +280,7 @@ export default {
     getCarList() {
       let that = this;
       mt_selectAllcart().then(data => {
-        // console.log(data.data.data);
+        // ////console.log(data.data.data);
         let arr1 = data.data.data;
         arr1.forEach(item => {
           item.collocation = JSON.parse(item.collocation);
@@ -300,7 +301,7 @@ export default {
     },
     //查看详情
     viewDetail(val) {
-      console.log(val);
+      ////console.log(val);
       this.$router.push("/goodsdetail/" + val.gid);
     },
     //全选
@@ -321,23 +322,23 @@ export default {
     //更新购物车
     updateCart(arr) {
       let userInfo = localStorage.getItem("userInfo");
-      // console.log(arr)
-      // console.log(JSON.stringify(arr))
+      // ////console.log(arr)
+      // ////console.log(JSON.stringify(arr))
       if (userInfo) {
         mt_insertcart(JSON.stringify(arr)).then(data => {
-          // console.log(data);
+          // ////console.log(data);
         });
       }
     },
     //单选
     checkgood(e) {
-      // console.log(this.cartList)
+      // ////console.log(this.cartList)
       this.computedPrice();
     },
     //删除商品
     deleteGood(index, value) {
       let that = this;
-      // console.log(value);
+      // ////console.log(value);
       that
         .$confirm("是否确认把商品移除购物车?", "删除提示", {
           confirmButtonText: "确定",
@@ -346,7 +347,7 @@ export default {
         })
         .then(() => {
           let userInfo = localStorage.getItem("userInfo");
-          console.log(userInfo);
+          ////console.log(userInfo);
           if (userInfo) {
             that.deleteCart(value.id);
           } else {
@@ -370,9 +371,9 @@ export default {
             type: "warning"
           })
           .then(() => {
-            // console.log(idarr);
+            // ////console.log(idarr);
             let userInfo = localStorage.getItem("userInfo");
-            console.log(userInfo);
+            ////console.log(userInfo);
             if (userInfo) {
               let objArr = that.cartList;
               let idarr = [];
@@ -405,16 +406,18 @@ export default {
       }
     },
     deleteCart(ids) {
-      console.log(ids);
+      ////console.log(ids);
       mt_deletecart(ids).then(data => {
-        // console.log(data);
-        this.$message.success("删除成功", 500);
+        // ////console.log(data);
+        if (!that.mobileMode.result) {
+          that.$message.success("删除成功", 500);
+        }
         this.getCarList();
       });
     },
     //数量加减
     changeNum(index, item) {
-      console.log(index);
+      ////console.log(index);
       this.cartList[index].selected = true;
       this.computedPrice();
       let obj = {},
@@ -425,10 +428,10 @@ export default {
     },
     //租期选择
     changeLeaseTerm(index, value) {
-      // console.log(index);
-      // console.log(value);
+      // ////console.log(index);
+      // ////console.log(value);
       this.cartList[index].selected = true;
-      // console.log(this.cartList);
+      // ////console.log(this.cartList);
       value.leaseTermOptions00.forEach(item => {
         if (value.leaseTerm == item.value) {
           this.cartList[index].rent = item.rentMoney;
@@ -448,7 +451,7 @@ export default {
       this.deposit = 0;
       this.rent = 0;
       this.totalPrice = 0;
-      // console.log(this.cartList)
+      // ////console.log(this.cartList)
       this.cartList.forEach((item, index) => {
         if (item.selected) {
           this.selectedNum += 1;
@@ -474,21 +477,26 @@ export default {
             let arr = [],
               obj = {};
             arr = this.cartList;
-            // console.log(this.cartList)
+            // ////console.log(this.cartList)
             arr.forEach((item, index) => {
               if (item.selected) {
                 item.subTime = subTime;
               }
             });
             obj.list = arr;
-            // console.log(obj)
+            // ////console.log(obj)
             this.setShoppingInfo(obj);
             // localStorage.setItem('shoppingInfo',JSON.stringify(obj))
             this.updateCart(obj);
-            // console.log(subTime)
+            // ////console.log(subTime)
             this.$router.push("/subOrder/" + subTime);
           } else {
-            this.$message.warning("请先选择一个商品");
+            
+            if (!this.mobileMode.result) {
+              this.$message.warning("请先选择一个商品");
+            }else{
+              alert("请先选择一个商品")
+            }
           }
         } else {
           this.$confirm("实名认证成功后才能下单", "信安提示", {
@@ -715,6 +723,14 @@ export default {
   }
   .mobile {
     padding-bottom: 100px;
+    .noContent {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
   }
 
   .main .item {

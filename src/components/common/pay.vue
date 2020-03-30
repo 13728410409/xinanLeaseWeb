@@ -64,7 +64,7 @@ export default {
   watch: {
     payType(newValue, oldValue){
       if(newValue!=oldValue){
-        // console.log(newValue)
+        // //console.log(newValue)
       }
     },
   },
@@ -84,7 +84,7 @@ export default {
     },
     // 销毁微信二维码
     destriyQrcode(){
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode")
       var childs = wxcode.childNodes
       if(childs!=null){
@@ -123,15 +123,15 @@ export default {
         let money = Number(that.reMoneyNum)
         // 清除二维码
         if(that.payType==1){
-          // console.log('微信充值')
+          // //console.log('微信充值')
           mt_wxpayRecharge('微信网页充值',money).then(data => {
-            console.log(data.data)
+            //console.log(data.data)
             data.data.forms = JSON.parse(data.data.form)
             that.useqrcode(data.data)
           })
         }else if(that.payType==2){
           mt_alipayRecharge('支付宝网页充值',money).then(data => {
-            // console.log(data.data)
+            // //console.log(data.data)
             that.html = data.data.form;
             var form = data.data.form;
             const div = document.createElement("div");
@@ -153,7 +153,7 @@ export default {
           //     }
           //   })
           // .then((res) =>{
-          //     console.log(res.data)
+          //     //console.log(res.data)
           //     if(res.data.code==200){
                 
           //     }else if (res.data.code==401){
@@ -174,7 +174,7 @@ export default {
       let timestamp =new Date().getTime()
       if(timestamp<=time){
         mt_validateIsPaySuccess(outTradeNo).then(data => {
-          console.log(data)
+          //console.log(data)
           if (data.data==1) {
             that.close()
             that.close1()

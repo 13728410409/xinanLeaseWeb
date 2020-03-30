@@ -113,7 +113,7 @@ function async (url = '', data = {}, type = 'GET', options = {}, httpUrl = baseU
   //	}
   //数据处理
   function handle(obj) {
-    // console.log(obj)
+    // //console.log(obj)
     if (parseInt(obj.code) == 0) {
       return obj;
     } else if (parseInt(obj.code) == 1000) {

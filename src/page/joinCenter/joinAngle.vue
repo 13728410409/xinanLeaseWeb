@@ -84,7 +84,7 @@ export default {
     //监听图片变化
     yyzz(newValue, oldValue) {
       if (newValue != oldValue) {
-        // console.log(this.eHeadImg)
+        // //console.log(this.eHeadImg)
       }
     }
   },
@@ -101,7 +101,7 @@ export default {
     getUserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        console.log(data.data)
+        //console.log(data.data)
         that.setUserInfo(data.data);
         if(this.userInfo.angelState==0){
           this.step = 2
@@ -118,10 +118,10 @@ export default {
     //获取天使加盟信息
     getCompanyInfo() {
       let that = this;
-      console.log(this.userInfo.angelState)
+      //console.log(this.userInfo.angelState)
       if(this.userInfo.angelState!=1){
         mt_wxpayByAngel().then(data => {
-          // console.log(data.data);
+          // //console.log(data.data);
           data.data.forms = JSON.parse(data.data.form)
           that.useqrcode(data.data);
         });
@@ -133,7 +133,7 @@ export default {
     },
     // 销毁微信二维码
     destriyQrcode() {
-      // console.log('------销毁微信二维码-----')
+      // //console.log('------销毁微信二维码-----')
       var wxcode = document.getElementById("qrCode");
       var childs = wxcode.childNodes;
       if (childs != null) {
@@ -160,7 +160,7 @@ export default {
     payAlipay() {
       let that = this;
       mt_alipayByAngel().then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.html = data.data.form;
         var form = data.data.form;
         const div = document.createElement("div");

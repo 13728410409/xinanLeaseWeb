@@ -190,7 +190,7 @@ export default {
       if (regSJH.test(that.phone)) {
         //发送验证码请求
         mt_register_code(that.phone, 2).then(data => {
-          console.log(data);
+          //console.log(data);
           that.code = "";
           that.settime();
           that.$message.success("短信发送成功");
@@ -229,7 +229,7 @@ export default {
       if (state) {
         let psd = that.$md5(that.password);
         mt_register(that.phone, that.code, psd).then(data => {
-          console.log(data);
+          //console.log(data);
           that.$alert("账号注册成功，立即前往登录", "注册提示", {
             confirmButtonText: "确定",
             showClose: false,

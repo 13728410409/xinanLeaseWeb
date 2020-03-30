@@ -224,7 +224,7 @@ export default {
     getuserInfo() {
       let that = this;
       mt_getuserInfo().then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         that.setUserInfo(data.data);
         that.getMyEarnings(); //获取资产详情
         // that.getNews()   //获取消息
@@ -234,7 +234,7 @@ export default {
     getJinPaiInfo() {
       let that = this;
       mt_getJinPaiInfo().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         data.data.forEach(item => {
           if (that.userInfo.type == item.type) {
             that.JoinTypeText = item.name;
@@ -245,7 +245,7 @@ export default {
 
     //编辑个人信息弹窗显示
     editInfo() {
-      // console.log(this.userInfo)
+      // //console.log(this.userInfo)
       this.dialogPinfo = true;
       this.eHeadImg = this.userInfo.headImg;
       this.eNickName = this.userInfo.nickName;
@@ -270,7 +270,7 @@ export default {
         }
         mt_edituserInfo(hImg, that.eNickName, that.birthday, that.gender).then(
           data => {
-            // console.log(data);
+            // //console.log(data);
             that.$message({
               message: "修改成功",
               type: "success",
@@ -310,13 +310,13 @@ export default {
     getMyEarnings() {
       let that = this;
       mt_selectMyEarnings().then(data => {
-        // console.log(data.data);
+        // //console.log(data.data);
         that.accountDetail = data.data;
       });
     },
     //账户管理
     viewAccount() {
-      alert("移动端界面优化中");
+      this.$router.push("/myAccount");
     },
     //查看我的资产记录
     viewAssets() {
@@ -350,7 +350,7 @@ export default {
     },
     //新闻中心
     viewNewsCenter() {
-      alert("移动端界面优化中");
+      this.$router.push("/newsCenter");
     },
   }
 };

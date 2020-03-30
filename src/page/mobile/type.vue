@@ -62,7 +62,7 @@ export default {
     getGoodsMenu1() {
       let that = this;
       mt_selectFirstMenu().then(data => {
-        console.log(data.data);
+        //console.log(data.data);
         that.navList = data.data;
         that.type = data.data[0].id;
         that.getGoodsMenu2(that.type);
@@ -72,7 +72,7 @@ export default {
     getGoodsMenu2(id) {
       let that = this;
       mt_selectSecondMenu(id).then(data => {
-        // console.log(data.data)
+        // //console.log(data.data)
         that.navList1 = data.data;
         if (data.data.length > 0) {
           that.currentName = that.navList[0].name;
