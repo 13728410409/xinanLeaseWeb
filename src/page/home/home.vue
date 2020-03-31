@@ -80,7 +80,7 @@
         </div>
         <!-- 新消息 -->
         <div class="newInfomation">
-          <div class="welcome">
+          <!-- <div class="welcome">
             <div class="img">
               <img src="/static/icon/logo.png" alt />
             </div>
@@ -106,7 +106,7 @@
                 v-if="phoneInfo.list&&index<2"
               >{{item}}</div>
             </div>
-          </div>
+          </div> -->
           <div class="service_goods">
             <div class="tab">
               <span :class="service_goods==2?'active':''" @click="selectService_goods(2)">最新上架</span>
@@ -114,7 +114,7 @@
               <span :class="service_goods==1?'active':''" @click="selectService_goods(1)">服务内容</span>
             </div>
             <ul class="list">
-              <li v-for="(item,index) of hList" :key="index" @click="viewDetail(item.id)">
+              <li v-for="(item,index) of hList" :key="index" v-if="index<14" @click="viewDetail(item.id)">
                 <span class="sign">HOT</span>
                 <div class="val ellipsis">{{item.name}}</div>
               </li>
@@ -464,7 +464,7 @@ export default {
     getGoodsMenu() {
       let that = this;
       mt_selectFirstMenu().then(data => {
-        // //console.log(data.data)
+        // console.log(data.data)
         that.navList = data.data;
       });
     },
@@ -489,8 +489,8 @@ export default {
     },
     // 查看二级菜单
     viewhome2(val) {
-      localStorage.setItem("home2", JSON.stringify(val));
-      this.$router.push("/home2/" + val.id);
+      // console.log(val)
+      this.$router.push("/home2/" + val.id+"/"+ encodeURI(encodeURI(val.name)));
     },
     //查看详情
     viewDetail(val) {

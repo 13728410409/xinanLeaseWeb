@@ -256,13 +256,8 @@
         <div class="container box">
           <div class="t">
             <i class="n">分&nbsp;&nbsp;类：</i>
-            <span>不限</span>
-            <span>电脑办公</span>
-            <span>电脑配件</span>
-            <span>手机</span>
-            <span>打印机</span>
-            <span>投影仪</span>
-            <span>服务器</span>
+            <router-link tag="span" to="/list">不限</router-link>
+            <span v-for="(item,index) of menuList" :key="index" @click="viewhome2(item)">{{item.name}}</span>
           </div>
           <div class="search">
             <span>搜&nbsp;&nbsp;索：</span>
@@ -507,7 +502,7 @@ import {
   accMul
 } from "@/config/often";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
-import { mt_getGoodsById, mt_addCart } from "@/api/home";
+import { mt_getGoodsById, mt_addCart, mt_selectFirstMenu } from "@/api/home";
 import { mt_selectComment, mt_goodsinsert } from "@/api/order";
 import { mt_insertcart, mt_selectAllcart } from "@/api/common";
 import { mt_getuserInfo } from "@/api/my";
@@ -600,7 +595,9 @@ export default {
 
       headValue: "商品详情", //头部
       showModalStatus: false, //配置弹窗显示状态
-      showVideo: false
+      showVideo: false,
+
+      menuList: [], //一级分类数据
     };
   },
   computed: {
@@ -663,6 +660,9 @@ export default {
         .catch(() => {
           that.$router.push("/");
         });
+    }
+    if(!that.mobileMode.result){
+      this.getGoodsMenu()
     }
   },
   updated() {},
@@ -969,6 +969,19 @@ export default {
     //下单
     placeOrder() {
       this.addCart(2);
+    },
+    //获取一级菜单分类
+    getGoodsMenu() {
+      let that = this;
+      mt_selectFirstMenu().then(data => {
+        console.log(data.data)
+        that.menuList = data.data;
+      });
+    },
+    // 查看二级菜单
+    viewhome2(val) {
+      // console.log(val)
+      this.$router.push("/home2/" + val.id+"/"+ encodeURI(encodeURI(val.name)));
     },
     //咨询
     consult() {

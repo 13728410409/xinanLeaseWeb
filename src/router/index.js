@@ -48,9 +48,14 @@ const routes = [
     component: resolve => require(['@/page/home/home.vue'], resolve)
   },
   {
-    path: '/home2/:id',
+    path: '/home2/:id/:name',
     name: 'home2',
     component: resolve => require(['@/page/home/home2.vue'], resolve)
+  },
+  {
+    path: '/home3/:id1/:id2',
+    name: 'home3',
+    component: resolve => require(['@/page/home/home3.vue'], resolve)
   },
   //商品列表
   {
@@ -207,6 +212,12 @@ const routes = [
     path: '/newsCenter',
     name: 'newsCenter',
     component: resolve => require(['@/page/news/newsCenter.vue'], resolve)
+  },
+  //加盟中心1
+  {
+    path: '/joinCenterShow',
+    name: 'joinCenterShow',
+    component: resolve => require(['@/page/joinCenter/joinCenterShow.vue'], resolve)
   },
   //加盟中心
   {

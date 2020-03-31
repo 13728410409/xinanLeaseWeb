@@ -22,13 +22,15 @@
       </div>
       <div class="type">
         <div class="container box">
-          <div class="step">
-            <router-link tag="span" to="home">一级分类</router-link>&nbsp;&gt;&nbsp;
-            <span @click="goHome2">二级分类</span>&nbsp;&nbsp;
+          <div class="step" v-if="id1!=''">
+            <!-- <router-link tag="span" to="home2">{{name1}}</router-link>&nbsp;&gt;&nbsp; -->
+            <span class="link" title="点击返回一级分类" @click="goHome2">{{name1}}</span>&nbsp;&gt;&nbsp;
+            <router-link tag="span" :to="'/home3/'+id1+'/'+id2"  class="link" title="点击返回二级分类">{{name2}}</router-link>&nbsp;&gt;&nbsp;
+            <span>{{name3}}</span>&nbsp;&nbsp;
             <i v-if="name!=''">“{{name}}”</i>
           </div>
           <!-- <div class="title" v-if="name!=''">“{{name}}”</div> -->
-          <div class="condition">
+          <div class="condition" style="margin-top:20px;">
             <div class="itm">
               <div class="name">
                 <span>商品分类：</span>
@@ -259,7 +261,9 @@
                 <div class="num">
                   已有
                   <span>{{item.comments}}</span>人评价
-                  <span style="float:right;color:#666666;">销量：{{item.salesVolume!=null?item.salesVolume:0}}</span>
+                  <span
+                    style="float:right;color:#666666;"
+                  >销量：{{item.salesVolume!=null?item.salesVolume:0}}</span>
                 </div>
               </div>
               <div class="noContent" v-if="list.length==0">暂无该分类商品</div>
@@ -279,7 +283,7 @@
       <foot-guide></foot-guide>
     </div>
     <div class="mobile" v-if="mobileMode.result">
-      <searchm :homeState="homeState" @getKey="searchWordKeyChange" ></searchm>
+      <searchm :homeState="homeState" @getKey="searchWordKeyChange"></searchm>
       <div class="condition_m">
         <div class="itm" :class="cond==1?'active':''" @click="condsort(1)">销量</div>
         <div class="itm" :class="cond==2?'active':''" @click="condsort(2)">价格</div>
@@ -300,7 +304,9 @@
               <div class="name ellipsis">{{item.name}}</div>
               <div class="des ellipsis2">{{item.proIntroduction}}</div>
               <div class="price">￥{{item.money}}</div>
-              <div class="num">{{item.comments}}条评价&nbsp;&nbsp;销量：{{item.salesVolume!=null?item.salesVolume:0}}</div>
+              <div
+                class="num"
+              >{{item.comments}}条评价&nbsp;&nbsp;销量：{{item.salesVolume!=null?item.salesVolume:0}}</div>
             </div>
           </div>
           <div class="noContent" v-if="list.length==0">暂无该分类商品</div>
@@ -311,34 +317,75 @@
         <div class="container">
           <div class="title">商品分类</div>
           <div class="box">
-            <div class="itm" :class="cond1.id==item.id?'active':''" v-for="(item,index) of condition.types" :key="index" @click="selectCond(1,item)">
+            <div
+              class="itm"
+              :class="cond1.id==item.id?'active':''"
+              v-for="(item,index) of condition.types"
+              :key="index"
+              @click="selectCond(1,item)"
+            >
               <span>{{item.name}}</span>
             </div>
           </div>
           <div class="title">商品品牌</div>
           <div class="box">
-            <div class="itm" :class="cond2.id==item.id?'active':''" v-for="(item,index) of condition.brands" :key="index" @click="selectCond(2,item)">
-              <span>{{item.name}}</span></div>
+            <div
+              class="itm"
+              :class="cond2.id==item.id?'active':''"
+              v-for="(item,index) of condition.brands"
+              :key="index"
+              @click="selectCond(2,item)"
+            >
+              <span>{{item.name}}</span>
+            </div>
           </div>
           <div class="title">新旧</div>
           <div class="box">
-            <div class="itm"  :class="cond3.id==item.id?'active':''" v-for="(item,index) of condition.status" :key="index" @click="selectCond(3,item)">
-              <span>{{item.name}}</span></div>
+            <div
+              class="itm"
+              :class="cond3.id==item.id?'active':''"
+              v-for="(item,index) of condition.status"
+              :key="index"
+              @click="selectCond(3,item)"
+            >
+              <span>{{item.name}}</span>
+            </div>
           </div>
           <div class="title">价格</div>
           <div class="box">
-            <div class="itm"  :class="cond4.id==item.id?'active':''" v-for="(item,index) of condition.moneys" :key="index" @click="selectCond(4,item)">
-              <span>{{item.name}}</span></div>
+            <div
+              class="itm"
+              :class="cond4.id==item.id?'active':''"
+              v-for="(item,index) of condition.moneys"
+              :key="index"
+              @click="selectCond(4,item)"
+            >
+              <span>{{item.name}}</span>
+            </div>
           </div>
           <div class="title">租赁方式</div>
           <div class="box">
-            <div class="itm"  :class="cond5.id==item.id?'active':''" v-for="(item,index) of condition.ways" :key="index" @click="selectCond(5,item)">
-              <span>{{item.name}}</span></div>
+            <div
+              class="itm"
+              :class="cond5.id==item.id?'active':''"
+              v-for="(item,index) of condition.ways"
+              :key="index"
+              @click="selectCond(5,item)"
+            >
+              <span>{{item.name}}</span>
+            </div>
           </div>
           <div class="title">适用人数</div>
           <div class="box">
-            <div class="itm"   :class="cond6.id==item.id?'active':''" v-for="(item,index) of condition.peoples" :key="index" @click="selectCond(6,item)">
-              <span>{{item.name}}</span></div>
+            <div
+              class="itm"
+              :class="cond6.id==item.id?'active':''"
+              v-for="(item,index) of condition.peoples"
+              :key="index"
+              @click="selectCond(6,item)"
+            >
+              <span>{{item.name}}</span>
+            </div>
           </div>
           <div class="btn">
             <div class="cancle" @click="resetSelect">重置</div>
@@ -376,6 +423,11 @@ export default {
     return {
       name: "", //搜索的名字
       menuId: "", //目录id
+      id1: "",
+      id2: "",
+      name1: "", 
+      name2: '',
+      name3: '',
       money: "", //搜索的价格
 
       condition: {},
@@ -404,7 +456,7 @@ export default {
     ...mapState(["userInfo", "mobileMode"])
   },
   created() {
-    // //console.log(this.$route.params)
+    console.log(this.$route.params)
     this.name =
       this.$route.params.name != undefined && this.$route.params.name != null
         ? this.$route.params.name
@@ -413,6 +465,27 @@ export default {
       this.$route.params.menuId != undefined &&
       this.$route.params.menuId != null
         ? this.$route.params.menuId
+        : "";
+
+    this.id1 =
+      this.$route.params.id1 != undefined && this.$route.params.id1 != null
+        ? this.$route.params.id1
+        : "";
+    this.name1 =
+      this.$route.params.name1 != undefined && this.$route.params.name1 != null
+        ? this.$route.params.name1
+        : "";
+    this.id2 =
+      this.$route.params.id2 != undefined && this.$route.params.id2 != null
+        ? this.$route.params.id2
+        : "";
+    this.name2 =
+      this.$route.params.name2 != undefined && this.$route.params.name2 != null
+        ? this.$route.params.name2
+        : "";
+    this.name3 =
+      this.$route.params.name3 != undefined && this.$route.params.name3 != null
+        ? this.$route.params.name3
         : "";
     this.getGoodsAttr();
     this.getRecommend();
@@ -473,18 +546,18 @@ export default {
     toggleConditionMask() {
       this.conditionMask = !this.conditionMask;
     },
-    hideMask(){
-      this.conditionMask = false
+    hideMask() {
+      this.conditionMask = false;
     },
     //重置选项
-    resetSelect(){
-      this.conditionMask = false
-      this.cond1= "" //分类
-      this.cond2= "" //品牌
-      this.cond3= "" //新旧
-      this.cond4= "" //价格
-      this.cond5= "" //租赁方式
-      this.cond6= "" //适用人数
+    resetSelect() {
+      this.conditionMask = false;
+      this.cond1 = ""; //分类
+      this.cond2 = ""; //品牌
+      this.cond3 = ""; //新旧
+      this.cond4 = ""; //价格
+      this.cond5 = ""; //租赁方式
+      this.cond6 = ""; //适用人数
     },
     //获取商品分类
     getGoodsAttr() {
@@ -559,11 +632,11 @@ export default {
       let scroll_height = document.getElementsByClassName("listItem")[0]
         .offsetHeight; //内容的高度
       let is_height = scroll_height - wrap_height - scroll_top;
-      if (is_height <0.1 && this.count > this.list.length) {
-        if(!this.scrollBottom){
-           this.page++;
-           this.getList();
-           this.scrollBottom = true
+      if (is_height < 0.1 && this.count > this.list.length) {
+        if (!this.scrollBottom) {
+          this.page++;
+          this.getList();
+          this.scrollBottom = true;
         }
       }
     },
@@ -609,14 +682,14 @@ export default {
         that.limit
       ).then(data => {
         // console.log(data.data);
-        if(!that.mobileMode.result){
+        if (!that.mobileMode.result) {
           that.list = data.data.data;
-        }else{
-          that.list = that.list.concat(data.data.data)
+        } else {
+          that.list = that.list.concat(data.data.data);
         }
         //console.log(that.page)
         that.count = data.data.count;
-        that.scrollBottom = false
+        that.scrollBottom = false;
       });
     },
     handleSizeChange(val) {
@@ -630,8 +703,8 @@ export default {
     //搜索
     searchWordKeyChange(val) {
       // console.log(val);
-      this.page = 1
-      this.list = []
+      this.page = 1;
+      this.list = [];
       this.name = val;
       this.getList();
     },
@@ -642,34 +715,28 @@ export default {
     },
     //前往二级
     goHome2() {
-      if (localStorage.getItem("home2") != null) {
-        let menuId = JSON.parse(localStorage.getItem("home2")).id;
-        this.$router.push("/home2/" + menuId);
-      } else {
-        mt_selectFirstMenu().then(data => {
-          localStorage.setItem("home2", JSON.stringify(data.data[0]));
-          this.$router.push("/home2/" + data.data[0].id);
-        });
-      }
+      this.$router.push(
+        "/home2/" + this.id1 + "/" + encodeURI(encodeURI(this.name1))
+      );
     },
-    
+    goHome3() {
+      this.$router.push("/home3/" + this.id1 + "/" + this.id2);
+    }
   },
-  updated() {
-
-  }
+  updated() {}
 };
 </script>>
 <style lang="scss" scoped>
 @import "src/style/mixin";
 .pc {
   .noContent {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
   .hometop3 {
     height: 40px;
     background-color: #ffffff;
@@ -706,12 +773,14 @@ export default {
     background-color: #ffffff;
     .box {
       .step {
-        padding: 12px 0;
+        margin-top: 15px;
         font-size: 14px;
         line-height: 14px;
         color: #999999;
         span {
           color: #666666;
+        }
+        .link{
           &:hover {
             cursor: pointer;
             color: $mainColor;
@@ -1004,7 +1073,7 @@ export default {
         vertical-align: middle;
       }
     }
-    
+
     .wrapper {
       position: fixed;
       top: 88px;
@@ -1082,7 +1151,6 @@ export default {
       }
     }
 
-
     .listMask {
       position: fixed;
       left: 0;
@@ -1090,7 +1158,7 @@ export default {
       bottom: 0;
       right: 0;
       z-index: 99;
-      animation: DSMask 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      animation: DSMask 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
       overflow: hidden;
     }
 
@@ -1102,7 +1170,7 @@ export default {
       right: 0;
       z-index: 99;
       background-color: rgba(0, 0, 0, 0.7);
-      animation: DSContentBox 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      animation: DSContentBox 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
     .listMask .container {
@@ -1208,9 +1276,6 @@ export default {
         transform: translate(0px, 0, 0);
       }
     }
-
-
-    
   }
 }
 </style>

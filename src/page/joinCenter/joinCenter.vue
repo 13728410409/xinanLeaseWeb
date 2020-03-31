@@ -9,8 +9,8 @@
       <div class="joinCenter">
         <div class="container box">
           <div class="sign">
-            <img @click="join(3)" src="/static/icon/agentjoin.png" alt />
-            <img @click="join(5)" src="/static/icon/goldjoin.png" alt />
+            <img @click="joinshow" src="/static/icon/agentjoin.png" alt />
+            <!-- <img @click="join(5)" src="/static/icon/goldjoin.png" alt /> -->
           </div>
           <div class="conact">
             <div class="title">输入您的电话&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们立即联系您</div>
@@ -118,12 +118,10 @@ export default {
       //console.log(type);
       this.$router.push("joinDes/" + type);
     },
+    joinshow(){
+      this.$router.push("joinCenterShow");
+    },
     //提交咨询信息
-    // companyName: '',
-    //   phone: '',
-    //   eamil: '',
-    //   conact: '',
-    //   remark: '',
     submit() {
       let that = this;
       if (!regSJH.test(that.phone)) {

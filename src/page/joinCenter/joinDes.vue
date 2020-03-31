@@ -134,8 +134,9 @@ export default {
     color: #333333;
   }
   .joinDes .content p{
+    margin-top: 5px;
     font-size: 13px;
-    font-size: 18px;
+    line-height: 18px;
     color: #333333;
   }
   .joinDes button {
